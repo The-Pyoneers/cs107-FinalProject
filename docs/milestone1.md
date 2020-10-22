@@ -33,41 +33,35 @@ The following example demonstrates how a user will interface with Farad:
 
 ## Software Organization
 
-A proposed layout for the directory tree is outlined below. The project will have separate directories for performing tests (actionable by the *pytest* library). The copyright license used will be the permissive MIT License 2.0. Documentation will be created using the Sphinx package and hosted externally. A folder for applications will exist to demonstrate several example use cases of the library in action. Source files for the forward and reverse mode functions will be placed under the *autodiff* folder. A requirements.txt file and setup.py file will be present to allow the package to be distributed via PyPi and for easy user setup of the package.
+A proposed layout for the directory tree is outlined below. The project will have separate directories for performing tests (actionable by the pytest library). The copyright license used will be the permissive MIT License 2.0. Documentation will be created using Sphinx and hosted externally on Read The Docs. A folder for applications will exist to demonstrate several example use cases of the library in action. Source files for the forward and reverse mode functions will be placed under the autodiff folder. A requirements.txt file and setup.py file will be present to allow the package to be distributed via PyPi and for easy user setup of the package.
 
 ```
-Farad
+master
 ├── LICENSE
 ├── README.md     
 ├── docs
-│   └── sphinx_docs
+│   ├── sphinx_docs
 │   └── design documents
 ├── requirements.txt
 ├── travis.yml
+├── .readthedocs.yml
+├── .gitignore
 ├── setup.py
-├── autodiff
+├── farad
+│   ├── __init__.py
 │   └── ...
 ├── tests
+│   ├── __init__.py
 │   └── ...
-├── applications
-│   └── ...
+└── applications
+    └── ...
 ```
 
-#### Modules
--	Numpy
--	Pandas
--	Sympy (math operations)
--	Matplot (plotting)
+The main module for this library will be farad, which contains all of the callable submodules used for automatic differentiation. Three other modules (directories) will also be created, (1) docs, containing documentation and milestone information for the project, (2) applications, containing several use case examples of the farad library, and (3) tests, containing unit tests for farad submodules.
 
-#### Continuous Integration
--	TravisCI
--	CodeCov
+The package will be augmented by continuous integration, implemented via TravisCI. Travis performs automated testing of submodules upon changes to source code. In addition, CodeCov will be used for performing coverage assessment of packaged code.
 
-#### Distribution
--	PyPi
-
-#### Packaging
--	Sphinx
+The package will be distributed via PyPi in the format outlined in the above-mentioned directory tree. The only anticipated package dependency will be numpy.
 
 ## Implementation
 Our plan on implementing the forward mode of automatic differentiation is as below:
