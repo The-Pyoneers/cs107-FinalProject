@@ -67,7 +67,7 @@ Farad
 -	PyPi
 
 #### Packaging
--	Sphinx?
+-	Sphinx
 
 ## Implementation
 Our plan on implementing the forward mode of automatic differentiation is as below:
