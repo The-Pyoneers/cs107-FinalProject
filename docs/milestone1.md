@@ -12,15 +12,15 @@ Symbolic differentiation requires either user input or a near-infinitely sized l
 
 AD, on the other hand, resolves these issues. Only elementary functions are encoded, and complex functions are decomposed into a series of operations with elementary functions using a computational graph structure. This is done via the chain rule, which allows derivatives to be fragmented into simpler ones that become trivial to solve. In addition, the computational complexity of automatic differentiation functions are proportional to the underlying code complexity in most cases, meaning the method can be implemented with only a minor impact on runtime.
 
-Forward mode AD can be achieved using dual numbers, which are formally described as Taylor series truncated at the first term, $x+ \epsilon x'$. By definition, dual numbers exhibit the property $\epslion^2=0$. Using dual numbers, a function can be defined by
+Forward mode AD can be achieved using dual numbers, which are formally described as Taylor series truncated at the first term, x+ epsilon x'. By definition, dual numbers exhibit the property epslion^2=0. Using dual numbers, a function can be defined by
 
-$$ f(x+x')=f(x)+ \epsilon f'(x)x' $$
+f(x+x')=f(x)+ epsilon f'(x)x' 
 
 The advantage of this definition is that it allows derivatives to be carried around as part of the data structure. The chain rule can also be applied using dual numbers
 
-$$ f(g(x+ \epsilon x'))=f(g(x)+ \epsilon g'(x)x')=f(g(x))+ \epsilon f'(g(x))g'(x)x'$$ 
+f(g(x+ epsilon x'))=f(g(x)+ epsilon g'(x)x')=f(g(x))+ epsilon f'(g(x))g'(x)x'
 
-The coefficient of  in this equation is equal to the derivative of the composite of the functions f and g. By isolating this part of the function and setting $\epsilon =1$, a value for the derivative can be obtained. The farad library implements similar functions for all primitive mathematical operations. The reverse mode AD method will not utilize the dual numbers implementation.
+The coefficient of  in this equation is equal to the derivative of the composite of the functions f and g. By isolating this part of the function and setting epsilon =1, a value for the derivative can be obtained. The farad library implements similar functions for all primitive mathematical operations. The reverse mode AD method will not utilize the dual numbers implementation.
 
 ## How to Use Farad
 
