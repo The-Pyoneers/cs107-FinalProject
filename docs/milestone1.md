@@ -83,5 +83,5 @@ For elementary functions like sin, sqrt, log, and exp (and all the others), we w
 ##  RESOURCES TO REFERENCE FOR IDEAS:
 
 https://github.com/autodiff/autodiff<br/>
-https://github.com/HIPS/autograd
+https://github.com/HIPS/autograd <br/>
 https://github.com/we-the-diff/cs207-FinalProject
