@@ -65,17 +65,15 @@ The package will be distributed via PyPi in the format outlined in the above-men
 
 ## Implementation
 
-#### Core data structures:
--	Dual number or dual vectors including the value and derivatives
+Core data structures: Dual number or dual vectors including the value and derivatives
 
-#### Classes to use:
--	DataClass which defines the instance as the dual number structure; FunctionClass which reads user-specified functions as input
+We will use DataClass and FunctionClass. DataClass defines the instance as the dual number structure and FunctionClass reads user-specified functions as input
 
-Our methods include all the mathematical operations like plus, multiplication, division, sin, power, log, exp, tanh, etc. And the name attributes include value and derivative.
+Our methods include all the mathematical operations like: plusaddition, multiplication, division, sintrigonometric (sin, cos, tan), power, logarithmic, exponential, hyperbolic (sinh, cosh, tanh,),  etc.as well as multiple complex operators (e.g., arcsin, arctanh, tetration). Methods will be implemented via operator overloading. And the name attributes include function value and derivative.
 
 The only external dependency would be Numpy
 
-For elementary functions like sin, sqrt, log, and exp (and all the others), we will create (overload) separate functions as class methods for each of the elementary functions
+For elementary functions like sin, sqrt, log, and exp (and all the others), we will create (overload) separate functions as class methods for each of the elementary functions. Compatibility will also be made for numpy functions (and potentially scipy) for added functionality and cross-compatibility.
 
 
 ## Advanced Feature(s)
@@ -86,3 +84,4 @@ For elementary functions like sin, sqrt, log, and exp (and all the others), we w
 
 https://github.com/autodiff/autodiff<br/>
 https://github.com/HIPS/autograd
+https://github.com/we-the-diff/cs207-FinalProject
