@@ -64,7 +64,6 @@ The package will be augmented by continuous integration, implemented via TravisC
 The package will be distributed via PyPi in the format outlined in the above-mentioned directory tree. The only anticipated package dependency will be numpy.
 
 ## Implementation
-Our plan on implementing the forward mode of automatic differentiation is as below:
 
 #### Core data structures:
 -	Dual number or dual vectors including the value and derivatives
@@ -72,19 +71,14 @@ Our plan on implementing the forward mode of automatic differentiation is as bel
 #### Classes to use:
 -	DataClass which defines the instance as the dual number structure; FunctionClass which reads user-specified functions as input
 
-#### Methods and name attributes:
-- Methods include all the mathematical operations like plus, multiplication, division, sin, power, log, exp, tanh, etc.
--	Name attributes include value and derivative.
+Our methods include all the mathematical operations like plus, multiplication, division, sin, power, log, exp, tanh, etc. And the name attributes include value and derivative.
 
-#### External dependencies:
--	Numpy
+The only external dependency would be Numpy
 
-#### How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
--	Creating (overloading) separate functions as class methods for each of the elementary functions
+For elementary functions like sin, sqrt, log, and exp (and all the others), we will create (overload) separate functions as class methods for each of the elementary functions
 
 
 ## Advanced Feature(s)
-The advanced features for this project include:
 -	The addition of reverse mode automatic differentiation
 -	The use of Farad in several use cases involving differential equations
 
