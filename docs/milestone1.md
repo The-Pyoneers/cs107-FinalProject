@@ -12,6 +12,16 @@ Symbolic differentiation requires either user input or a near-infinitely sized l
 
 AD, on the other hand, resolves these issues. Only elementary functions are encoded, and complex functions are decomposed into a series of operations with elementary functions using a computational graph structure. This is done via the chain rule, which allows derivatives to be fragmented into simpler ones that become trivial to solve. In addition, the computational complexity of automatic differentiation functions are proportional to the underlying code complexity in most cases, meaning the method can be implemented with only a minor impact on runtime.
 
+Forward mode AD can be achieved using dual numbers, which are formally described as Taylor series truncated at the first term, $x+ \epsilon x'$. By definition, dual numbers exhibit the property $\epslion^2=0$. Using dual numbers, a function can be defined by
+
+$$ f(x+x')=f(x)+ \epsilon f'(x)x' $$
+
+The advantage of this definition is that it allows derivatives to be carried around as part of the data structure. The chain rule can also be applied using dual numbers
+
+$$ f(g(x+ \epsilon x'))=f(g(x)+ \epsilon g'(x)x')=f(g(x))+ \epsilon f'(g(x))g'(x)x'$$ 
+
+The coefficient of  in this equation is equal to the derivative of the composite of the functions f and g. By isolating this part of the function and setting $\epsilon =1$, a value for the derivative can be obtained. The farad library implements similar functions for all primitive mathematical operations. The reverse mode AD method will not utilize the dual numbers implementation.
+
 ## How to Use Farad
 
 As an encapsulated library, a user will easily interact with it by simply importing the library into the notebook.
@@ -23,13 +33,14 @@ The user can install the Farad package via the preferred installer program (pip)
 The following example demonstrates how a user will interface with Farad:
 ```python
 >>> import Farad as ad
->>>  def my_pow(x，r) :
-...     y =  x ** r
-...     Return y
->>> d_power = ad (my_power)
->>> d_power(3, 4)
-108
+>>> d_power = ad.exp(ad.pow(ad.var(‘x’), 2)))  # instantiation of AD object for exp(2*x)
+>>> # This could also be implemented as ad.exp(ad.var(‘x’)**2)
+>>> d_power.forward({‘x’,0.5})
+5.43656366
+>>> d_power.reverse()
 ```
+
+The `var` method is used to instantiate independent variables in the AD workflow. The `pow` and `exp` methods are numpy-derived and perform the power and exponential operations respectively. The `pow` method can also be implemented using the `**` operation as a result of operator overloading.
 
 ## Software Organization
 
@@ -65,15 +76,25 @@ The package will be distributed via PyPi in the format outlined in the above-men
 
 ## Implementation
 
-Core data structures: Dual number or dual vectors including the value and derivatives.
+Our plan on implementing forward mode AD is as follows.
 
-We will use DataClass and FunctionClass. DataClass defines the instance as the dual number structure and FunctionClass reads user-specified functions as input
+### Core data structures
 
-Our methods include all the mathematical operations like: plusaddition, multiplication, division, sintrigonometric (sin, cos, tan), power, logarithmic, exponential, hyperbolic (sinh, cosh, tanh,),  etc.as well as multiple complex operators (e.g., arcsin, arctanh, tetration). Methods will be implemented via operator overloading. And the name attributes include function value and derivative.
+- Dual number, vectors, or tensors, including the value and derivatives. 
+- Since dual numbers cannot be used to implement reverse mode AD, an alternative method will be used.
 
-The only external dependency would be Numpy
+### Classes to use
 
-For elementary functions like sin, sqrt, log, and exp (and all the others), we will create (overload) separate functions as class methods for each of the elementary functions. Compatibility will also be made for numpy functions (and potentially scipy) for added functionality and cross-compatibility.
+- DataClass which defines the instance as the dual number structure; FunctionClass which reads user-specified functions as input.
+
+### Methods and name attributes
+
+- Methods include all the mathematical operations: addition, multiplication, division, trigonometric (sin, cos, tan), power, logarithmic, exponential, hyperbolic (sinh, cosh, tanh), as well as multiple complex operators (e.g., arcsin, arctanh, tetration). Methods will also be implemented via operator overloading where possible.
+- Name attributes include function value and derivative.
+
+### How will you deal with elementary functions like sin, sqrt, log, and exp (and all the others)?
+
+- For elementary functions like sin, sqrt, log, and exp (and all the others), we will create (overload) separate functions as class methods for each of the elementary functions. Compatibility will also be made for numpy functions (and potentially scipy) for added functionality and cross-compatibility.
 
 Note: The description above is for forward mode automatic differentiation. For reverse mode (in the advanced features), since dual numbers cannot be used to implement reverse mode automatic differentiation, an alternative method will be used.
 
@@ -81,8 +102,7 @@ Note: The description above is for forward mode automatic differentiation. For r
 -	The addition of reverse mode automatic differentiation
 -	The use of Farad in several use cases involving differential equations
 
-##  RESOURCES TO REFERENCE FOR IDEAS:
+##  References
 
 https://github.com/autodiff/autodiff<br/>
 https://github.com/HIPS/autograd <br/>
-https://github.com/we-the-diff/cs207-FinalProject
