@@ -108,6 +108,24 @@ https://github.com/autodiff/autodiff<br/>
 https://github.com/HIPS/autograd <br/>
 
 
-## Introduction
+## Feedback
 
-#Milestone1
+### Milestone1
+- 2/2 Introduction:
+Would have been nice to see more about why do we care about derivatives anyways and why is Farad a solution compared to other approaches? 
+
+Response : Finding the derivative can help with many optimization problems. Differentiation gives us critical points and these can help us to solve functions in Engineering and Science fields. And our Farad software is more user friendly and easier to use. 
+
+- 1.5/2 Background
+Good start to the background.  The flow could have been enhanced by presenting the evaluation trace and a computational graph.
+Going forward, I would also like to see a discussion on what forward mode actually computes (Jacobian-vector product), the “seed” vector, and the efficiency of forward mode.
+
+Response: 
+
+- 4.5/5 Implementation
+1. How will you handle vector valued functions?
+2. Why do you have a scipy dependency?
+3. Will you be using numpy under-the-hood to implement your elementary functions?
+
+Response: 
+
