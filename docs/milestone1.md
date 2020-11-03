@@ -14,7 +14,7 @@ AD, on the other hand, resolves these issues. Only elementary functions are enco
 
 Forward mode AD can be achieved using dual numbers, which are formally described as Taylor series truncated at the first term, x+ epsilon x'. By definition, dual numbers exhibit the property epslion^2=0. Using dual numbers, a function can be defined by
 
-f(x+x')=f(x)+ epsilon f'(x)x' 
+f(x+x')=f(x)+ epsilon f'(x)x'
 
 The advantage of this definition is that it allows derivatives to be carried around as part of the data structure. The chain rule can also be applied using dual numbers
 
@@ -80,12 +80,14 @@ Our plan on implementing forward mode AD is as follows.
 
 ### Core data structures
 
-- Dual number, vectors, or tensors, including the value and derivatives. 
+- Dual number, vectors, or tensors, including the value and derivatives.
 - Since dual numbers cannot be used to implement reverse mode AD, an alternative method will be used.
 
 ### Classes to use
 
-- DataClass which defines the instance as the dual number structure; FunctionClass which reads user-specified functions as input.
+- First, we have a dual number class. This class can be instantialized by scalar or vectors. To deal with the case of function with vector input, e.g. f(x1,x2,x3,…,xn), we have been implementing our dual number class to include derivatives with respect to all input dimensions (from x1 to xn) in the derivative attribute of our dual number object. That is, for a farad object y, we have y._der = [dydx1, dydx2,..., dydxn].
+- For the case of vector functions, e.g. g(x) = [f1(x), f2(x), f3(x)], we will also define a dual vector class in addition to the dual number class. A dual vector object needs to be instantialized with dual number objects, e.g., g  = dual_vector(f1,f2,f3). Then we expect to get the Jacobian matrix through either g.forward or g._der.
+
 
 ### Methods and name attributes
 
@@ -112,23 +114,23 @@ https://github.com/HIPS/autograd <br/>
 
 ### Milestone1
 
-##### (A) 
+##### (A)
 2/2 Introduction:
-Would have been nice to see more about why do we care about derivatives anyways and why is Farad a solution compared to other approaches? 
+Would have been nice to see more about why do we care about derivatives anyways and why is Farad a solution compared to other approaches?
 
-##### Response : 
+##### Response :
 
 Differential equations play an overarching role in science research. From Maxwell’s electromagnetic equations to Shroedinger’s quantum theory, from pandemic disease models to spreading fake news models, researching functions and their derivatives in differential equations empower people to understand the essence of nature.
 
 With more advanced computing science and algorithms, scientists and engineers are now able to find the solutions to more complicated differential equations. Therefore we create Farad, a more user-friendly software library which helps users perform the differential calculation in a more straightforward way and enables users to concentrate more on the essence of science rather than the programmatic computing process.
 
 
-##### B 
+##### B
 1.5/2 Background
 Good start to the background.  The flow could have been enhanced by presenting the evaluation trace and a computational graph.
 Going forward, I would also like to see a discussion on what forward mode actually computes (Jacobian-vector product), the “seed” vector, and the efficiency of forward mode.
 
-##### Response: 
+##### Response:
 
 One of the powerful features of automatic differentiation is the forward mode. In forward mode when the user considers to evaluate a function at the given point, the derivative result can easily be calculated by generating the evaluation trace and evaluation graph based on chain rule. Here is an example to illustrate the procedure of forward mode:
 
@@ -139,18 +141,18 @@ Then the evaluation trace of the functions in each step:
 ![evaluationTrace](evaluationTrace.png)
 
 Furthermore, if we are going to apply forward mode of AD for both scalar functions and vector functions of multiple variables, we introduce the Jacobian matrix J = 𝜕fi/𝜕xj and the seed vector p. By applying these two elements to a function, we can define the directional derivative as ![dpxn](dpxn.png)
- , which represents the derivative of x_n (f) in the direction of the vector p. This can also be interpreted that the forward mode of AD is actually computing the product of the gradient of a function with the seed vector. 
+ , which represents the derivative of x_n (f) in the direction of the vector p. This can also be interpreted that the forward mode of AD is actually computing the product of the gradient of a function with the seed vector.
 
 From the evaluation graph and evaluation trace of forward mode, the differentiation process can be illustrated in a quite straightforward way.
 
 
-##### C 
+##### C
 4.5/5 Implementation
 1. How will you handle vector valued functions?
 2. Why do you have a scipy dependency?
 3. Will you be using numpy under-the-hood to implement your elementary functions?
 
-##### Response 1: 
+##### Response 1:
 
 For the case of vector input, e.g. f(x1,x2,x3,…,xn), we have been implementing our dual number class to include derivatives with respect to all input dimensions (from x1 to xn) in the derivative attribute of our dual number object. That is, for a farad object y, we have y._val = y_value, y._der = [dydx1, dydx2,..., dydxn].
 
@@ -165,7 +167,3 @@ A numpy dependency should be enough for  most of the elementary functions. Just 
 ##### Response 3:
 
 Yes, we will use numpy under-the-hood when we implement elementary functions, eg. cos(), sin(), power(),log(), exp(), cross() and ndarry for vector.
-
-
-
-
