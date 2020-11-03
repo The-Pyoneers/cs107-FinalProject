@@ -134,7 +134,7 @@ Going forward, I would also like to see a discussion on what forward mode actual
 
 One of the powerful features of automatic differentiation is the forward mode. In forward mode when the user considers to evaluate a function at the given point, the derivative result can easily be calculated by generating the evaluation trace and evaluation graph based on chain rule. Here is an example to illustrate the procedure of forward mode:
 
-Consider the function f (x, y) = exp(-(sin(x) - cos(y))^2) to be evaluate at (𝜋/2, 𝜋/3), we can firstly create the evaluation graph:
+Consider the function f (x, y) = $exp(-(sin(x)-cos(y)^{2}))$ to be evaluate at (𝜋/2, 𝜋/3), we can firstly create the evaluation graph:
 ![evaluationGraph](evaluationGraph.png)
 
 Then the evaluation trace of the functions in each step:
