@@ -125,7 +125,7 @@ Differential equations play an overarching role in science research. From Maxwel
 With more advanced computing science and algorithms, scientists and engineers are now able to find the solutions to more complicated differential equations. Therefore we create Farad, a more user-friendly software library which helps users perform the differential calculation in a more straightforward way and enables users to concentrate more on the essence of science rather than the programmatic computing process.
 
 
-##### B
+##### (B)
 1.5/2 Background
 Good start to the background.  The flow could have been enhanced by presenting the evaluation trace and a computational graph.
 Going forward, I would also like to see a discussion on what forward mode actually computes (Jacobian-vector product), the “seed” vector, and the efficiency of forward mode.
@@ -146,7 +146,7 @@ Furthermore, if we are going to apply forward mode of AD for both scalar functio
 From the evaluation graph and evaluation trace of forward mode, the differentiation process can be illustrated in a quite straightforward way.
 
 
-##### C
+##### (C)
 4.5/5 Implementation
 1. How will you handle vector valued functions?
 2. Why do you have a scipy dependency?
