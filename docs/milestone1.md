@@ -115,7 +115,7 @@ https://github.com/HIPS/autograd <br/>
 ### Milestone1
 
 ##### (A)
-2/2 Introduction:
+**2/2 Introduction:**
 Would have been nice to see more about why do we care about derivatives anyways and why is Farad a solution compared to other approaches?
 
 ##### Response :
@@ -126,15 +126,15 @@ With more advanced computing science and algorithms, scientists and engineers ar
 
 
 ##### (B)
-1.5/2 Background
-Good start to the background.  The flow could have been enhanced by presenting the evaluation trace and a computational graph.
+**1.5/2 Background:**
+Good start to the background. The flow could have been enhanced by presenting the evaluation trace and a computational graph.
 Going forward, I would also like to see a discussion on what forward mode actually computes (Jacobian-vector product), the “seed” vector, and the efficiency of forward mode.
 
 ##### Response:
 
 One of the powerful features of automatic differentiation is the forward mode. In forward mode when the user considers to evaluate a function at the given point, the derivative result can easily be calculated by generating the evaluation trace and evaluation graph based on chain rule. Here is an example to illustrate the procedure of forward mode:
 
-Consider the function f (x, y) = $$exp(-(sin(x)-cos(y)^{2}))$$ to be evaluate at (𝜋/2, 𝜋/3), we can firstly create the evaluation graph:
+Consider the function f (x, y) = exp(-(sin(x)-cos(y)^{2})) to be evaluate at (𝜋/2, 𝜋/3), we can firstly create the evaluation graph:
 ![evaluationGraph](evaluationGraph.png)
 
 Then the evaluation trace of the functions in each step:
@@ -147,7 +147,7 @@ From the evaluation graph and evaluation trace of forward mode, the differentiat
 
 
 ##### (C)
-4.5/5 Implementation
+**4.5/5 Implementation:**
 1. How will you handle vector valued functions?
 2. Why do you have a scipy dependency?
 3. Will you be using numpy under-the-hood to implement your elementary functions?
