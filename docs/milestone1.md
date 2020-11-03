@@ -157,8 +157,6 @@ For the case of vector input, e.g. f(x1,x2,x3,…,xn), we have been implementing
 
 For the  case of vector functions, e.g. g(x) = [f1(x), f2(x), f3(x)], we define a dual vector class in addition to the dual number class. A dual vector object needs to be instantialized with dual number objects, e.g., g  = dual_vector(f1,f2,f3). Then we expect to get the Jacobian matrix through either g.forward or g._der.
 
-We have modified the “Classes to use” subsection in the Implementation section according to what we mentioned above.
-
 ##### Response 2:
 
 A numpy dependency should be enough for  most of the elementary functions. Just in case the user-defined functions include scipy functions, we hope we could potentially deal with those rare situations. For the minimum requirement of the forward mode implementation, we won’t have a scipy dependency. For the case when the input function includes scipy, a scipy dependency may be included in our implementation.
