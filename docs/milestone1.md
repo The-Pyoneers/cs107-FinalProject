@@ -85,9 +85,7 @@ Our plan on implementing forward mode AD is as follows.
 
 ### Classes to use
 
-- First, we have a dual number class. This class can be instantialized by scalar or vectors. To deal with the case of function with vector input, e.g. f(x1,x2,x3,…,xn), we have been implementing our dual number class to include derivatives with respect to all input dimensions (from x1 to xn) in the derivative attribute of our dual number object. That is, for a farad object y, we have y._der = [dydx1, dydx2,..., dydxn].
-- For the case of vector functions, e.g. g(x) = [f1(x), f2(x), f3(x)], we will also define a dual vector class in addition to the dual number class. A dual vector object needs to be instantialized with dual number objects, e.g., g  = dual_vector(f1,f2,f3). Then we expect to get the Jacobian matrix through either g.forward or g._der.
-
+- DataClass which defines the instance as the dual number structure; FunctionClass which reads user-specified functions as input.
 
 ### Methods and name attributes
 
@@ -108,6 +106,7 @@ Note: The description above is for forward mode automatic differentiation. For r
 
 https://github.com/autodiff/autodiff<br/>
 https://github.com/HIPS/autograd <br/>
+
 
 
 ## Feedback
