@@ -111,21 +111,56 @@ https://github.com/HIPS/autograd <br/>
 ## Feedback
 
 ### Milestone1
-- 2/2 Introduction:
+(A) 2/2 Introduction:
 Would have been nice to see more about why do we care about derivatives anyways and why is Farad a solution compared to other approaches? 
 
-Response : Finding the derivative can help with many optimization problems. Differentiation gives us critical points and these can help us to solve functions in Engineering and Science fields. And our Farad software is more user friendly and easier to use. 
+Response : 
 
-- 1.5/2 Background
+Differential equations play an overarching role in science research. From Maxwell’s electromagnetic equations to Shroedinger’s quantum theory, from pandemic disease models to spreading fake news models, researching functions and their derivatives in differential equations empower people to understand the essence of nature.
+
+With more advanced computing science and algorithms, scientists and engineers are now able to find the solutions to more complicated differential equations. Therefore we create Farad, a more user-friendly software library which helps users perform the differential calculation in a more straightforward way and enables users to concentrate more on the essence of science rather than the programmatic computing process.
+
+
+(B) 1.5/2 Background
 Good start to the background.  The flow could have been enhanced by presenting the evaluation trace and a computational graph.
 Going forward, I would also like to see a discussion on what forward mode actually computes (Jacobian-vector product), the “seed” vector, and the efficiency of forward mode.
 
 Response: 
 
-- 4.5/5 Implementation
+One of the powerful features of automatic differentiation is the forward mode. In forward mode when the user considers to evaluate a function at the given point, the derivative result can easily be calculated by generating the evaluation trace and evaluation graph based on chain rule. Here is an example to illustrate the procedure of forward mode:
+
+Consider the function f (x, y) = exp(-(sin(x) - cos(y))^2) to be evaluate at (𝜋/2, 𝜋/3), we can firstly create the evaluation graph:
+![evaluationGraph](evaluationGraph.png)
+
+Then the evaluation trace of the functions in each step:
+![evaluationTrace](evaluationTrace.png)
+
+Furthermore, if we are going to apply forward mode of AD for both scalar functions and vector functions of multiple variables, we introduce the Jacobian matrix J = 𝜕fi/𝜕xj and the seed vector p. By applying these two elements to a function, we can define the directional derivative as Dpxn =𝜵xnp = j=1n-1xnxjpj , which represents the derivative of xn (f) in the direction of the vector p. This can also be interpreted that the forward mode of AD is actually computing the product of the gradient of a function with the seed vector. 
+
+From the evaluation graph and evaluation trace of forward mode, the differentiation process can be illustrated in a quite straightforward way.
+
+
+(C) 4.5/5 Implementation
 1. How will you handle vector valued functions?
 2. Why do you have a scipy dependency?
 3. Will you be using numpy under-the-hood to implement your elementary functions?
 
-Response: 
+Response 1: 
+
+For the case of vector input, e.g. f(x1,x2,x3,…,xn), we have been implementing our dual number class to include derivatives with respect to all input dimensions (from x1 to xn) in the derivative attribute of our dual number object. That is, for a farad object y, we have y._val = y_value, y._der = [dydx1, dydx2,..., dydxn].
+
+For the  case of vector functions, e.g. g(x) = [f1(x), f2(x), f3(x)], we define a dual vector class in addition to the dual number class. A dual vector object needs to be instantialized with dual number objects, e.g., g  = dual_vector(f1,f2,f3). Then we expect to get the Jacobian matrix through either g.forward or g._der.
+
+We have modified the “Classes to use” subsection in the Implementation section according to what we mentioned above.
+
+Response 2:
+
+A numpy dependency should be enough for  most of the elementary functions. Just in case the user-defined functions include scipy functions, we hope we could potentially deal with those rare situations. For the minimum requirement of the forward mode implementation, we won’t have a scipy dependency. For the case when the input function includes scipy, a scipy dependency may be included in our implementation.
+
+Response 3:
+
+Yes, we will use numpy under-the-hood when we implement elementary functions, eg. cos(), sin(), power(),log(), exp(), cross() and ndarry for vector.
+
+
+
 
