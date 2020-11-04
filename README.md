@@ -17,3 +17,7 @@ This repository contains related to project group #34's final project for CS107/
 | Xiaolan Ke           | xiaolan_ke@g.harvard.edu      |
 | ChunChao Tseng       | cht039@g.harvard.edu          |
 | Zeyuan Hu            | zeyuan_hu@fas.harvard.edu     |
+
+## Documentation
+
+The documentation for this package can be found [here](https://farad.readthedocs.io/en/latest/index.html#).
