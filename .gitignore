@@ -11,3 +11,9 @@ __pycache__/
 
 # Local History for Visual Studio Code
 .history/
+
+# Sphinx documentation
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
