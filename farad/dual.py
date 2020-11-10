@@ -14,10 +14,11 @@ methods.
 Example (exp(x^2) + 2x):
 ​
         $ import farad as ad
-        # import farad.dual as dual
-        $ farad_object = dual.exp(dual.var('x')**2) + 2*dual.var('x')  # derivative is 2x*exp(x^2) + 2
-        $ farad_object.forward({'x'=0.5},dual=True)  # forward function calls Dual class
-        >>> output
+        $ import farad.dual as dual
+        $ x = Dual(3, 1)
+        $ z = y**2 + 2*x + 3 # derivative is 2*x + 2
+        $ print(z.val, z.der)  # outputs should be 15 (2**3 + 2*3 + 3) and 8 (2*x + 2)
+        >>> 18 8 
 ​
 Attributes:
     val T<numbers.Integral>: Function value evaluated at a fixed point.
@@ -31,204 +32,182 @@ Todo:
 import numpy as np
 import numbers
 import reprlib
-
-from typing import NoReturn, List, Union
+from typing import NoReturn, List, Union, Optional, Type
 Array = Union[List[float], np.ndarray]
+
 
 class Dual():
 
 
-    def __init__(self, val: numbers.Integral, der: Array) -> NoReturn:
+    def __init__(self, val: Type[numbers.Integral], der: Optional[Type[Array]] = 1) -> NoReturn:
         """Initialize value and derivatives when called."""
         self._val = val
         self._der = np.array(der)
 
 
     @property
-    def der(self) -> Array:
-        return self._der
+    def der(self) -> Type[Array]:
+        return self._der  # limits user interference with 'der' attribute
 
 
     @property
-    def val(self) -> numbers.Integral:
-        return self._val
+    def val(self) -> Type[numbers.Integral]:
+        return self._val  # limits user interference with 'val' attribute
 
 
-    def __add__(self, x: "Dual") -> "Dual":
+    def __add__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload the addition operator (+) to handle Dual class."""
         try:  # try-except loop for Python principle EAFP
             return Dual(self._val + x._val, self._der + x._der)
-        except AttributeError:
-            raise AttributeError(f"Input not a Dual class.")
+        except AttributeError:  # if input is not a Dual object but a float
+            return Dual(self._val + x, self._der + x)
 
 
-    def __radd__(self, x: "Dual") -> "Dual":
+    def __radd__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Revert to __add__ dunder method to handle input reversal."""
-        return self.__add__(x)
+        return self.__add__(x)  # operation is commutative
 
 
-    def __sub__(self, x: "Dual") -> "Dual":
+    def __sub__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload the subtraction operator (-) to handle Dual class."""
         try:
             return Dual(self._val - x._val, self._der - x._der)
         except AttributeError:
-            raise AttributeError(f"Input not a Dual class.")
+            return Dual(self._val - x, self._der - x)
 
 
-    def __rsub__(self, x: "Dual") -> "Dual":
+    def __rsub__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Revert to __sub__ dunder method to handle input reversal."""
-        return self.__sub__(x)
+        try:  # operation is not commutative
+            return Dual(x._val - self._val, x._der - self._der)
+        except AttributeError:
+            return Dual(x - self._val, x - self._der)
 
 
-    def __mul__(self, x: "Dual") -> "Dual":
+    def __mul__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload the multiplication operator (*) to handle Dual class."""
         try:
-            return Dual(self.val * x.val, self.der * x.val + self.val * x.der)  # chain rule for derivative
+            return Dual(self._val * x._val, self._der * x._val + self._val * x._der)  # chain rule for derivative
         except AttributeError:
-            raise AttributeError(f"Input not a Dual class.")
+            return Dual(self._val * x, self._der * x)
 
 
-    def __rmul__(self, x: "Dual") -> "Dual":
+    def __rmul__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Revert to __mul__ dunder method to handle input reversal."""
-        return self.__mul__(x)
+        return self.__mul__(x)  # operation is commutative
 
 
-    def __pow__(self, x: "Dual") -> "Dual":
+    def __pow__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload the exponent operator (**) to handle Dual class."""
         try:
-            return Dual(self.val**x.val, self.val**x.val*(self.der*(x.val/self.val) + x.der*np.log(self.val)))
+            return Dual(self._val**x._val, self._val**x._val*(self._der*(x._val/self._val) + x._der*np.log(self._val)))
         except AttributeError:
-            raise AttributeError(f"Input not a Dual class.")
-        except ZeroDivisionError:
-            return ZeroDivisionError
+            return Dual(self._val**x, self._val**(x-1) * x * self._der)
 
 
-    def __rpow__(self, x: "Dual") -> "Dual":
+    def __rpow__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload input reversed exponent operator to handle Dual class."""
         # Cannot revert to __pow__ dunder method due to non-commutativity of exponent operator
-        try:
-            return Dual(x**self.val, np.log(x) * x ** self.val  * self.der)
+        try: 
+            return Dual(x**self._val, x._val**self._val * np.log(x._val) * self._der)
         except AttributeError:
-            raise AttributeError(f"Input not a Dual class.")
+            return Dual(x**self._val, x**self._val * np.log(x) * self._der)
 
 
-    def __truediv__(self, x: "Dual") -> "Dual":
+    def __truediv__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload the division operator (/) to handle Dual class."""
         try:
-            return Dual(self.val/ x.val, (self.der * x.val - self.val * x.der)/(x.val)**2)
+            return Dual(self._val/x._val, (self._der * x._val - self._val * x._der)/x._val**2)
         except AttributeError:
-            return AttributeError(f"Input not a Dual class.")
-        except ZeroDivisionError:
-            raise ZeroDivisionError
+            return Dual(self._val/x, self._der/x)
 
 
-    def __rtruediv__(self, x: "Dual") -> "Dual":
+    def __rtruediv__(self, x: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload input reversed division operator to handle Dual class."""
         # Cannot revert to __truediv__ dunder method due to non-commutativity of divison operator
-        try:
-            return Dual(x/self.val, -(x * self.der)/self.val ** 2)
-        except AttributeError:
-            return AttributeError(f"Input not a Dual class.")
-        except ZeroDivisionError:
-            raise ZeroDivisionError
+        return Dual(x/self._val, -x/self._der*self._val**2)
 
 
-    def __neg__(self: "Dual") -> "Dual":
+    def __neg__(self: Type[Union["Dual", float]]) -> Type["Dual"]:
         """Overload the unary negation operator (e.g., -x) to handle Dual class."""
-        return Dual(-self.val, -self.der)
+        return Dual(-self._val, -self._der)
 
 
-    def __eq__(self, x: "Dual") -> bool:
+    def __pos__(self: Type[Union["Dual", float]]) -> Type["Dual"]:
+        """Overload the unary positive operator (e.g., +x) to handle Dual class."""
+        return Dual(self._val, self._der)
+
+
+    def __eq__(self, x: Type[Union["Dual", float]]) -> Type[bool]:
         """Overload the equality operator (e.g., x==y) to handle Dual class."""
         try:  # classes equivalent if values and derivatives are equal
-            return (self.val == x.val and np.array_equal(self.der, x.der))
+            return (self._val == x._val and np.array_equal(self._der, x._der))
         except AttributeError:
-            return AttributeError(f"Input not a Dual class.")
+            return (self._val == x)
 
 
-    def __neq__(self, x: "Dual") -> bool:
+    def __ne__(self, x: Type[Union["Dual", float]]) -> Type[bool]:
         """Overload the inequality operator (e.g., x!=y) to handle Dual class."""
         try:
-            return (self.val != x.val or (np.array_equal(self.der, x.der) == False))
+            return (self._val != x._val or (np.array_equal(self._der, x._der) == False))
         except AttributeError:
-            return AttributeError(f"Input not a Dual class.")
+            return (self._val != x)
 
 
-    def __lt__(self, x: "Dual") -> bool:
+    def __lt__(self, x: Type[Union["Dual", float]]) -> Type[bool]:
         """Overload the less than dunder method (e.g., x<y) to handle Dual class."""
         try:
-            return (self.val < x.val)
+            return (self._val < x._val)
         except AttributeError:
-            return (self.val < x)
+            return (self._val < x)
 
 
-    def __le__(self, x: "Dual") -> bool:
+    def __le__(self, x: Type[Union["Dual", float]]) -> Type[bool]:
         """Overload the less than or equal to dunder method (e.g., x<=y) to handle Dual class."""
         try:
-            return (self.val <= x.val)
+            return (self._val <= x._val)
         except AttributeError:
-            return (self.val <= x)
+            return (self._val <= x)
 
 
-    def __gt__(self, x: "Dual") -> bool:
+    def __gt__(self, x: Type[Union["Dual", float]]) -> Type[bool]:
         """Overload the greater than dunder method (e.g., x>y) to handle Dual class."""
         try:
-            return (self.val > x.val)
+            return (self._val > x._val)
         except AttributeError:
-            return (self.val > x)
+            return (self._val > x)
 
 
-    def __ge__(self, x: "Dual") -> bool:
+    def __ge__(self, x: Type[Union["Dual", float]]) -> Type[bool]:
         """Overload the greater than or equal to dunder method (e.g., x>=y) to handle Dual class."""
         try:
-            return (self.val >= x.val)
+            return (self._val >= x._val)
         except AttributeError:
-            return (self.val >= x)
+            return (self._val >= x)
 
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> Type[str]:
         """Prints class definition with inputs - the output can be passed to eval() to instantiate new instance of class Dual."""
-        return f"Dual({reprlib.repr(self.val)},{reprlib.repr(list(self.der))})"
+        try:
+            return f"Dual({reprlib.repr(self._val)},{reprlib.repr(list(self._der))})"
+        except TypeError:  # if der attribute cannot be written to a list
+            return f"Dual({reprlib.repr(self._val)},{reprlib.repr(self._der)})"
 
-
-    def __str__(self) -> str:
+    def __str__(self) -> Type[str]:
         """Prints user-friendly class definition."""
-        return f"Forward-mode {self.__class__.__name__} Object ( Values: {reprlib.repr(np.round(self.val, 4))}, Derivatives: {reprlib.repr(list(np.round(self.der, 4)))} )"
+        try:
+            return f"Forward-mode {self.__class__.__name__} Object ( Values: {reprlib.repr(np.round(self._val, 4))}, Derivatives: {reprlib.repr(list(np.round(self.der, 4)))} )"
+        except TypeError:  # if der attribute cannot be written to a list
+            return f"Forward-mode {self.__class__.__name__} Object ( Values: {reprlib.repr(np.round(self._val, 4))}, Derivatives: {reprlib.repr(np.round(self.der, 4))} )"
 
-
-    def __len__(self) -> str:
+    def __len__(self) -> Type[str]:
         """Returns length of input vector."""
         try:
-            return len(self.val)
+            return len(self._val)
         except TypeError:
             return 1
 
 
-    def __bool__(self) -> bool:
+    def __bool__(self) -> Type[bool]:
         return False
 
-
-    def __nonzero__(self) -> bool:
-        return self.__bool__()
-
-
-if __name__ == '__main__':
-    x = Dual(1, [1,0])
-    y = Dual(1, [0,1])
-    z = x > y
-    #print(z)
-    x += y
-    #print(x)
-    z = x * y
-    #print(z)
-    z = x ** y
-    #print(z)
-    z = x / y
-    print(z)
-    z = x == y
-    print(z)
-    z = x != y
-    print(z)
-    z = -x
-    print(z)
-    eval(repr(x))

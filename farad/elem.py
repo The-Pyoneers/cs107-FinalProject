@@ -2,7 +2,9 @@
 """
 
 __all__ = ['sin', 'cos', 'tan', 'log', 'log10', 'relu', 'sinh', 'cosh', 'tanh' \
-           'sigmoid', 'log2', 'exp', 'exp2', 'sqrt']
+           'sigmoid', 'log2', 'exp', 'exp2', 'sqrt', 'arccos', 'arcsin', 'arctan' \
+            'relu', 'logistic']
+
 
 from dual import Dual
 import numpy as np
@@ -106,23 +108,73 @@ def log2(x: Dual) -> Union[Dual, float, List[float]]:
 
 
 def sinh(x: Dual) -> Union[Dual, float, List[float]]:
-    pass
+    """Calculates the hyberbolic sine of input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The hyperbolic sine of each element of x.
+    """
+    try:
+        return Dual(np.sinh(x.val), np.cosh(x.val) * x.der)
+    except AttributeError:
+        return np.sinh(x)  # default to numpy implementation
 
 
 def cosh(x: Dual) -> Union[Dual, float, List[float]]:
-    pass
+    """Calculates the hyberbolic cosine of input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The hyperbolic cosine of each element of x.
+    """
+    try:
+        return Dual(np.cosh(x.val), np.sinh(x.val) * x.der)
+    except AttributeError:
+        return np.cosh(x)  # default to numpy implementation
 
 
 def tanh(x: Dual) -> Union[Dual, float, List[float]]:
-    pass
+    """Calculates the hyberbolic tangent of input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The hyperbolic tangent of each element of x.
+    """
+    try:
+        return Dual(np.tanh(x.val), x.der / np.cosh(x.val))
+    except AttributeError:
+        return np.tanh(x)  # default to numpy implementation
 
 
 def relu(x: Dual) -> Union[Dual, float, List[float]]:
+    try:
+
     pass
 
 
 def sigmoid(x: Dual) -> Union[Dual, float, List[float]]:
     pass
+
+
+def logistic(x: Dual) -> Union[Dual, float, List[float]]:
+    """Calculates the output of the logistic function given the input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The output  of the logistic function on each element of x.
+    """
+    try:
+        return(1 / (1 + np.exp(-x.val)), np.exp(x.val) / ((1 + np.exp(x.val)) ** 2))
+    except AttributeError:
+       return 1 / (1 + np.exp(-x))
 
 
 def exp(x: Dual) -> Union[Dual, float, List[float]]:
@@ -137,14 +189,86 @@ def exp(x: Dual) -> Union[Dual, float, List[float]]:
     try:
         return Dual(np.exp(x.val), np.exp(x.val) * x.der)
     except AttributeError:
-        return np.exp()  # Default to numpy implementation
+        return np.exp(x)  # Default to numpy implementation
 
 def exp2(x: Dual) -> Union[Dual, float, List[float]]:
     pass
 
 
 def sqrt(x: Dual) -> Union[Dual, float, List[float]]:
-    pass
+    """Calculates the square root of input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The square root of each element of x.
+    """
+    try:
+		return x.__pow__(0.5)
+    except AttributeError:
+        return np.sqrt(x)  # default to numpy implementation
+
+
+def power(x: Dual, power: float) -> Union[Dual, float, List[float]]:
+    """Calculates the power of input. Alternative method to dunder method __pow__ in Dual class.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+    k : float.
+
+    Returns:	
+    y : array_like or Dual Object. Each element of x to the power of 'pow'.
+    """
+    try:
+		return x.__pow__(power)
+    except AttributeError:
+        return np.power(x, power)  # default to numpy implementation
+
+
+def arcsin(x: Dual) -> Union[Dual, float, List[float]]:
+    """Calculates the inverse sine of the input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The inverse sine of each element of x.
+    """
+    try:
+        return Dual(np.arcsin(x.val), 1 / np.sqrt(1 - x.val **2) * x.der)
+    except AttributeError:
+        return np.arcsin(x)
+
+
+def arccos(x: Dual) -> Union[Dual, float, List[float]]:
+    """Calculates the inverse cosine of the input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The inverse cosine of each element of x.
+    """
+    try:
+        return Dual(np.arccos(x.val), -1 / np.sqrt(1 - x.val**2) * x.der)
+    except AttributeError:
+        return np.arccos(x)
+
+
+def arctan(x: Dual) -> Union[Dual, float, List[float]]:
+    """Calculates the inverse tangent of the input.
+
+    Parameters:	
+    x : array_like or Dual Object. 
+
+    Returns:	
+    y : array_like or Dual Object. The inverse tangent of each element of x.
+    """
+    try:
+        return Dual(np.arctan(x.val), 1 / (1 + x.val**2) * x.der)
+    else:
+        return np.arctan(x)
 
 
 if __name__ == "__main__":
