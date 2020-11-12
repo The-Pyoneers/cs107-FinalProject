@@ -2,7 +2,7 @@
 
 ### Tasks: 
 
-######(the number in the brackets represents the estimated story point in the sprint)
+###### (the number in the brackets represents the estimated story point in the sprint)
 1. Test suite (4)
 2. Driver/API script (7)
 3. Documentation (3)
