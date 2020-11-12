@@ -1,6 +1,6 @@
 ## What tasks has each group member been assigned to for Milestone2.
 
-### Tasks:
+### Tasks: (the number in the brackets represents the estimated story point in the sprint)
 1. Test suite (4)
 2. Driver/API script (7)
 3. Documentation (3)
@@ -11,6 +11,7 @@
 8. Proposal for advanced features (e.g., backward mode, applications, nondifferentiable functions?) (3) 
 What kinds of things do you want to implement next? How will your software change? What will be the primary challenges to implementing these new features?
 
+###### (the number in the brackets represents the ratio of the workload)
 * Matt: Function library, test suite (½), doc strings (⅓)
 * Zeyuan: Driver (½), Root finding algorithm
 * Lily: Test suite (½),  admin files
