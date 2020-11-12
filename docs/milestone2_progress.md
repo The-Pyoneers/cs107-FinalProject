@@ -1,6 +1,8 @@
 ## What tasks has each group member been assigned to for Milestone2.
 
-### Tasks: (the number in the brackets represents the estimated story point in the sprint)
+### Tasks: 
+
+######(the number in the brackets represents the estimated story point in the sprint)
 1. Test suite (4)
 2. Driver/API script (7)
 3. Documentation (3)
