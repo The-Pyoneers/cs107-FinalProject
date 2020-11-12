@@ -10,8 +10,11 @@
 5. Root finding algorithm (4)
 6. Function library (3)
 7. Docstrings for functions (7)
-8. Proposal for advanced features (e.g., backward mode, applications, nondifferentiable functions?) (3) 
-What kinds of things do you want to implement next? How will your software change? What will be the primary challenges to implementing these new features?
+8. Proposal for advanced features (3)
+    * e.g., backward mode, applications, nondifferentiable functions?
+    * What kinds of things do you want to implement next? 
+    * How will your software change? 
+    * What will be the primary challenges to implementing these new features?
 
 ###### (the number in the brackets represents the ratio of the workload)
 * Matt: Function library, test suite (½), doc strings (⅓)
@@ -19,13 +22,13 @@ What kinds of things do you want to implement next? How will your software chang
 * Lily: Test suite (½),  admin files
 * Jim: Driver and doc strings (⅔)
 
-All work on documentation and proposal for advanced features.
+We will all work on documentation and proposal for advanced features.
 
 
 
 ## What has each group member done since the submission of Milestone1.
 
-* Matt: Wrote Dual.py module and part of admath.py module; set up Sphinx
+* Matt: wrote Dual.py module and part of admath.py module; set up Sphinx
 * Zeyuan: contributed to updating the milestone 2a document; wrote a root-finding demo using our autograd package.
-* Lily: worked on milestone 1 documentation(introduction, background, use cases) and milestone 2a; worked on test cases for Dual module; migrate google doc into markdown files
+* Lily: worked on milestone 1 documentation(introduction, background, use cases) and milestone 2a; worked on test cases for Dual module; migrated google doc into markdown files
 * Jim: worked on milestone 1 documentation(introduction, background, formulae, evaluation graph & trace)
