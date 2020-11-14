@@ -13,10 +13,7 @@ def test_sin():
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
     val = val1 + val2
-    print(val)
     z = Elem.sin(val)
-    print(z)
-    print(np.cos(val.val) * val.der[0])
 
     try:
         assert z.val == np.sin(val.val)
@@ -44,10 +41,7 @@ def test_cos():
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
     val = val1 + val2
-    print(val)
     z = Elem.cos(val)
-    print(z)
-    print(-np.sin(val.val) * val.der[0])
 
     try:
         assert z.val == np.cos(val.val)
@@ -75,10 +69,7 @@ def test_tan():
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
     val = val1 - val2
-    print(val)
     z = Elem.tan(val)
-    print(z)
-    print(1/np.cos(val.val)**2 * val.der[0])
 
     try:
         assert z.val == np.tan(val.val)
@@ -106,10 +97,7 @@ def test_log():
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
     val = val1 * val2
-    print(val)
     z = Elem.log(val)
-    print(z)
-    print(1/val.val * val.der[0])
 
     try:
         assert z.val == np.log(val.val)
@@ -141,10 +129,7 @@ def test_log10():
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
     val = val1 * val2
-    print(val)
     z = Elem.log10(val)
-    print(z)
-    print(1/(val.val*np.log(10)) * val.der[0])
 
     try:
         assert z.val == np.log10(val.val)
@@ -176,10 +161,7 @@ def test_log2():
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
     val = val1 * val2
-    print(val)
     z = Elem.log2(val)
-    print(z)
-    print(1/(val.val*np.log(2)) * val.der[0])
 
     try:
         assert z.val == np.log2(val.val)
@@ -210,7 +192,6 @@ def test_sinh():
     # Test for sinh with two Dual objects
     val = Dual(3, [4, 1])
     z = Elem.sinh(val)
-    print(np.cosh(val.val) * val.der[0])
 
     try:
         assert z.val == np.sinh(val.val)
@@ -262,7 +243,6 @@ def test_tanh():
     """Test of tanh method."""
     # Test for tan with two Dual objects
     val = Dual(3, [4, 1])
-
     z = Elem.tanh(val)
     der = val.der/np.cosh(val.val)
 
