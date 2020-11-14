@@ -272,9 +272,10 @@ def arctan(x: Dual) -> Union[Dual, float, List[float]]:
 
 
 if __name__ == "__main__":
-    val = Dual(3,[4,1])
+    val1 = Dual(3,[4,1])
     val2 = Dual(2,[3,1])
-    val + val2
+    val = val1 + val2
+    print(val)
     z = sin(val)
     print(z)
     z = cos(val)
