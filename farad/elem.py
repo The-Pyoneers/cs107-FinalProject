@@ -6,7 +6,7 @@ __all__ = ['sin', 'cos', 'tan', 'log', 'log10', 'relu', 'sinh', 'cosh', 'tanh' \
             'relu', 'logistic']
 
 
-from dual import Dual
+from farad.dual import Dual as Dual
 import numpy as np
 from typing import Union, List
 
@@ -270,16 +270,16 @@ def arctan(x: Dual) -> Union[Dual, float, List[float]]:
     except AttributeError:
         return np.arctan(x)
 
-
-if __name__ == "__main__":
-    val1 = Dual(3,[4,1])
-    val2 = Dual(2,[3,1])
-    val = val1 + val2
-    print(val)
-    z = sin(val)
-    print(z)
-    z = cos(val)
-    print(z)
-    z = tan(val)
-    print(z)
-    print(bool(z))
+#
+# if __name__ == "__main__":
+#     val1 = Dual(3,[4,1])
+#     val2 = Dual(2,[3,1])
+#     val = val1 + val2
+#     print(val)
+#     z = sin(val)
+#     print(z)
+#     z = cos(val)
+#     print(z)
+#     z = tan(val)
+#     print(z)
+#     print(bool(z))
