@@ -5,10 +5,9 @@ __all__ = ['sin', 'cos', 'tan', 'log', 'log10', 'relu', 'sinh', 'cosh', 'tanh' \
            'sigmoid', 'log2', 'exp', 'exp2', 'sqrt', 'arccos', 'arcsin', 'arctan' \
             'relu', 'logistic']
 
-
-from farad.dual import Dual as Dual
-import numpy as np
 from typing import Union, List
+import numpy as np
+from farad.dual import Dual
 
 
 def sin(x: Dual) -> Union[Dual, float, List[float]]:
@@ -174,7 +173,7 @@ def logistic(x: Dual) -> Union[Dual, float, List[float]]:
     try:
         return(1 / (1 + np.exp(-x.val)), np.exp(x.val) / ((1 + np.exp(x.val)) ** 2))
     except AttributeError:
-       return 1 / (1 + np.exp(-x))
+        return 1 / (1 + np.exp(-x))
 
 
 def exp(x: Dual) -> Union[Dual, float, List[float]]:
@@ -269,17 +268,3 @@ def arctan(x: Dual) -> Union[Dual, float, List[float]]:
         return Dual(np.arctan(x.val), 1 / (1 + x.val**2) * x.der)
     except AttributeError:
         return np.arctan(x)
-
-#
-# if __name__ == "__main__":
-#     val1 = Dual(3,[4,1])
-#     val2 = Dual(2,[3,1])
-#     val = val1 + val2
-#     print(val)
-#     z = sin(val)
-#     print(z)
-#     z = cos(val)
-#     print(z)
-#     z = tan(val)
-#     print(z)
-#     print(bool(z))

@@ -1,20 +1,10 @@
+"""Test Math functionality for farad package.
+"""
+
 import pytest
+import numpy as np
 import farad.elem as Elem
 from farad.dual import Dual
-
-import numpy as np
-
-# val1 = Dual(3,[4,1])
-# val = val1 + val2
-# val2 = Dual(2,[3,1])
-# print(val)
-# z = sin(val)
-# print(z)
-# z = cos(val)
-# print(z)
-# z = tan(val)
-# print(z)
-# print(bool(z))
 
 
 def test_sin():
