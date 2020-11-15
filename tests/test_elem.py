@@ -263,3 +263,161 @@ def test_tanh():
     except AssertionError as e:
         print(e)
         raise AssertionError
+
+
+def test_logistic():
+    """Test of logistic method."""
+    # Test for logistic with two Dual objects
+    x = Dual(3, [4, 1])
+    z = Elem.logistic(x)
+    result = (1 / (1 + np.exp(-x.val)), np.exp(x.val) / ((1 + np.exp(x.val)) ** 2))
+    try:
+        assert z == result
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for logistic with int
+    x = 3
+    fx = Elem.logistic(x)
+    try:
+        assert fx == 1 / (1 + np.exp(-x))
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_exp():
+    """Test of exp method."""
+    # Test for exp with two Dual objects
+    x = Dual(3, [4, 1])
+    z = Elem.exp(x)
+    der = np.exp(x.val) * x.der
+
+    try:
+        assert z.val == np.exp(x.val)
+        assert np.all(z.der == der)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for exp with int,
+    x = 3
+    fx = Elem.exp(x)
+    try:
+        assert fx == np.exp(x)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+# def test_sqrt():
+#     """Test of sqrt method."""
+#     # Test for sqrt with two Dual objects
+#     x = Dual(3, [4, 1])
+#     z = Elem.sqrt(x)
+#     result = x ** 0.5
+#     print(z.der[0])
+#     print(z.der[1] )
+#     # try:
+#     #     assert z.val == np.sqrt(x.val)
+#     #     assert z.der[0] == result.der[0]
+#     #     assert z.der[1] == result.der[1]
+#     #
+#     # except AssertionError as e:
+#     #     print(e)
+#     #     raise AssertionError
+#
+#     # Test for logistic with int
+#     x = 3
+#     fx = Elem.sqrt(x)
+#     try:
+#         assert fx == np.sqrt(x)
+#
+#     except AssertionError as e:
+#         print(e)
+#         raise AssertionError
+
+
+def test_arcsin():
+    """Test of arcsin method."""
+    # Test for arcsin with two Dual objects
+    # arsin() input (-1,1)
+    x = Dual(0.2, [0.4, 0.1])
+    z = Elem.arcsin(x)
+    print(z)
+    der = 1 / np.sqrt(1 - x.val ** 2) * x.der
+    try:
+        assert z.val == np.arcsin(x.val)
+        assert np.all(z.der == der)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for arcsin with int
+    x = 0.1
+    fx = Elem.arcsin(x)
+    try:
+        assert fx == np.arcsin(x)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_arccos():
+    """Test of arccos method."""
+    # Test for arccos with two Dual objects
+    # arccos() input (-1,1)
+    x = Dual(0.2, [0.4, 0.1])
+    z = Elem.arccos(x)
+    print(z)
+    der = -1 / np.sqrt(1 - x.val**2) * x.der
+    try:
+        assert z.val == np.arccos(x.val)
+        assert np.all(z.der == der)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for arccos with int
+    x = 0.1
+    fx = Elem.arccos(x)
+    try:
+        assert fx == np.arccos(x)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_arctan():
+    """Test of arctan method."""
+    # Test for arctan with two Dual objects
+    # arctan() input (-1,1)
+    x = Dual(0.2, [0.4, 0.1])
+    z = Elem.arctan(x)
+    der = 1 / (1 + x.val**2) * x.der
+    try:
+        assert z.val == np.arctan(x.val)
+        assert np.all(z.der == der)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for arctan with int
+    x = 0.1
+    fx = Elem.arctan(x)
+    try:
+        assert fx == np.arctan(x)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError

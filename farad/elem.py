@@ -152,8 +152,6 @@ def tanh(x: Dual) -> Union[Dual, float, List[float]]:
 
 
 def relu(x: Dual) -> Union[Dual, float, List[float]]:
-    # try:
-
     pass
 
 
@@ -189,6 +187,7 @@ def exp(x: Dual) -> Union[Dual, float, List[float]]:
         return Dual(np.exp(x.val), np.exp(x.val) * x.der)
     except AttributeError:
         return np.exp(x)  # Default to numpy implementation
+
 
 def exp2(x: Dual) -> Union[Dual, float, List[float]]:
     pass
