@@ -1,29 +1,29 @@
 #-*- coding: utf-8 -*-
 """Dual number implementation for Python forward AD mode.
-​
+
 Author: Matthew Stewart
 Date Created: October 30th, 2020
 Date Last Updated: October 30th, 2020
-​
+
 This module contains dunder methods to overload built-in Python operators
 such as addition and multiplication. This system will only be used for the
 forward AD mode, which will be called by the FaradObject.forward() method. If
 the method fails to implement dual numbers, it will fall back to using standard
 methods.
-​
+
 Example (exp(x^2) + 2x):
-​
+
         $ import farad as ad
         $ import farad.dual as dual
         $ x = Dual(3, 1)
         $ z = y**2 + 2*x + 3 # derivative is 2*x + 2
         $ print(z.val, z.der)  # outputs should be 15 (2**3 + 2*3 + 3) and 8 (2*x + 2)
-        >>> 18 8 
-​
+        >>> 18 8
+
 Attributes:
     val T<numbers.Integral>: Function value evaluated at a fixed point.
     der T<list|np.array>: List of first derivatives evaluated at a fixed point.
-​
+
 Todo:
     * For module TODOs
     * Add Sphinx documentation
@@ -210,4 +210,3 @@ class Dual():
 
     def __bool__(self) -> Type[bool]:
         return False
-
