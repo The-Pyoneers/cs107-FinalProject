@@ -3,8 +3,8 @@
 # scalar input.
 
 
-from dual import Dual
-import elem as el
+from farad.dual import Dual
+import farad.elem as el
 import numpy as np
 
 # an example input function
