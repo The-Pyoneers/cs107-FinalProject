@@ -10,15 +10,6 @@ forward AD mode, which will be called by the FaradObject.forward() method. If
 the method fails to implement dual numbers, it will fall back to using standard
 methods.
 
-Example (exp(x^2) + 2x):
-
-        $ import farad as ad
-        $ import farad.dual as dual
-        $ x = Dual(3, 1)
-        $ z = y**2 + 2*x + 3 # derivative is 2*x + 2
-        $ print(z.val, z.der)  # outputs should be 15 (2**3 + 2*3 + 3) and 8 (2*x + 2)
-        $ 18 8
-
 Attributes:
     val T<numbers.Integral>: Function value evaluated at a fixed point.
     der T<list|np.array>: List of first derivatives evaluated at a fixed point.
