@@ -397,16 +397,3 @@ def test_len():
     except AssertionError as e:
         print(e)
         raise AssertionError
-
-
-def test_bool():
-    """Test of the bool special method (__bool__) of Dual class."""
-    # Test for bool special method with scalar Dual objects
-    x = Dual(2)
-    y = Dual(2, [0,1])
-    try:
-        assert bool(x) == False
-        assert bool(y) == False
-    except AssertionError as e:
-        print(e)
-        raise AssertionError
