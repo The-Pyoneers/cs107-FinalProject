@@ -5,20 +5,26 @@
 
 from farad.dual import Dual
 import farad.elem as el
-import numpy as np
+#import numpy as np
+from farad.driver import AutoDiff
+
 
 # an example input function
+def fi(x):
+    return el.sin(x) - x
+
+
+autofx = AutoDiff(fi)
+
+
+# return the value of function fi
 def fx(x):
-    return np.sin(x) - x
+    return autofx.get_val_scalar(x)
 
 
-# the derivative function of fx
-# users need to rewrite the fx in using elementary
-# functions overloaded in farad package.
+# return the derivative function fi
 def dfx(x):
-    xd = Dual(x, 1)
-    fx = el.sin(xd) - xd
-    return fx.der
+    return autofx.forward(x)
 
 
 def newton_root(f, df, x0, epsilon, max_iter):
