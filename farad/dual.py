@@ -1,22 +1,14 @@
-r"""Dual number implementation for Python forward AD mode.
+"""Dual number implementation for Python forward AD mode.
 
 Author: Matthew Stewart
 Date Created: October 30th, 2020
-Date Last Updated: October 30th, 2020
+Date Last Updated: November 15th, 2020
 
 This module contains dunder methods to overload built-in Python operators
 such as addition and multiplication. This system will only be used for the
 forward AD mode, which will be called by the FaradObject.forward() method. If
 the method fails to implement dual numbers, it will fall back to using standard
 methods.
-
-Attributes:
-    val T<numbers.Integral>: Function value evaluated at a fixed point.
-    der T<list|np.array>: List of first derivatives evaluated at a fixed point.
-
-Todo:
-    * For module TODOs
-    * Add Sphinx documentation
 """
 
 import numpy as np
