@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-"""Dual number implementation for Python forward AD mode.
+r"""Dual number implementation for Python forward AD mode.
 
 Author: Matthew Stewart
 Date Created: October 30th, 2020
