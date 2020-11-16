@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 r"""Dual number implementation for Python forward AD mode.
 
 Author: Matthew Stewart
@@ -18,7 +17,7 @@ Example (exp(x^2) + 2x):
         $ x = Dual(3, 1)
         $ z = y**2 + 2*x + 3 # derivative is 2*x + 2
         $ print(z.val, z.der)  # outputs should be 15 (2**3 + 2*3 + 3) and 8 (2*x + 2)
-        >>> 18 8
+        output: 18 8
 
 Attributes:
     val T<numbers.Integral>: Function value evaluated at a fixed point.
