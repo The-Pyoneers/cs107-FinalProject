@@ -1,3 +1,13 @@
+"""This is the driver for Project Farad.
+
+This file contains class AutoDiff which has two methods.
+get_var_scalar() is for getting scalar variable including a number or a list.
+forward() is for getting the derivative of the variables via forward AD mode.
+
+Note that for milestone2 this class only deals with scalar, the function will be extended in next stage.
+"""
+
+
 from farad.dual import Dual
 from numbers import Number
 
