@@ -163,7 +163,7 @@ def relu(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     try:
         a = max(0, x.val)
         b = np.where(a > 0, 1, 0)
-        return Dual(a, b * x.der, 0)
+        return Dual(a, b * x.der)
     except AttributeError:
         return max(0, x)
 
@@ -180,9 +180,9 @@ def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     try:
         a = max(0, x.val)
         b = np.where(a > 0, 1, 0)
-        if b > 6:  # clip output to a maximum of 6
-            b = 6
-        return Dual(a, b * x.der, 0)
+        if a > 6:  # clip output to a maximum of 6
+            a = 6
+        return Dual(a, b * x.der)
     except AttributeError:
         return min(max(0, x), 6)
 
@@ -217,19 +217,22 @@ def exp(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
         return np.exp(x)  # Default to numpy implementation
 
 
-def exp2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
-    """Calculates the double  exponent of input.
-
-    Parameters:	
-    x : array_like or Dual Object. 
-
-    Returns:	
-    y : array_like or Dual Object. The exponent of each element of x.
-    """
-    try:
-        return Dual(np.exp2(x._val), np.exp2(x._val) * (x._der * np.log(2)), np.log(2) * np.exp2(x._val) * (x._der2 + np.log(2) * x._der**2))
-    except AttributeError:
-        return np.exp2(x)
+# todo: figure out implementation for exp2
+# def exp2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+#     """Calculates the double  exponent of input.
+#
+#     Parameters:
+#     x : array_like or Dual Object.
+#
+#     Returns:
+#     y : array_like or Dual Object. The exponent of each element of x.
+#     """
+#     try:
+#         return Dual(np.exp2(x._val), np.exp2(x._val) * (x._der * np.log(2)))##, np.log(2) * np.exp2(x._val) * (x._der2 + np.log(2) * x._der**2))
+#
+#         # return Dual(np.exp2(x._val), np.exp2(x._val) * (x._der * np.log(2)), np.log(2) * np.exp2(x._val) * (x._der2 + np.log(2) * x._der**2))
+#     except AttributeError:
+#         return np.exp2(x)
 
 
 def sqrt(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
@@ -308,14 +311,14 @@ def arctan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
         return np.arctan(x)
 
 
-if __name__ == "__main__":
-    val = Dual(3,[4,1])
-    val2 = Dual(2,[3,1])
-    val + val2
-    z = sin(val)
-    print(z)
-    z = cos(val)
-    print(z)
-    z = tan(val)
-    print(z)
-    print(bool(z))
+# if __name__ == "__main__":
+#     val = Dual(3,[4,1])
+#     val2 = Dual(2,[3,1])
+#     val + val2
+#     z = sin(val)
+#     print(z)
+#     z = cos(val)
+#     print(z)
+#     z = tan(val)
+#     print(z)
+#     print(bool(z))
