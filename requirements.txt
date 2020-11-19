@@ -1,5 +1,2 @@
-sphinx_rtd_theme>=0.3.1
-# sphinx-autodoc-typehints needs at least sphinx 1.8
-sphinx>=1.8
-sphinx-autodoc-typehints
-alabaster
+certifi==2020.6.20
+numpy==1.19.4
