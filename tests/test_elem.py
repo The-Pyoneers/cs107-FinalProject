@@ -265,6 +265,67 @@ def test_tanh():
         raise AssertionError
 
 
+def test_relu():
+    """Test of relu method."""
+    # Test for relu with two Dual objects
+    x = Dual(3, [4, 1])
+    z = Elem.relu(x)
+
+    a = max(0, x.val)
+    b = np.where(a > 0, 1, 0)
+    result = Dual(a, b * x.der)
+
+    try:
+        assert z.val == result.val
+        assert np.all(z.der == result.der)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for tanh with int,
+    x = 3
+    fx = Elem.relu(x)
+    try:
+        assert fx == max(0, x)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_relu6():
+    """Test of relu6 method."""
+    # Test for relu6 with two Dual objects
+    x = Dual(8, [4, 1])
+    z = Elem.relu6(x)
+
+    a = max(0, x.val)
+    b = np.where(a > 0, 1, 0)
+    print(b)
+    if a > 6:  # clip output to a maximum of 6
+        a = 6
+    result = Dual(a, b * x.der)
+
+    try:
+        assert z.val == result.val
+        assert np.all(z.der == result.der)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for tanh with int,
+    x = 3
+    fx = Elem.relu6(x)
+    try:
+        assert fx == min(max(0, x), 6)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
 def test_logistic():
     """Test of logistic method."""
     # Test for logistic with two Dual objects
@@ -315,32 +376,85 @@ def test_exp():
         raise AssertionError
 
 
-# def test_sqrt():
-#     """Test of sqrt method."""
-#     # Test for sqrt with two Dual objects
+# def test_exp2():
+#     """Test of exp2 method."""
+#     # Test for exp2 with two Dual objects
 #     x = Dual(3, [4, 1])
-#     z = Elem.sqrt(x)
-#     result = x ** 0.5
-#     print(z.der[0])
-#     print(z.der[1] )
-#     # try:
-#     #     assert z.val == np.sqrt(x.val)
-#     #     assert z.der[0] == result.der[0]
-#     #     assert z.der[1] == result.der[1]
-#     #
-#     # except AssertionError as e:
-#     #     print(e)
-#     #     raise AssertionError
+#     z = Elem.exp2(x)
+#     print(z)
+#     der = np.exp2(x._val) * (x._der * np.log(2))
 #
-#     # Test for logistic with int
-#     x = 3
-#     fx = Elem.sqrt(x)
 #     try:
-#         assert fx == np.sqrt(x)
+#         assert z.val == np.exp2(x.val)
+#         assert np.all(z.der == der)
 #
 #     except AssertionError as e:
 #         print(e)
 #         raise AssertionError
+#
+#     # Test for exp2 with int,
+#     x = 3
+#     fx = Elem.exp2(x)
+#     try:
+#         assert fx == np.exp2(x)
+#
+#     except AssertionError as e:
+#         print(e)
+#         raise AssertionError
+
+
+def test_sqrt():
+    """Test of sqrt method."""
+    # Test for sqrt with two Dual objects
+    x = Dual(3, [4, 1])
+    z = Elem.sqrt(x)
+    result = x ** 0.5
+
+    try:
+        assert z.val == np.sqrt(x.val)
+        assert z.der[0] == result.der[0]
+        assert z.der[1] == result.der[1]
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for sqrt with double
+    x = 3.0
+    fx = Elem.sqrt(x)
+    try:
+        assert fx == np.sqrt(x)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_power():
+    """Test of power method."""
+    # Test for power with two Dual objects
+    x = Dual(3, [4, 1])
+    z = Elem.power(x, 2)
+    result = x ** 2
+
+    try:
+        assert z.val == np.power(x.val, 2)
+        assert z.der[0] == result.der[0]
+        assert z.der[1] == result.der[1]
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for power with double
+    x = 3.0
+    fx = Elem.power(x, 2.0)
+    try:
+        assert fx == 9.0
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
 
 
 def test_arcsin():
