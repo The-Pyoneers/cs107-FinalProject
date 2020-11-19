@@ -44,6 +44,6 @@ class AutoDiff:
             for v in val:
                 a = Dual(v, 1)
                 ders.append(self.fn(a).der)
-                return ders
+            return ders
         else:
             raise Exception("Currently we have not accepted input types other than number and list")
