@@ -18,3 +18,8 @@ docs/_build/
 # Jupyter Notebook
 .ipynb_checkpoints
 .ipynb
+
+# installation files
+env*
+farad.egg-info
+dist
