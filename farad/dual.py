@@ -256,8 +256,10 @@ class Dual():
 
         Examples
         ========
-        >>> 4 - Dual(2.0, 3)
-        Dual(2.0,array(1))
+        >>> Dual(2,3) * Dual(1,2)
+        Dual(2,array(7))
+        >>> Dual(2,3) * 3
+        Dual(6,array(9))
         """
         try:
             return Dual(self._val * x._val, self._der * x._val + self._val * x._der)  # chain rule for derivative
