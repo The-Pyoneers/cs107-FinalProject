@@ -16,14 +16,34 @@ from farad.elem import *
 class AutoDiff:
 
     def __init__(self, fn):
+        """Constructor for AutoDiff class.
+
+        Parameters
+        ==========
+        fn: The specific AD method for calculating the derivative
+
+        Notes
+        =====
+        Currently, only first order derivatives of scalar functions via
+        forward mode are supported. The methods and the range of functions
+        will be extended in later versions to handle vector inputs with Jacobians.
+        """
         self.fn = fn
 
     def get_val_scalar(self, val):
-        # for a number, evaluated at a single variable.
+        """Get a scalar or a list of scalars.
+
+        Args:
+            val: a scalar or a list of numbers.
+
+        Returns: self.fn(a).val or list of self.fn(a).val.
+
+        """
+        # evaluate a number at a single variable.
         if isinstance(val, Number):
             a = Dual(val, 1)
             return self.fn(a).val
-        # for a list of numbers, evaluated at a single variable.
+        # evaluate a list of numbers at a single variable.
         elif isinstance(val, list):
             vals = []
             for v in val:
@@ -31,14 +51,22 @@ class AutoDiff:
                 vals.append(self.fn(a).val)
             return vals
         else:
-            raise Exception("Currently we have not accepted input types other than number and list")
+            raise Exception("Currently not support types other than number and list")
 
     def forward(self, val):
-        # for a number, get the derivative at a single variable
+        """Forward mode method of AutoDiff class.
+
+        Args:
+            val: a scalar or a list of scalars.
+
+        Returns: self.fn(a).ders or list of self.fn(a).ders.
+        The derivatives of val.
+        """
+        # Get the derivative of a number at a single variable
         if isinstance(val, Number):
             a = Dual(val, 1)
             return self.fn(a).der
-        # for a list of numbers, get the derivative at a single variable
+        # Get the derivative of a list of numbers at a single variable
         elif isinstance(val, list):
             ders = []
             for v in val:
@@ -46,4 +74,4 @@ class AutoDiff:
                 ders.append(self.fn(a).der)
             return ders
         else:
-            raise Exception("Currently we have not accepted input types other than number and list")
+            raise Exception("Currently not support input types other than number and list")
