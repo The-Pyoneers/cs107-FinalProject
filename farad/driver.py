@@ -34,7 +34,7 @@ class AutoDiff:
         """Get a scalar or a list of scalars.
 
         Args:
-            val: a scalar or a list of numbers.
+            val: a scalar or a list of scalars.
 
         Returns: self.fn(a).val or list of self.fn(a).val.
 
