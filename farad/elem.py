@@ -244,10 +244,10 @@ def sqrt(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     Returns:	
     y : array_like or Dual Object. The square root of each element of x.
     """
-    try:
-        return x.__pow__(0.5)
-    except AttributeError:
-        return np.sqrt(x)  # default to numpy implementation
+    # try:
+    return x.__pow__(0.5)
+    # except AttributeError:
+    #     return np.sqrt(x)  # default to numpy implementation
 
 
 def power(x: Union[Dual, float], power: float) -> Union[Dual, float, List[float]]:
@@ -260,10 +260,10 @@ def power(x: Union[Dual, float], power: float) -> Union[Dual, float, List[float]
     Returns:	
     y : array_like or Dual Object. Each element of x to the power of 'pow'.
     """
-    try:
-        return x.__pow__(power)
-    except AttributeError:
-        return np.power(x, power)  # default to numpy implementation
+    # try:
+    return x.__pow__(power)
+    # except AttributeError:
+        # return np.power(x, power)  # default to numpy implementation
 
 
 def arcsin(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
