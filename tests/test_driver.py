@@ -13,8 +13,37 @@ def test_get_val_scalar():
         return exp(x)
     function = ad.AutoDiff(f)
 
+    # test scalar input
     try:
         assert function.get_val_scalar(1) == np.exp(1)
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # test list input
+    try:
+        assert function.get_val_scalar([1,2,3]) == np.exp([1,2,3])
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_forward():
+    """Test of forward method."""
+    def f(x):
+        return exp(x)
+    function = ad.AutoDiff(f)
+
+    # test scalar input
+    try:
+        assert function.forward(1) == np.exp(1)
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # test list input
+    try:
+        assert function.forward([1,2,3]) == np.exp([1,2,3])
     except AssertionError as e:
         print(e)
         raise AssertionError
