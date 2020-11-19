@@ -10,6 +10,7 @@ Note that for milestone2 this class only deals with scalar, the function will be
 
 from farad.dual import Dual
 from numbers import Number
+from farad.elem import *
 
 
 class AutoDiff:
