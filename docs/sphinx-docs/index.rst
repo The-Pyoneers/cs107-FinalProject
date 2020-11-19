@@ -225,6 +225,9 @@ the case when the input function includes scipy, a scipy dependency may be inclu
 Future Features
 ===============
 
+**Jacobian matrix** The package is planned to fully support vector input and vector functions and be able
+to return a Jacobian matrix for vector cases.
+
 **Reverse mode**. Functionality is planned to support reverse mode differentiation, although this will not
 be done using dual numbers as the forward mode was done.
 
