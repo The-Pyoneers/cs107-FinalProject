@@ -20,7 +20,7 @@ class AutoDiff:
 
         Parameters
         ==========
-        fn: The specific AD method for calculating the derivative
+        fn: The specific AD method for calculating the derivative.
 
         Notes
         =====
