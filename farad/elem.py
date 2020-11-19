@@ -1,7 +1,7 @@
 """Math functionality for farad package."""
 
-__all__ = ['sin', 'cos', 'tan', 'log', 'log10', 'sinh', 'cosh', 'tanh' \
-           'log2', 'exp', 'exp2', 'sqrt', 'arccos', 'arcsin', 'arctan' \
+__all__ = ['sin', 'cos', 'tan', 'log', 'log10', 'sinh', 'cosh', 'tanh', \
+           'log2', 'exp', 'sqrt', 'arccos', 'arcsin', 'arctan', \
            'relu', 'logistic', 'relu6']
 
 
