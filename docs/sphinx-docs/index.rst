@@ -173,6 +173,15 @@ The package will be distributed via PyPI in the format outlined in the above-men
 The only anticipated package dependency will be numpy in order to reduce reliance on external libraries
 and reduce the complexity of the code base. Additional dependencies will be used during testing and packaging.
 
+test_elem.py: This is the test-suite for elem.py
+
+test_driver.py: This is the test-suite for driver.py
+
+test_dual.py: This is the test-suite for dual.py
+
+Tests for above classes and functions and they are run using pytest, with the assistance
+of assert function. The tests are linked with Travis CI and CodeCov, which provides continuous integration
+software testing, and a code coverage service to ensure that all of the code is being tested.
 
 Implementation details
 ======================
