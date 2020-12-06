@@ -56,11 +56,11 @@ class Rnode:
     def __pow__(self, other):
         try:
             z = Rnode(self.value ** other.value)
-            self.children.append((other.value* self.value ** (ohter.value - 1.), z))
+            self.children.append((other.value* self.value ** (other.value - 1.), z))
             other.children.append((self.value ** other.value * np.log(self.value), z))
         except AttributeError:
             z = Rnode(self.value ** other)
-            self.children.append((other* self.value ** (ohter - 1.), z))
+            self.children.append((other* self.value ** (other - 1.), z))
         return z
 
     def __rpow__(self, other):
