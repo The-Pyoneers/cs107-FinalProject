@@ -14,7 +14,7 @@ from typing import NoReturn, List, Union, Optional, Type
 Array = Union[List[float], np.ndarray, numbers.Integral]
 
 
-class Dual():
+class Dual:
 
 
     def __init__(self, val: numbers.Integral, der: Optional[Array] = 1) -> "Dual":
