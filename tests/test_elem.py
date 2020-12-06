@@ -244,7 +244,7 @@ def test_tanh():
     # Test for tan with two Dual objects
     val = Dual(3, [4, 1])
     z = Elem.tanh(val)
-    der = val.der/np.cosh(val.val)
+    der = val.der/(np.cosh(val.val))**2
 
     try:
         assert z.val == np.tanh(val.val)
