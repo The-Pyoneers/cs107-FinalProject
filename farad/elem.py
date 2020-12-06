@@ -190,8 +190,7 @@ def tanh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """
     try:
         z = Rnode(np.tanh(x.value))
-        # ?
-        # x.children.append(, z)
+        x.children.append((1 / np.cosh(x.value), z))
         return z
     except AttributeError:
         try:
@@ -210,11 +209,19 @@ def relu(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     y : array_like or Dual Object. The output  of the relu function on each element of x.
     """
     try:
-        a = max(0, x.val)
+
+        a = max(0, x.value)
         b = np.where(a > 0, 1, 0)
-        return Dual(a, b * x.der)
+        z = Rnode(a)
+        x.children.append((b, z))
+        return z
     except AttributeError:
-        return max(0, x)
+        try:
+            a = max(0, x.val)
+            b = np.where(a > 0, 1, 0)
+            return Dual(a, b * x.der)
+        except AttributeError:
+            return max(0, x)
 
 
 def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
@@ -227,13 +234,23 @@ def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     y : array_like or Dual Object. The output  of the relu6 function on each element of x.
     """
     try:
-        a = max(0, x.val)
-        b = np.where(a > 0, 1, 0)
-        if a > 6:  # clip output to a maximum of 6
-            a = 6
-        return Dual(a, b * x.der)
+
+        a = float(max(0, x.value))
+        b = np.where(0.0 < a < 6.0, 1, 0)
+        if a > 6.0:  # clip output to a maximum of 6
+            a = 6.0
+        z = Rnode(a)
+        x.children.append((b, z))
+        return z
     except AttributeError:
-        return min(max(0, x), 6)
+        try:
+            a = float(max(0, x.value))
+            b = np.where(0.0 < a < 6.0, 1, 0)
+            if a > 6.0:  # clip output to a maximum of 6
+                a = 6.0
+            return Dual(a, b * x.der)
+        except AttributeError:
+            return min(max(0, x), 6)
 
 
 def logistic(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
@@ -447,6 +464,14 @@ if __name__ == "__main__":
     b = tanh(x)
     b.grad_value = 4.0
     print("tanh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+
+    b = relu(x)
+    b.grad_value = 4.0
+    print("relu partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+
+    b = relu6(x)
+    b.grad_value = 8.0
+    print("relu6 partial b/ partial x = {}".format(x.grad()))
 
     b = logistic(x)
     b.grad_value = 4.0
