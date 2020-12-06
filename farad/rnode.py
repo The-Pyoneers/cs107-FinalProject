@@ -12,11 +12,10 @@ class Rnode:
         self.children = []
         self.grad_value = None
 
-    def __repr__(self) -> str:
-        pass
-
-    def __str__(self) -> str:
-        pass
+    def clear(self):
+        # to clean some attributes a Rnode object before reusing as an input to a new function
+        self.children = []
+        self.grad_value = None
 
     def __add__(self, x):
         try:

@@ -14,10 +14,10 @@ from typing import Union, List
 def sin(x: Dual) -> Union[Dual, float, List[float]]:
     """Calculate sine of the input in radians.
 
-    Parameters:	
+    Parameters:
     x : array_like or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The sine of each element of x.
     """
     try:
@@ -34,10 +34,10 @@ def sin(x: Dual) -> Union[Dual, float, List[float]]:
 def cos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculate cosine of the input in radians.
 
-    Parameters:	
+    Parameters:
     x : array_like or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The cosine of each element of x.
     """
     try:
@@ -54,10 +54,10 @@ def cos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def tan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculate tangent of the input in radians.
 
-    Parameters:	
+    Parameters:
     x : array_like or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The tangent of each element of x.
     """
 
@@ -75,10 +75,10 @@ def tan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def log(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculate natural logarithm of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The natural logarithm of each element of x.
     """
     try:
@@ -97,10 +97,10 @@ def log(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def log10(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the base-10 logarithm of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The base-10 logarithm of each element of x.
     """
 
@@ -120,10 +120,10 @@ def log10(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def log2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the base-2 logarithm of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The base-2 logarithm of each element of x.
     """
     try:
@@ -142,10 +142,10 @@ def log2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def sinh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the hyberbolic sine of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The hyperbolic sine of each element of x.
     """
     try:
@@ -162,10 +162,10 @@ def sinh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def cosh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the hyberbolic cosine of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The hyperbolic cosine of each element of x.
     """
     try:
@@ -182,19 +182,19 @@ def cosh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def tanh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the hyberbolic tangent of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The hyperbolic tangent of each element of x.
     """
     try:
         z = Rnode(np.tanh(x.value))
-        x.children.append((1 / np.cosh(x.value), z))
+        x.children.append((1 / np.cosh(x.value)**2, z))
         return z
     except AttributeError:
         try:
-            return Dual(np.tanh(x.val), x.der / np.cosh(x.val))
+            return Dual(np.tanh(x.val), x.der / np.cosh(x.val)**2)
         except AttributeError:
             return np.tanh(x)  # default to numpy implementation
 
@@ -202,10 +202,10 @@ def tanh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def relu(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the output of the relu function on the input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The output  of the relu function on each element of x.
     """
     try:
@@ -227,10 +227,10 @@ def relu(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the output of the relu6 function on the input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The output  of the relu6 function on each element of x.
     """
     try:
@@ -256,10 +256,10 @@ def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def logistic(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the output of the logistic function given the input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The output  of the logistic function on each element of x.
     """
     try:
@@ -278,10 +278,10 @@ def logistic(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def exp(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the exponent of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The exponent of each element of x.
     """
     try:
@@ -316,16 +316,16 @@ def exp(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def sqrt(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the square root of input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The square root of each element of x.
     """
     try:
         z = Rnode(x.value ** 0.5)
         # ?
-        x.children.append((x.__pow__(0.5), z))
+        x.children.append((0.5*x.value ** (-0.5), z))
         return z
     except AttributeError:
 
@@ -336,11 +336,11 @@ def sqrt(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def power(x: Union[Dual, float], power: float) -> Union[Dual, float, List[float]]:
     """Calculates the power of input. Alternative method to dunder method __pow__ in Dual class.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
     k : float.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. Each element of x to the power of 'pow'.
     """
     return x.__pow__(power)
@@ -349,10 +349,10 @@ def power(x: Union[Dual, float], power: float) -> Union[Dual, float, List[float]
 def arcsin(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the inverse sine of the input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The inverse sine of each element of x.
     """
     try:
@@ -373,10 +373,10 @@ def arcsin(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def arccos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the inverse cosine of the input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The inverse cosine of each element of x.
     """
     try:
@@ -398,10 +398,10 @@ def arccos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 def arctan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
     """Calculates the inverse tangent of the input.
 
-    Parameters:	
-    x : array_like or Dual Object. 
+    Parameters:
+    x : array_like or Dual Object.
 
-    Returns:	
+    Returns:
     y : array_like or Dual Object. The inverse tangent of each element of x.
     """
     try:
@@ -431,60 +431,76 @@ if __name__ == "__main__":
     # initialize x = 0.5 and y = 4.2
     x = Rnode(0.11)
     y = Rnode(1.0)
+    print('x: ', x)
+    print('y: ', y)
 
     a = sin(x)
     a.grad_value = 1.0
     print("sin partial a/ partial x = {}".format(x.grad())) # ∂a/∂x = 4.2
     # should print: partial a/ partial x = 0.8775825618903728
 
+    y.clear()
     b = cos(y)
     b.grad_value = 1.0
-    print("cos partial b/ partial x = {}".format(y.grad()))  # ∂a/∂x = 4.2
+    print("cos partial b/ partial y = {}".format(y.grad()))  # ∂a/∂x = 4.2
 #?
+    y.clear()
     b = tan(y)
     b.grad_value = 1.0
-    print("tan partial b/ partial x = {}".format(y.grad()))  # ∂a/∂x = 4.2
+    print("tan partial b/ partial y = {}".format(y.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = arccos(x)
-    b.grad_value = 2.0
+    b.grad_value = 1.0
     print("arccos partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = log(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("log partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = sinh(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("sinh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = cosh(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("cosh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = tanh(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("tanh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+    print('true value is:', 1./np.cosh(x.value))
 
+    x.clear()
     b = relu(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("relu partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = relu6(x)
-    b.grad_value = 8.0
+    b.grad_value = 1.0
     print("relu6 partial b/ partial x = {}".format(x.grad()))
 
+    x.clear()
     b = logistic(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("logistic partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = exp(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("exp partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = sqrt(x)
-    b.grad_value = 4.0
+    b.grad_value = 1.0
     print("sqrt partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
 
+    x.clear()
     b = arctan(x)
-    b.grad_value = 2.0
+    b.grad_value = 1.0
     print("arctan partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
