@@ -235,6 +235,22 @@ be done using dual numbers as the forward mode was done.
 run for neural networks. An example application will be given on the MNIST dataset, which will benchmark
 against a standard neural network library such as Pytorch or Tensorflow for comparison.
 
+
+Broader Impact and Inclusivity Statement
+========================================
+
+Science as a discipline exists without prejudice or favoritism. Its universal goal is to uncover the truth
+about the physical world, be it through discovery or ingenuity. Researchers from disparate fields as well as
+widely varying socioeconomic, cultural backgrounds, and ability are united by solely one thing: potential. Open-source
+software is no exception. Contributors are united in the pursuit for progress to tackle existing challenges
+facing humanity and enhancing already-existing solutions. The core developers of Farad share in this worldview, and,
+as such, every individual, regardless of background, is free to contribute to improve our existing code base. Contributors
+should be respectful of other developers regardless of their identity, and understanding towards those still in the process of
+learning about diverse perspectives and identities. Differences of opinion may arise and should be resolved amicably, exercising
+an unwavering commitment to respect, tolerance, and restraint. Ideas and feedback for fostering an increasingly inclusive developer 
+ecosystem are encouraged. All are welcome.
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
