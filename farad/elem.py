@@ -426,81 +426,81 @@ def arctan(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float
 #     z = tan(val)
 #     print(z)
 #     print(bool(z))
-if __name__ == "__main__":
-    # define the Vars for the example problem
-    # initialize x = 0.5 and y = 4.2
-    x = Rnode(0.11)
-    y = Rnode(1.0)
-    print('x: ', x)
-    print('y: ', y)
-
-    a = sin(x)
-    a.grad_value = 1.0
-    print("sin partial a/ partial x = {}".format(x.grad())) # ∂a/∂x = 4.2
-    # should print: partial a/ partial x = 0.8775825618903728
-
-    y.clear()
-    b = cos(y)
-    b.grad_value = 1.0
-    print("cos partial b/ partial y = {}".format(y.grad()))  # ∂a/∂x = 4.2
-#?
-    y.clear()
-    b = tan(y)
-    b.grad_value = 1.0
-    print("tan partial b/ partial y = {}".format(y.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = arccos(x)
-    b.grad_value = 1.0
-    print("arccos partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = log(x)
-    b.grad_value = 1.0
-    print("log partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = sinh(x)
-    b.grad_value = 1.0
-    print("sinh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = cosh(x)
-    b.grad_value = 1.0
-    print("cosh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = tanh(x)
-    b.grad_value = 1.0
-    print("tanh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-    print('true value is:', 1./np.cosh(x.value))
-
-    x.clear()
-    b = relu(x)
-    b.grad_value = 1.0
-    print("relu partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = relu6(x)
-    b.grad_value = 1.0
-    print("relu6 partial b/ partial x = {}".format(x.grad()))
-
-    x.clear()
-    b = logistic(x)
-    b.grad_value = 1.0
-    print("logistic partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = exp(x)
-    b.grad_value = 1.0
-    print("exp partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = sqrt(x)
-    b.grad_value = 1.0
-    print("sqrt partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
-
-    x.clear()
-    b = arctan(x)
-    b.grad_value = 1.0
-    print("arctan partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+# if __name__ == "__main__":
+#     # define the Vars for the example problem
+#     # initialize x = 0.5 and y = 4.2
+#     x = Rnode(0.11)
+#     y = Rnode(1.0)
+#     print('x: ', x)
+#     print('y: ', y)
+#
+#     a = sin(x)
+#     a.grad_value = 1.0
+#     print("sin partial a/ partial x = {}".format(x.grad())) # ∂a/∂x = 4.2
+#     # should print: partial a/ partial x = 0.8775825618903728
+#
+#     y.clear()
+#     b = cos(y)
+#     b.grad_value = 1.0
+#     print("cos partial b/ partial y = {}".format(y.grad()))  # ∂a/∂x = 4.2
+# #?
+#     y.clear()
+#     b = tan(y)
+#     b.grad_value = 1.0
+#     print("tan partial b/ partial y = {}".format(y.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = arccos(x)
+#     b.grad_value = 1.0
+#     print("arccos partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = log(x)
+#     b.grad_value = 1.0
+#     print("log partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = sinh(x)
+#     b.grad_value = 1.0
+#     print("sinh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = cosh(x)
+#     b.grad_value = 1.0
+#     print("cosh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = tanh(x)
+#     b.grad_value = 1.0
+#     print("tanh partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#     print('true value is:', 1./np.cosh(x.value))
+#
+#     x.clear()
+#     b = relu(x)
+#     b.grad_value = 1.0
+#     print("relu partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = relu6(x)
+#     b.grad_value = 1.0
+#     print("relu6 partial b/ partial x = {}".format(x.grad()))
+#
+#     x.clear()
+#     b = logistic(x)
+#     b.grad_value = 1.0
+#     print("logistic partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = exp(x)
+#     b.grad_value = 1.0
+#     print("exp partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = sqrt(x)
+#     b.grad_value = 1.0
+#     print("sqrt partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
+#
+#     x.clear()
+#     b = arctan(x)
+#     b.grad_value = 1.0
+#     print("arctan partial b/ partial x = {}".format(x.grad()))  # ∂a/∂x = 4.2
