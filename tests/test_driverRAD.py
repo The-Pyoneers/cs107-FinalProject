@@ -25,8 +25,9 @@ def test_get_forwardpass1f():
     # test fi(x) at different x values
     function.forwardpass([1.0,2.0])
     try:
-        assert function.get_val() == np.sin([1.0,2.0])
-        assert function.reverse() == np.cos([1.0,2.0])
+        assert np.array_equal(function.get_val(), np.sin([1.0,2.0]))
+        assert np.array_equal(function.reverse(), np.cos([1.0,2.0]))
+
     except AssertionError as e:
         print(e)
         raise AssertionError
@@ -83,10 +84,10 @@ def test_get_forwardpass():
     def f2d1(x, y):
         return x * y
 
-    def f2d1(x, y):
+    def f2d2(x, y):
         return 2 * x * y
 
-    function = rad.RAutoDiff([f1, f2])
+    function = rad.RAutoDiff([f2d1, f2d2])
     # test [f2d1(x,y), f2d1(x,y)] at point (x,y)
     function.forwardpass([1,2])
     try:
