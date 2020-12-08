@@ -244,7 +244,7 @@ def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
         return z
     except AttributeError:
         try:
-            a = float(max(0, x.value))
+            a = float(max(0, x.val))
             b = np.where(0.0 < a < 6.0, 1, 0)
             if a > 6.0:  # clip output to a maximum of 6
                 a = 6.0

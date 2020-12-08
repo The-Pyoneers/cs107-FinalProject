@@ -301,7 +301,7 @@ def test_relu6():
     z = Elem.relu6(x)
 
     a = max(0, x.val)
-    b = np.where(a > 0, 1, 0)
+    b = np.where(0.0 < a < 6.0, 1, 0)
     print(b)
     if a > 6:  # clip output to a maximum of 6
         a = 6
