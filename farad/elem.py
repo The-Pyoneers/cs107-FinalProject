@@ -11,14 +11,14 @@ import numpy as np
 from typing import Union, List
 
 
-def sin(x: Dual) -> Union[Dual, float, List[float]]:
+def sin(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculate sine of the input in radians.
 
     Parameters:
-    x : array_like or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
+    x : array_like, Rnode object, or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
 
     Returns:
-    y : array_like or Dual Object. The sine of each element of x.
+    y : array_like, Rnode object, or Dual Object. The sine of each element of x.
     """
     try:
         z = Rnode(np.sin(x.value))
@@ -31,14 +31,14 @@ def sin(x: Dual) -> Union[Dual, float, List[float]]:
             return np.sin(x)  # Default to numpy implementation
 
 
-def cos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def cos(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculate cosine of the input in radians.
 
     Parameters:
-    x : array_like or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
+    x : array_like, Rnode object, or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
 
     Returns:
-    y : array_like or Dual Object. The cosine of each element of x.
+    y : array_like, Rnode object, or Dual Object. The cosine of each element of x.
     """
     try:
         z = Rnode(np.cos(x.value))
@@ -51,14 +51,14 @@ def cos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.cos(x)  # Default to numpy implementation
 
 
-def tan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def tan(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculate tangent of the input in radians.
 
     Parameters:
-    x : array_like or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
+    x : array_like, Rnode object, or Dual Object. Angle, in radians (2 pi rad equals 360 degrees).
 
     Returns:
-    y : array_like or Dual Object. The tangent of each element of x.
+    y : array_like, Rnode object, or Dual Object. The tangent of each element of x.
     """
 
     try:
@@ -72,14 +72,14 @@ def tan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.tan(x)  # Default to numpy implementation
 
 
-def log(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def log(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculate natural logarithm of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The natural logarithm of each element of x.
+    y : array_like, Rnode object, or Dual Object. The natural logarithm of each element of x.
     """
     try:
         z = Rnode(np.log(x.value))
@@ -94,14 +94,14 @@ def log(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.log(x)  # Default to numpy implementation
 
 
-def log10(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def log10(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the base-10 logarithm of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The base-10 logarithm of each element of x.
+    y : array_like, Rnode object, or Dual Object. The base-10 logarithm of each element of x.
     """
 
     try:
@@ -117,14 +117,14 @@ def log10(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.log10(x)  # Default to numpy implementation
 
 
-def log2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def log2(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the base-2 logarithm of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The base-2 logarithm of each element of x.
+    y : array_like, Rnode object, or Dual Object. The base-2 logarithm of each element of x.
     """
     try:
         z = Rnode(np.log2(x.value))
@@ -139,14 +139,14 @@ def log2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.log2(x)  # Default to numpy implementation
 
 
-def sinh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def sinh(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the hyberbolic sine of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The hyperbolic sine of each element of x.
+    y : array_like, Rnode object, or Dual Object. The hyperbolic sine of each element of x.
     """
     try:
         z = Rnode(np.sinh(x.value))
@@ -159,14 +159,14 @@ def sinh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.sinh(x)  # default to numpy implementation
 
 
-def cosh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def cosh(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the hyberbolic cosine of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The hyperbolic cosine of each element of x.
+    y : array_like, Rnode object, or Dual Object. The hyperbolic cosine of each element of x.
     """
     try:
         z = Rnode(np.cosh(x.value))
@@ -179,14 +179,14 @@ def cosh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.cosh(x)  # default to numpy implementation
 
 
-def tanh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def tanh(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the hyberbolic tangent of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The hyperbolic tangent of each element of x.
+    y : array_like, Rnode object, or Dual Object. The hyperbolic tangent of each element of x.
     """
     try:
         z = Rnode(np.tanh(x.value))
@@ -199,14 +199,14 @@ def tanh(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.tanh(x)  # default to numpy implementation
 
 
-def relu(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def relu(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the output of the relu function on the input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The output  of the relu function on each element of x.
+    y : array_like, Rnode object, or Dual Object. The output  of the relu function on each element of x.
     """
     try:
 
@@ -224,14 +224,14 @@ def relu(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return max(0, x)
 
 
-def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def relu6(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the output of the relu6 function on the input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The output  of the relu6 function on each element of x.
+    y : array_like, Rnode object, or Dual Object. The output  of the relu6 function on each element of x.
     """
     try:
 
@@ -253,14 +253,14 @@ def relu6(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return min(max(0, x), 6)
 
 
-def logistic(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def logistic(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the output of the logistic function given the input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The output  of the logistic function on each element of x.
+    y : array_like, Rnode object, or Dual Object. The output  of the logistic function on each element of x.
     """
     try:
         z = Rnode(1 / (1 + np.exp(-x.value)))
@@ -275,14 +275,14 @@ def logistic(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return 1 / (1 + np.exp(-x))
 
 
-def exp(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def exp(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the exponent of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The exponent of each element of x.
+    y : array_like, Rnode object, or Dual Object. The exponent of each element of x.
     """
     try:
         z = Rnode(np.exp(x.value))
@@ -296,14 +296,14 @@ def exp(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 
 
 # todo: figure out implementation for exp2
-# def exp2(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+# def exp2(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
 #     """Calculates the double  exponent of input.
 #
 #     Parameters:
-#     x : array_like or Dual Object.
+#     x : array_like, Rnode object, or Dual Object.
 #
 #     Returns:
-#     y : array_like or Dual Object. The exponent of each element of x.
+#     y : array_like, Rnode object, or Dual Object. The exponent of each element of x.
 #     """
 #     try:
 #         return Dual(np.exp2(x._val), np.exp2(x._val) * (x._der * np.log(2)))##, np.log(2) * np.exp2(x._val) * (x._der2 + np.log(2) * x._der**2))
@@ -313,14 +313,14 @@ def exp(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 #         return np.exp2(x)
 
 
-def sqrt(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def sqrt(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the square root of input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The square root of each element of x.
+    y : array_like, Rnode object, or Dual Object. The square root of each element of x.
     """
     try:
         z = Rnode(x.value ** 0.5)
@@ -333,27 +333,27 @@ def sqrt(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
 
 
 
-def power(x: Union[Dual, float], power: float) -> Union[Dual, float, List[float]]:
+def power(x: Union[Rnode, Dual, float], power: float) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the power of input. Alternative method to dunder method __pow__ in Dual class.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
     k : float.
 
     Returns:
-    y : array_like or Dual Object. Each element of x to the power of 'pow'.
+    y : array_like, Rnode object, or Dual Object. Each element of x to the power of 'pow'.
     """
     return x.__pow__(power)
 
 
-def arcsin(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def arcsin(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the inverse sine of the input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The inverse sine of each element of x.
+    y : array_like, Rnode object, or Dual Object. The inverse sine of each element of x.
     """
     try:
         z = Rnode(np.arcsin(x.value))
@@ -370,14 +370,14 @@ def arcsin(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.arcsin(x)
 
 
-def arccos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def arccos(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the inverse cosine of the input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The inverse cosine of each element of x.
+    y : array_like, Rnode object, or Dual Object. The inverse cosine of each element of x.
     """
     try:
         z = Rnode(np.arccos(x.value))
@@ -395,14 +395,14 @@ def arccos(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
             return np.arccos(x)
 
 
-def arctan(x: Union[Dual, float]) -> Union[Dual, float, List[float]]:
+def arctan(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
     """Calculates the inverse tangent of the input.
 
     Parameters:
-    x : array_like or Dual Object.
+    x : array_like, Rnode object, or Dual Object.
 
     Returns:
-    y : array_like or Dual Object. The inverse tangent of each element of x.
+    y : array_like, Rnode object, or Dual Object. The inverse tangent of each element of x.
     """
     try:
         z = Rnode(np.arctan(x.value))
