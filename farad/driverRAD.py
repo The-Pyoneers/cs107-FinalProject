@@ -57,8 +57,7 @@ class RAutoDiff:
         self._roots = None
         self._value = None
         self._der = None
-        if not isinstance(x, Number):
-            x = np.asarray(x)
+        x = np.asarray(x)
         try:
             nf = len(self.fn)  # if fn is a list of functions
         except TypeError:
@@ -108,13 +107,13 @@ class RAutoDiff:
         self._roots = None
         nparams = len(signature(fi).parameters)  # number of parameters of input function
         if nparams == 1:  # function has only one parameter
-            if isinstance(x, Number):
+            if x.size == 1: # scalar input
                 self._roots = Rnode(x)
                 f = fi(self._roots)
                 f.grad_value = 1.0
                 tmpval = f.value
                 tmpder = self._roots.grad()
-            else:
+            else: # vector input
                 if len(x.shape) > 1:
                     raise TypeError('input dimension size not supported')
                 else:
@@ -130,8 +129,8 @@ class RAutoDiff:
                         tmpidx = tmpidx + 1
 
         else:  # multiple input parameters (vector input)
-            if isinstance(x, Number):
-                raise TypeError('input dimension size mismatch')
+            if x.size == 1:
+                raise TypeError('input has insufficient parameters')
             if len(x.shape) == 1:  # evaluate at one vector point
                 if len(x) != nparams:
                     raise TypeError('input dimension size mismatch')
