@@ -6,19 +6,19 @@ reverse() is for getting the derivative of the variables via reverse AD mode.
 
 Currently multiple situations are supported，with the function type and dimension size of input and output are listed below:
 
-function form, x, function value, function derivatives
-f(x)           1               1                     1
-f(x)           m               m                     m
-f(xn)          n               1                     n
-f(xn)        mxn               m                   mxn
-fk(x)          1               k                     k
-fk(x)          m             mxk                   mxk
-fk(xn)         n               k                   kxn
-fk(xn)       mxn             mxk                 mxkxn
+function form F, X, function value, function derivatives
+F(X)           1               1                     1
+F(X)           m               m                     m
+F(Xn)          n               1                     n
+F(Xn)        mxn               m                   mxn
+Fk(X)          1               k                     k
+Fk(X)          m             mxk                   mxk
+Fk(Xn)         n               k                   kxn
+Fk(Xn)       mxn             mxk                 mxkxn
 
-m is when x (either scalar or vector) is evaluated at m points
-n is when x is a vector with length n
-k is when input function is a vector function with length k
+m: X (either scalar or vector) is evaluated at m points
+n: X is a vector with length n
+k: input function F is a vector function with length k
 """
 
 
@@ -31,12 +31,29 @@ from farad.rnode import Rnode
 
 class RAutoDiff:
     def __init__(self, fn):
+        """Constructor for RAutoDiff class.
+
+        Parameters
+        ==========
+        fn: The specific AD method for calculating the derivative.
+        """
         self.fn = fn
         self._roots = None
         self._value = None
         self._der = None
 
     def forwardpass(self, x):
+        """Constructor the tree structure with input X for specific AD method
+        fn. Update the value and derivative of the AD method.
+
+        Parameters
+        ==========
+        x: array_like
+
+        Returns:
+        No returns.
+
+        """
         self._roots = None
         self._value = None
         self._der = None
@@ -73,6 +90,20 @@ class RAutoDiff:
 
 
     def _forwardpass1f(self, x, fi):  # deal with only one function case
+        """Constructor the tree structure with input X for one single AD method
+        fi. This _forwardpass1f method will be called when dealing with vector function
+        input fn = [f1, f2, f3, ...]
+
+        Parameters
+        ==========
+        x: array_like
+        fi: One AD method
+
+        Returns:
+        tmpval: array_like, the value of fi(x)
+        tmpder : array_like, the derivative of fi(x)
+
+        """
 # shoule only be called from forwardpass
         self._roots = None
         nparams = len(signature(fi).parameters)  # number of parameters of input function
@@ -125,9 +156,22 @@ class RAutoDiff:
         return tmpval, tmpder
 
     def get_val(self):  # return the value of the function
+        """Get value of the input method fn for given X
+
+        Returns:
+        y : array_like
+
+        """
         return self._value
 
     def reverse(self):  # return the derivative with respect to varname variable
+        """Get the derivatives (scalar, vector, or matrix depending on the
+        the dimension of input method fn and X)
+
+        Returns:
+        y : array_like
+
+        """
         return self._der
 
 if __name__ == "__main__":
