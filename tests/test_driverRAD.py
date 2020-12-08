@@ -11,7 +11,7 @@ def test_get_forwardpass1f():
     """Test of _forwardpass1f method, i.e., testing one-function situation"""
     def f(x):
         return sin(x)
-    function = rad.AutoDiff(f)
+    function = rad.RAutoDiff(f)
 
     # test scalar input
     function.forwardpass(1.0)
@@ -34,7 +34,7 @@ def test_get_forwardpass1f():
     def f2d(x, y):
         return x * y
 
-    function = rad.AutoDiff(f2d)
+    function = rad.RAutoDiff(f2d)
     # test f2d(x,y) at point (x,y)
     function.forwardpass([1,2])
     try:
@@ -61,7 +61,7 @@ def test_get_forwardpass():
     def f2(x):
         return cos(x)
 
-    function = rad.AutoDiff([f1, f2])
+    function = rad.RAutoDiff([f1, f2])
     # test scalar input
     function.forwardpass(1.0)
     try:
@@ -84,8 +84,9 @@ def test_get_forwardpass():
         return x * y
 
     def f2d1(x, y):
-        return 2* x * y
+        return 2 * x * y
 
+    function = rad.RAutoDiff([f1, f2])
     # test [f2d1(x,y), f2d1(x,y)] at point (x,y)
     function.forwardpass([1,2])
     try:
