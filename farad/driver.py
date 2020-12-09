@@ -55,21 +55,21 @@ class AutoDiff(object):
         list[float|int], float, or int.
             Returns list of float or integer values corresponding to output node values.
         """
-        self._vals = []  # reset values to prevent duplicates
+        #self._vals = []  # reset values to prevent duplicates
 
         if self.dimensions == 1:  # (1 input -> scalar objective function)
 
             if self.length == 1:  # (1 input parameter -> univariate)
-        
+                
                 try:  # EAFP principle
                     try:  # default assumption is list input
                         for v in val:
                             a = Dual(v, 1)
-                            self._vals.append(self.function(a).val)
+                            self._vals.append(self.function(a)._val)
                         return self._vals
                     except TypeError:  # defers to float/integer input
                         a = Dual(val, 1)
-                        return self.function(a).val
+                        return self.function(a)._val
                 except TypeError:
                     raise TypeError('Only list, float, and integer inputs supported.')
 
@@ -83,33 +83,30 @@ class AutoDiff(object):
                 try:
                     return self.function(*val)
                 except:
-                    print(self.length)
-                    print(val)
                     raise Exception(f'Mismatch between function parameter length: {self.length}, and input length: {len(val)}.')
 
         else:  # (>=2 inputs -> vector objective function)
 
-            if self.length == 1:  # (1 input parameter -> univariate)
+            if any(isinstance(el, list) for el in val):
+                for v in val:
+                    values = []
+                    for i in range(self.dimensions):
+                        def inner_func(*args):
+                            return self.function(*args)[i]
+                        func = AutoDiff(inner_func, dim=1)
+                        func.length = self.length
+                        values.append(func.values(v))
+                    self._vals.append(values)
 
-                if any(isinstance(el, list) for el in val):
-                    for v in val:
-                        values = []
-                        for i in range(self.dimensions):
-                            def inner_func(*args):
-                                return self.function(*args)[i]
-                            func = AutoDiff(inner_func, dim=1)
-                            func.length = self.length
-                            values.append(func.values(v))
-                        self._vals.append(values)
-
-            else:  # (>=2 input parameters -> multivariate)
+            else:
                 
+                self._vals = []  # reset values to prevent duplicates
                 for i in range(self.dimensions):
                     def inner_func(*args):
                         return self.function(*args)[i]
                     func = AutoDiff(inner_func, dim=1)
                     func.length = self.length
-                    values.append(func.values(v))
+                    self._vals.append(func.values(val))
             return self._vals
 
 
@@ -126,66 +123,62 @@ class AutoDiff(object):
         list[float|int], float, or int.
             Returns list of float or integer values corresponding to output node derivatives.
         """
-
         self._ders = []   # reset values to prevent duplicates
 
         if self.dimensions == 1:  # (1 input -> scalar objective function)
 
-            if self.length == 1:  # (1 input parameter -> univariate)
-        
-                try:  # EAFP principle
-                    try:  # default assumption is list input
-                        for v in val:
-                            a = Dual(v, 1)
-                            self._ders.append(self.function(a).der)
-                        return self._ders
-                    except TypeError:  # defers to float/integer input
-                        a = Dual(val, 1)
-                        return self.function(a).der
-                except TypeError:
-                    raise TypeError('Only list, float, and integer inputs supported.')
-
-            else:  # (>=2 input parameters -> multivariate)
+            if self.length > 1:  # (1 input parameter -> univariate)
 
                 if any(isinstance(value, list) for value in val):  # parse and calculate for each list
                     values = []
                     for value in val:
                         values.append(self.forward(value))
-                    return values
+                    self._ders = values
+                    return self._ders
                 try:
                     for i in range(self.length):
                         val2 = val.copy()
                         val2[i] = Dual(val2[i], 1)
                         v = self.function(*val2)
                         if type(v) is Dual:
-                            self._ders.append(self.function(*val2).der)
+                            self._ders.append(self.function(*val2)._der)
                         else:
                             self._ders.append(0)
                     return self._ders
                 except:
                     raise Exception(f'Mismatch between function parameter length: {self.length}, and input length: {len(val)}.')
+        
+            try:  # EAFP principle
+                try:  # default assumption is list input
+                    for v in val:
+                        a = Dual(v, 1)
+                        self._ders.append(self.function(a)._der)
+                    return self._ders
+                except TypeError:  # defers to float/integer input
+                    a = Dual(val, 1)
+                    return self.function(a)._der
+            except TypeError:
+                raise TypeError('Only list, float, and integer inputs supported.')
 
         else:  # (>=2 inputs -> vector objective function)
 
-            if self.length == 1:  # (1 input parameter -> univariate)
-
-                if any(isinstance(el, list) for el in val):
-                    for v in val:
-                        values = []
-                        for i in range(self.dimensions):
-                            def inner_func(*args):
-                                return self.function(*args)[i]
-                            func = AutoDiff(inner_func, dim = 1)
-                            func.length = self.length
-                            values.append(func.forward(v))
-                        self._ders.append(values)
+            if any(isinstance(el, list) for el in val):
+                for v in val:
+                    values = []
+                    for i in range(self.dimensions):
+                        def inner_func(*args):
+                            return self.function(*args)[i]
+                        func = AutoDiff(inner_func, dim=1)
+                        func.length = self.length
+                        values.append(func.forward(v))
+                    self._ders.append(values)
 
             else:  # (>=2 input parameters -> multivariate)
                 
                 for i in range(self.dimensions):
                     def inner_func(*args):
                         return self.function(*args)[i]
-                    func = AutoDiff(inner_func, dim = 1)
+                    func = AutoDiff(inner_func, dim=1)
                     func.length = self.length
-                    values.append(func.forward(v))
+                    self._vals.append(func.forward(val))
             return self._ders

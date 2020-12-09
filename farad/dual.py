@@ -40,7 +40,7 @@ class Dual:
         vector inputs with jacobians.
         """
         self._val = val
-        self._der = np.array(der)
+        self._der = der
 
 
     @property
@@ -128,12 +128,12 @@ class Dual:
         Example
         =======
         >>> Dual(1.0,4.0) + Dual(2.0,3.0)
-        Dual(3.0,array(7.))
+        Dual(3.0,array(7.0))
         """
         try:  # try-except loop for Python principle EAFP
             return Dual(self._val + x._val, self._der + x._der)
         except AttributeError:  # if input is not a Dual object but a float
-            return Dual(self._val + x, self._der + x)
+            return Dual(self._val + x, self._der)
 
 
     def __radd__(self, x: Union["Dual", float]) -> "Dual":
