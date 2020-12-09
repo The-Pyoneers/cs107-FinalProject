@@ -259,3 +259,115 @@ def test_neq():
     except AssertionError as e:
         print(e)
         raise AssertionError
+
+
+def test_lt():
+    """Test of the less than special method (__lt__) of Rnode class."""
+    # Test for less than special method with scalar Rnode object and float value
+    x = Rnode(2.0)
+    try:
+        assert (x < 3) == True
+        assert (x < 1) == False
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for less than special method with two Rnode Dual object
+    a = Rnode(2.0)
+    b = Rnode(2.0)
+    c = Rnode(1.0)
+    d = Rnode(1.0)
+    try:
+        assert (a < b) == False
+        assert (a < c) == False
+        assert (d < a) == True
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_le():
+    """Test of the less than or equal to special method (__le__) of Rnode class."""
+    # Test for less than or equal to special method with scalar Rnode object and float value
+    x = Rnode(2.0)
+    try:
+        assert (x <= 3) == True
+        assert (x <= 2) == True
+        assert (x <= 1) == False
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for less than or equal to special method with two scalar Rnode object
+    a = Rnode(2.0)
+    b = Rnode(2.0)
+    c = Rnode(1.0)
+    d = Rnode(1.0)
+    try:
+        assert (a <= b) == True
+        assert (a <= c) == False
+        assert (a <= d) == False
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_gt():
+    """Test of the greater than special method (__gt__) of Rnode class."""
+    # Test for greater than special method with scalar Rnode object and float value
+    x = Rnode(2.0)
+    try:
+        assert (x > 3) == False
+        assert (x > 1) == True
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for greater than special method with two scalar Rnode object
+    a = Rnode(2.0)
+    b = Rnode(2.0)
+    c = Rnode(1.0)
+    d = Rnode(1.0)
+    try:
+        assert (a > b) == False
+        assert (a > c) == True
+        assert (a > d) == True
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_ge():
+    """Test of the greater than or equal to special method (__ge__) of Rnode class."""
+    # Test for greater than or equal to special method with scalar Rnode object and float value
+    x = Rnode(2.0)
+    try:
+        assert (x >= 3) == False
+        assert (x >= 1) == True
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+    # Test for greater than or equal to special method with two scalar Rnode object
+    a = Rnode(2.0)
+    b = Rnode(2.0)
+    c = Rnode(1.0)
+    d = Rnode(1.0)
+    try:
+        assert (a >= b) == True
+        assert (a >= c) == True
+        assert (d >= a) == False
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
+def test_str():
+    """Test of the string special method (__str__) of Rnode class."""
+    # Test for string special method with scalar Rnode objects
+    x = Rnode(1.0)
+    try:
+        assert str(x) == 'Reverse-mode Rnode Object ( Values: 1.0 )'
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
