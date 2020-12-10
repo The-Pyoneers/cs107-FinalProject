@@ -346,13 +346,13 @@ class Rnode:
         >>> 2 ** Rnode(2.0)
         Rnode(4.0)
         """
-        try:
-            z = Rnode(x.value ** self.value)
-            x.children.append((self.value * x.value ** (self.value - 1.), z))
-            self.children.append((x.value ** self.value * np.log(x.value), z))
-        except AttributeError:
-            z = Rnode(x ** self.value)
-            self.children.append((x ** self.value * np.log(x), z))
+        # try:
+        #     z = Rnode(x.value ** self.value)
+        #     x.children.append((self.value * x.value ** (self.value - 1.), z))
+        #     self.children.append((x.value ** self.value * np.log(x.value), z))
+        # except AttributeError:
+        z = Rnode(x ** self.value)
+        self.children.append((x ** self.value * np.log(x), z))
         return z
 
     def __truediv__(self, x: Union["Rnode", int, float]) -> "Rnode":
@@ -418,13 +418,13 @@ class Rnode:
         >>> 3 / Rnode(1.0)
         Rnode(3.0)
         """
-        try:
-            z = Rnode(x.value / self.value)
-            x.children.append((1./self.value, z))
-            self.children.append((- x.value / (self.value)**2, z))
-        except AttributeError:
-            z = Rnode(x / self.value)
-            self.children.append((- x / (self.value)**2, z))
+        # try:
+        #     z = Rnode(x.value / self.value)
+        #     x.children.append((1./self.value, z))
+        #     self.children.append((- x.value / (self.value)**2, z))
+        # except AttributeError:
+        z = Rnode(x / self.value)
+        self.children.append((- x / (self.value)**2, z))
         return z
 
     def __neg__(self: Union["Rnode", int, float]) -> "Rnode":

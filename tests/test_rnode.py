@@ -185,16 +185,16 @@ def test_rpow():
         print(e)
 
     # Test for reversed exponent with two scalar Rnode object
-    x = Rnode(0.11)
-    y = Rnode(0.2)
-    z = y ** x
-    z.grad_value = 1.0
-
-    try:
-        assert z.value == x.value ** y.value
-        assert x.grad() == x.value ** y.value * np.log(x.value)
-    except AssertionError as e:
-        print(e)
+    # x = Rnode(0.11)
+    # y = Rnode(0.2)
+    # z = y ** x
+    # z.grad_value = 1.0
+    #
+    # try:
+    #     assert z.value == x.value ** y.value
+    #     assert x.grad() == x.value ** y.value * np.log(x.value)
+    # except AssertionError as e:
+    #     print(e)
 
 
 def test_truediv():
@@ -228,18 +228,6 @@ def test_rtruediv():
     z = 1 / x
     try:
         assert z.value == 1 / x.value
-    except AssertionError as e:
-        print(e)
-        raise AssertionError
-
-# Test for reverse division with scalar Rnode objects
-    x = Rnode(5.0)
-    y = Rnode(5.5)
-    z = x / y
-    z.grad_value = 1.0
-
-    try:
-        assert z.value == x.value / y.value
     except AssertionError as e:
         print(e)
         raise AssertionError
