@@ -86,6 +86,13 @@ class RAutoDiff:
             self._value = np.transpose(self._value, (1, 0))
             self._der = np.transpose(self._der, (1, 0, 2))
 
+        try:  # if _value or _der is a scalar array (size = 1), convert array to scalar
+            if self._value.size ==1:
+                self._value = np.asscalar(self._value)
+            if self._der.size == 1:
+                self._der = np.asscalar(self._der)
+        except AttributeError:
+            pass
 
 
     def _forwardpass1f(self, x, fi):  # deal with only one function case
