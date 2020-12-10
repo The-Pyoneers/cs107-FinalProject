@@ -117,6 +117,7 @@ def test_get_forwardpass():
 
     # test [f2d1(x,y), f2d1(x,y)] at multiple points, i.e., (x,y) and (x1, y1)
 
+    function.forwardpass([[1,2],[3,4]])
     try:
         assert np.array_equal(function.values(),[[2,4],[12,24]])
         assert np.array_equal(function.reverse(), [[[2,1],[4,2]],[[4,3],[8,6]]])
@@ -130,5 +131,5 @@ def test_get_forwardpass():
     with pytest.raises(TypeError) as excinfo:
         function = rad.RAutoDiff([f2d2, f2d3])
         function.forwardpass([1,2])
-    assert "input dimension size mismatch" in str(excinfo.value)
+    assert "all input functions must contain the same parameters" in str(excinfo.value)
     function = rad.RAutoDiff([f2d2, f2d3])
