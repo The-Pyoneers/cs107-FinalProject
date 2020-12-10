@@ -116,7 +116,7 @@ def test_get_forwardpass():
         raise AssertionError
 
     # test [f2d1(x,y), f2d1(x,y)] at multiple points, i.e., (x,y) and (x1, y1)
-    c
+
     try:
         assert np.array_equal(function.values(),[[2,4],[12,24]])
         assert np.array_equal(function.reverse(), [[[2,1],[4,2]],[[4,3],[8,6]]])
