@@ -27,6 +27,23 @@ from farad.rnode import Rnode
 #         print(e)
 #         raise AssertionError
 
+
+def test_clear():
+    """Test of clear special method (clear) of Rnode class."""
+    # Test for clear with scalar Rnode object and float value
+    x = Rnode(0.11)
+    z = x**2 + x
+    z.grad_value = 1.0
+    x.grad()
+    x.clear()
+
+    try:
+        # assert z.value == x.value **2 + x.value
+        assert x.grad() is None
+    except AssertionError as e:
+        print(e)
+
+
 def test_add():
     """Test of addition special method (__add__) of Rnode class."""
     # Test for addition with scalar Rnode object and float value
@@ -80,6 +97,18 @@ def test_sub():
         print(e)
 
 
+def test_rsub():
+    """Test of reverse subtraction special method (__rsub__) of Rnode class."""
+    # Test for reverse subtraction with scalar Rnode object and float value
+    x = Rnode(0.5)
+    z = 0.1 - x
+    try:
+        assert z.value == x.value - 0.1
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
+
 def test_mul():
     """Test of multiplication special method (__mul__) of Rnode class."""
     # Test for multiplication with scalar Rnode object and float value
@@ -125,13 +154,26 @@ def test_pow():
     try:
         assert z.value == x.value ** 2
         assert x.grad() == x.value ** 2 * np.log(x.value)
+        # assert x.children == (x.value ** 2 * np.log(x.value), z)
+    except AssertionError as e:
+        print(e)
+
+# Test for exponent with two scalar Rnode object
+    x = Rnode(0.11)
+    y = Rnode(0.2)
+    z = x ** y
+    z.grad_value = 1.0
+
+    try:
+        assert z.value == x.value ** y.value
+        assert x.grad() == x.value ** y.value * np.log(x.value)
     except AssertionError as e:
         print(e)
 
 
 def test_rpow():
-    """Test of exponent special method (__pow__) of Rnode class."""
-    # Test for exponent with scalar Rnode object and float value
+    """Test of reversed exponent special method (__pow__) of Rnode class."""
+    # Test for reversed exponent with scalar Rnode object and float value
     x = Rnode(0.11)
     z = 2 ** x
     z.grad_value = 1.0
@@ -139,6 +181,18 @@ def test_rpow():
     try:
         assert z.value == 2 ** x.value
         # assert x.grad() == x.value ** 2 * np.log(x.value)
+    except AssertionError as e:
+        print(e)
+
+    # Test for reversed exponent with two scalar Rnode object
+    x = Rnode(0.11)
+    y = Rnode(0.2)
+    z = y ** x
+    z.grad_value = 1.0
+
+    try:
+        assert z.value == x.value ** y.value
+        assert x.grad() == x.value ** y.value * np.log(x.value)
     except AssertionError as e:
         print(e)
 
