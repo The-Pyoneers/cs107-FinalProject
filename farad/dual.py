@@ -553,9 +553,9 @@ class Dual:
         False
         """
         try:
-            return (self._val != x._val or (np.array_equal(self._der, x._der) == False))
+            return self._val != x._val or (np.array_equal(self._der, x._der) is False)
         except AttributeError:
-            return (self._val != x)
+            return self._val != x
 
 
     def __lt__(self, x: Union["Dual", int, float]) -> bool:
