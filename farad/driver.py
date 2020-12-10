@@ -54,6 +54,21 @@ class AutoDiff(object):
         =======
         list[float|int], float, or int.
             Returns list of float or integer values corresponding to output node values.
+
+        Examples
+        ========
+        >>> example = AutoDiff(lambda x: 2**x)
+        >>> example.values(3)
+        8
+        >>> example = AutoDiff(lambda x: 2**x)
+        >>> example.values([3, 4])
+        [8, 16]
+        >>> example = AutoDiff(lambda x, y: 3*x + 2*y)
+        >>> example.values([3, 4])
+        17
+        >>> example = AutoDiff(lambda x, y: 2*x + 4*y)
+        >>> example.values([[3, 4], [5,4]])
+        [22, 26]
         """
         #self._vals = []  # reset values to prevent duplicates
 
@@ -122,6 +137,21 @@ class AutoDiff(object):
         =======
         list[float|int], float, or int.
             Returns list of float or integer values corresponding to output node derivatives.
+
+        Examples
+        ========
+        >>> example = AutoDiff(lambda x: 2**x)
+        >>> example.forward(3)
+        5.545177444479562
+        >>> example = AutoDiff(lambda x: 2**x)
+        >>> example.forward([3, 4])
+        [5.545177444479562, 11.090354888959125]
+        >>> example = AutoDiff(lambda x, y: 3*x + 2*y)
+        >>> example.forward([3, 4])
+        [3, 2]
+        >>> example = AutoDiff(lambda x, y: 2*x + 4*y)
+        >>> example.forward([[3, 4], [5,4]])
+        [[2, 4], [2, 4]]
         """
         self._ders = []   # reset values to prevent duplicates
 
