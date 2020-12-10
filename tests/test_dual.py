@@ -10,7 +10,7 @@ def test_add():
     fx = x + 3.5
     try:
         assert fx.val == 5.5
-        assert fx.der == 4.5
+        assert fx.der == 1.0
     except AssertionError as e:
         print(e)
         raise AssertionError
@@ -34,7 +34,7 @@ def test_radd():
     fx = 1.5 + x
     try:
         assert fx.val == 3.0
-        assert fx.der == 2.5
+        assert fx.der == 1.0
     except AssertionError as e:
         print(e)
         raise AssertionError
@@ -366,7 +366,7 @@ def test_repr():
     x = Dual(2)
     y = Dual(2, [0,1])
     try:
-        assert repr(x) == 'Dual(2,array(1))'
+        assert repr(x) == 'Dual(2,1)'
         assert repr(y) == 'Dual(2,[0, 1])' 
     except AssertionError as e:
         print(e)
