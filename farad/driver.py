@@ -11,7 +11,6 @@ Note that for milestone2 this class only deals with scalar, the function will be
 from farad.dual import Dual
 from numbers import Number
 from inspect import signature
-from farad.elem import *
 
 
 class AutoDiff(object):
@@ -33,8 +32,8 @@ class AutoDiff(object):
         """
         self.function = function  # function input (e.g., lambda x, y: x**2 + y**2)
         self.dimensions = dim  # dimensionality of function input (e.g., 2 for lambda x: [x**2, x**3])
-        self._vals = []
-        self._ders = []
+        self.vals = []
+        self.ders = []
         try:
             # if defined as lambda function
             self.length = len(self.function.__code__.co_varnames)  # no. of function inputs (e.g., 2 for lambda x, y: x**2 +  y**2)
@@ -70,8 +69,6 @@ class AutoDiff(object):
         >>> example.values([[3, 4], [5,4]])
         [22, 26]
         """
-        #self._vals = []  # reset values to prevent duplicates
-
         if self.dimensions == 1:  # (1 input -> scalar objective function)
 
             if self.length == 1:  # (1 input parameter -> univariate)
@@ -80,11 +77,11 @@ class AutoDiff(object):
                     try:  # default assumption is list input
                         for v in val:
                             a = Dual(v, 1)
-                            self._vals.append(self.function(a)._val)
-                        return self._vals
+                            self.vals.append(self.function(a)._val)
+                        return self.vals
                     except TypeError:  # defers to float/integer input
                         a = Dual(val, 1)
-                        return self.function(a)._val
+                        self.vals.append(self.function(a)._val)
                 except TypeError:
                     raise TypeError('Only list, float, and integer inputs supported.')
 
@@ -96,6 +93,7 @@ class AutoDiff(object):
                         values.append(self.values(value))
                     return values
                 try:
+                    self.vals.append(self.function(*val))
                     return self.function(*val)
                 except:
                     raise Exception(f'Mismatch between function parameter length: {self.length}, and input length: {len(val)}.')
@@ -111,18 +109,19 @@ class AutoDiff(object):
                         func = AutoDiff(inner_func, dim=1)
                         func.length = self.length
                         values.append(func.values(v))
-                    self._vals.append(values)
+                    self.vals.append(values)
 
             else:
                 
-                self._vals = []  # reset values to prevent duplicates
+                self.vals = []  # reset values to prevent duplicates
                 for i in range(self.dimensions):
                     def inner_func(*args):
                         return self.function(*args)[i]
                     func = AutoDiff(inner_func, dim=1)
                     func.length = self.length
-                    self._vals.append(func.values(val))
-            return self._vals
+                    self.vals.append(func.values(val))
+
+            return self.vals
 
 
     def forward(self, val):
@@ -153,7 +152,7 @@ class AutoDiff(object):
         >>> example.forward([[3, 4], [5,4]])
         [[2, 4], [2, 4]]
         """
-        self._ders = []   # reset values to prevent duplicates
+        self.ders = []   # reset values to prevent duplicates
 
         if self.dimensions == 1:  # (1 input -> scalar objective function)
 
@@ -163,18 +162,18 @@ class AutoDiff(object):
                     values = []
                     for value in val:
                         values.append(self.forward(value))
-                    self._ders = values
-                    return self._ders
+                    self.ders = values
+                    return self.ders
                 try:
                     for i in range(self.length):
                         val2 = val.copy()
                         val2[i] = Dual(val2[i], 1)
                         v = self.function(*val2)
                         if type(v) is Dual:
-                            self._ders.append(self.function(*val2)._der)
+                            self.ders.append(self.function(*val2)._der)
                         else:
-                            self._ders.append(0)
-                    return self._ders
+                            self.ders.append(0)
+                    return self.ders
                 except:
                     raise Exception(f'Mismatch between function parameter length: {self.length}, and input length: {len(val)}.')
         
@@ -182,11 +181,12 @@ class AutoDiff(object):
                 try:  # default assumption is list input
                     for v in val:
                         a = Dual(v, 1)
-                        self._ders.append(self.function(a)._der)
-                    return self._ders
+                        self.ders.append(self.function(a)._der)
+                    return self.ders
                 except TypeError:  # defers to float/integer input
                     a = Dual(val, 1)
-                    return self.function(a)._der
+                    self.ders.append(self.function(a)._der)
+                    return self.ders
             except TypeError:
                 raise TypeError('Only list, float, and integer inputs supported.')
 
@@ -201,7 +201,7 @@ class AutoDiff(object):
                         func = AutoDiff(inner_func, dim=1)
                         func.length = self.length
                         values.append(func.forward(v))
-                    self._ders.append(values)
+                    self.ders.append(values)
 
             else:  # (>=2 input parameters -> multivariate)
                 
@@ -210,5 +210,5 @@ class AutoDiff(object):
                         return self.function(*args)[i]
                     func = AutoDiff(inner_func, dim=1)
                     func.length = self.length
-                    self._vals.append(func.forward(val))
-            return self._ders
+                    self.ders.append(func.forward(val))
+            return self.ders

@@ -40,7 +40,7 @@ class Dual:
         vector inputs with jacobians.
         """
         self._val = val
-        self._der = der
+        self._der = np.array(der)
 
 
     @property
