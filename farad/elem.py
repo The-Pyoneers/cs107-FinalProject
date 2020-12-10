@@ -26,7 +26,7 @@ def sin(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
         return z
     except AttributeError:
         try:  # Python EAFP principle - assume input is type Dual
-            return Dual(np.sin(x._val), np.cos(x._val)*x._der)
+            return Dual(np.sin(x._val), np.cos(x._val)*np.asarray(x._der))
         except AttributeError:
             return np.sin(x)  # Default to numpy implementation
 
@@ -46,7 +46,7 @@ def cos(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
         return z
     except AttributeError:
         try:
-            return Dual(np.cos(x._val), -np.sin(x._val)*x._der)
+            return Dual(np.cos(x._val), -np.sin(x._val)*np.asarray(x._der))
         except AttributeError:
             return np.cos(x)  # Default to numpy implementation
 
@@ -67,7 +67,7 @@ def tan(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
         return z
     except AttributeError:
         try:
-            return Dual(np.tan(x._val), 1/np.cos(x._val)**2*x._der)
+            return Dual(np.tan(x._val), 1/np.cos(x._val)**2*np.asarray(x._der))
         except AttributeError:
             return np.tan(x)  # Default to numpy implementation
 
@@ -89,7 +89,7 @@ def log(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
         try:
             if x._val <= 0:
                 raise ValueError('Domain of logarithm is {x > 0}')
-            return Dual(np.log(x._val), (1/x._val)*x._der)
+            return Dual(np.log(x._val), (1/x._val)*np.asarray(x._der))
         except AttributeError:
             return np.log(x)  # Default to numpy implementation
 
@@ -112,7 +112,7 @@ def log10(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]
         try:
             if x._val <= 0:
                 raise ValueError('Domain of logarithm is {x > 0}')
-            return Dual(np.log10(x._val), (1/(x._val*np.log(10)))*x._der)
+            return Dual(np.log10(x._val), (1/(x._val*np.log(10)))*np.asarray(x._der))
         except AttributeError:
             return np.log10(x)  # Default to numpy implementation
 
@@ -134,7 +134,7 @@ def log2(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]
         try:
             if x._val <= 0:
                 raise ValueError('Domain of logarithm is {x > 0}')
-            return Dual(np.log2(x._val), (1/(x._val*np.log(2)))*x._der)
+            return Dual(np.log2(x._val), (1/(x._val*np.log(2)))*np.asarray(x._der))
         except AttributeError:
             return np.log2(x)  # Default to numpy implementation
 
@@ -154,7 +154,7 @@ def sinh(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]
         return z
     except AttributeError:
         try:
-            return Dual(np.sinh(x.val), np.cosh(x.val) * x.der)
+            return Dual(np.sinh(x.val), np.cosh(x.val) * np.asarray(x.der))
         except AttributeError:
             return np.sinh(x)  # default to numpy implementation
 
@@ -174,7 +174,7 @@ def cosh(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]
         return z
     except AttributeError:
         try:
-            return Dual(np.cosh(x.val), np.sinh(x.val) * x.der)
+            return Dual(np.cosh(x.val), np.sinh(x.val) * np.asarray(x.der))
         except AttributeError:
             return np.cosh(x)  # default to numpy implementation
 
@@ -290,7 +290,7 @@ def exp(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float]]:
         return z
     except AttributeError:
         try:
-            return Dual(np.exp(x.val), np.exp(x.val) * x.der)
+            return Dual(np.exp(x.val), np.exp(x.val) * np.asarray(x.der))
         except AttributeError:
             return np.exp(x)  # Default to numpy implementation
 
@@ -365,7 +365,7 @@ def arcsin(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float
         return z
     except AttributeError:
         try:
-            return Dual(np.arcsin(x.val), 1 / np.sqrt(1 - x.val ** 2) * x.der)
+            return Dual(np.arcsin(x.val), 1 / np.sqrt(1 - x.val ** 2) * np.asarray(x.der))
         except AttributeError:
             return np.arcsin(x)
 
@@ -390,7 +390,7 @@ def arccos(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float
         return z
     except AttributeError:
         try:
-            return Dual(np.arccos(x.val), -1 / np.sqrt(1 - x.val**2) * x.der)
+            return Dual(np.arccos(x.val), -1 / np.sqrt(1 - x.val**2) * np.asarray(x.der))
         except AttributeError:
             return np.arccos(x)
 
@@ -410,7 +410,7 @@ def arctan(x: Union[Rnode, Dual, float]) -> Union[Rnode, Dual, float, List[float
         return z
     except AttributeError:
         try:
-            return Dual(np.arctan(x.val), 1 / (1 + x.val**2) * x.der)
+            return Dual(np.arctan(x.val), 1 / (1 + x.val**2) * np.asarray(x.der))
         except AttributeError:
             return np.arctan(x)
 

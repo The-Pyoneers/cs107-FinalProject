@@ -513,7 +513,7 @@ def test_exp():
     # Test for exp with two Dual objects
     x = Dual(3, [4, 1])
     z = Elem.exp(x)
-    der = np.exp(x.val) * x.der
+    der = np.exp(x.val) * np.asarray(x.der)
 
     try:
         assert z.val == np.exp(x.val)
@@ -647,16 +647,13 @@ def test_arcsin():
     with pytest.raises(ValueError, match=r".* sqrt .*"):
         Elem.arcsin(Rnode(1.0))
 
-    # Test for sqrt with two Dual objects
-    x = Dual(3, [4, 1])
-    z = Elem.sqrt(x)
-    result = x ** 0.5
+
     # Test for arcsin with two Dual objects
     # arsin() input (-1,1)
     x = Dual(0.2, [0.4, 0.1])
     z = Elem.arcsin(x)
     print(z)
-    der = 1 / np.sqrt(1 - x.val ** 2) * x.der
+    der = 1 / np.sqrt(1 - x.val ** 2) * np.asarray(x.der)
     try:
         assert z.val == np.arcsin(x.val)
         assert np.all(z.der == der)
@@ -705,7 +702,7 @@ def test_arccos():
     x = Dual(0.2, [0.4, 0.1])
     z = Elem.arccos(x)
     print(z)
-    der = -1 / np.sqrt(1 - x.val**2) * x.der
+    der = -1 / np.sqrt(1 - x.val**2) * np.asarray(x.der)
     try:
         assert z.val == np.arccos(x.val)
         assert np.all(z.der == der)
@@ -743,7 +740,7 @@ def test_arctan():
     # arctan() input (-1,1)
     x = Dual(0.2, [0.4, 0.1])
     z = Elem.arctan(x)
-    der = 1 / (1 + x.val**2) * x.der
+    der = 1 / (1 + x.val**2) * np.asarray(x.der)
     try:
         assert z.val == np.arctan(x.val)
         assert np.all(z.der == der)

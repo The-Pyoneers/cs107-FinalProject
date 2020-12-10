@@ -194,7 +194,7 @@ class Dual:
         Dual(-2.0,-1)
         """
         try:
-            return Dual(self._val - x._val, self._der - x._der)
+            return Dual(self._val - x._val, np.asarray(self._der) - np.asarray(x._der))
         except AttributeError:
             return Dual(self._val - x, self._der - x)
 
@@ -326,7 +326,7 @@ class Dual:
         try:
             return Dual(self._val**x._val, self._val**x._val*(self._der*(x._val/self._val) + x._der*np.log(self._val)))
         except AttributeError:
-            return Dual(self._val**x, self._val**(x-1) * x * self._der)
+            return Dual(self._val**x, self._val**(x-1) * x * np.asarray(self._der))
 
 
     def __rpow__(self, x: Union["Dual", int, float]) -> "Dual":
