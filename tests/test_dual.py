@@ -366,7 +366,7 @@ def test_repr():
     x = Dual(2)
     y = Dual(2, [0,1])
     try:
-        assert repr(x) == 'Dual(2,1)'
+        assert repr(x) == 'Dual(2,array(1))'
         assert repr(y) == 'Dual(2,[0, 1])' 
     except AssertionError as e:
         print(e)
