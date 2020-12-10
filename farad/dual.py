@@ -68,7 +68,7 @@ class Dual:
         Example
         =======
         >>> Dual(1.0,1.0).der
-        array(1.)
+        1.0
         """       
         return self._der  # limits user interference with 'der' attribute
 
@@ -128,7 +128,7 @@ class Dual:
         Example
         =======
         >>> Dual(1.0,4.0) + Dual(2.0,3.0)
-        Dual(3.0,array(7.0))
+        Dual(3.0,7.0)
         """
         try:  # try-except loop for Python principle EAFP
             return Dual(self._val + x._val, self._der + x._der)
@@ -159,7 +159,7 @@ class Dual:
         Example
         =======
         >>> 4 + Dual(2.0,3.0)
-        Dual(6.0,array(7.))
+        Dual(6.0,3.0)
         """
         return self.__add__(x)  # operation is commutative
 
@@ -189,9 +189,9 @@ class Dual:
         Examples
         ========
         >>> Dual(2.0, 3) - Dual(1.0, 2) 
-        Dual(1.0,array(1))
+        Dual(1.0,1)
         >>> Dual(2.0, 3) - 4
-        Dual(-2.0,array(-1))
+        Dual(-2.0,-1)
         """
         try:
             return Dual(self._val - x._val, self._der - x._der)
@@ -222,9 +222,9 @@ class Dual:
         Examples
         ========
         >>> Dual(2.0, 3) - Dual(1.0, 2) 
-        Dual(1.0,array(1))
+        Dual(1.0,1)
         >>> Dual(2.0, 3) - 4
-        Dual(-2.0,array(-1))
+        Dual(-2.0,-1)
         """
         try:  # operation is not commutative
             return Dual(x._val - self._val, x._der - self._der)
@@ -257,9 +257,9 @@ class Dual:
         Examples
         ========
         >>> Dual(2,3) * Dual(1,2)
-        Dual(2,array(7))
+        Dual(2,7)
         >>> Dual(2,3) * 3
-        Dual(6,array(9))
+        Dual(6,9)
         """
         try:
             return Dual(self._val * x._val, self._der * x._val + self._val * x._der)  # chain rule for derivative
@@ -289,7 +289,7 @@ class Dual:
         Examples
         ========
         >>> 3 * Dual(1.0, 2) 
-        Dual(3.0,array(6))
+        Dual(3.0,6)
         """
         return self.__mul__(x)  # operation is commutative
 
@@ -319,9 +319,9 @@ class Dual:
         Examples
         ========
         >>> Dual(1.0, 2) ** 2
-        Dual(1.0,array(4.))
+        Dual(1.0,4.0)
         >>> Dual(1.0, 3.0) ** Dual(4.0, 5.0)
-        Dual(1.0,array(12.))
+        Dual(1.0,12.0)
         """
         try:
             return Dual(self._val**x._val, self._val**x._val*(self._der*(x._val/self._val) + x._der*np.log(self._val)))
@@ -351,7 +351,7 @@ class Dual:
         Examples
         ========
         >>> 2 ** Dual(1.0,2)
-        Dual(2.0,array(2.77258872))
+        Dual(2.0,2.772588722239781)
         """
         # Cannot revert to __pow__ dunder method due to non-commutativity of exponent operator
         try: 
@@ -385,9 +385,9 @@ class Dual:
         Examples
         ========
         >>> Dual(2.0,3.0) / Dual(1.0,4.0)
-        Dual(2.0,array(-5.))
+        Dual(2.0,-5.0)
         >>> Dual(2.0,3.0) / 4
-        Dual(0.5,array(0.75))
+        Dual(0.5,0.75)
         """
         try:
             return Dual(self._val/x._val, (self._der * x._val - self._val * x._der)/x._val**2)
@@ -418,7 +418,7 @@ class Dual:
         Examples
         ========
         >>> 3 / Dual(1.0,4.0)
-        Dual(3.0,array(-0.75))
+        Dual(3.0,-0.75)
         """
         # Cannot revert to __truediv__ dunder method due to non-commutativity of divison operator
         return Dual(x/self._val, -x/self._der*self._val**2)
@@ -447,7 +447,7 @@ class Dual:
         Examples
         ========
         >>> -Dual(1.0,4.0)
-        Dual(-1.0,array(-4.))
+        Dual(-1.0,-4.0)
         """
         return Dual(-self._val, -self._der)
 
@@ -475,7 +475,7 @@ class Dual:
         Examples
         ========
         >>> +Dual(1.0,4.0)
-        Dual(1.0,array(4.))
+        Dual(1.0,4.0)
         """
         return Dual(self._val, self._der)
 
@@ -735,7 +735,7 @@ class Dual:
         Example
         =======
         >>> repr(Dual(1.0,4.0))
-        'Dual(1.0,array(4.))'
+        'Dual(1.0,4.0)'
         """
         try:
             return f"Dual({reprlib.repr(self._val)},{reprlib.repr(list(self._der))})"
