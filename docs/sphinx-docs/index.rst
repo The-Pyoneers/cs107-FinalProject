@@ -135,34 +135,36 @@ setup of the package.
 ::
 
  farad_pkg
-├── LICENSE
-├── README.md
-├── docs
-│   ├── sphinx_docs
-│   └── design documents
-├── requirements.txt
-├── .travis.yml
-├── .readthedocs.yml
-├── .codecov.yml
-├── .gitignore
-├── setup.py
-├── setup.cfg
-├── farad
-│   ├── __init__.py
-│   └── dual.py
-│   └── elem.py
-│   └── driver.py
-│   └── driverRAD.py
-│   └── rnode.py
-├── tests
-│   ├── __init__.py
-│   └── test_dual.py
-│   └── test_elem.py
-│   └── test_driver.py
-│   └── test_driverRAD.py
-│   └── test_rnode.py
-└── examples
-    └── root-finding.py
+ ├── LICENSE
+ ├── README.md
+ ├── docs
+ │   ├── sphinx_docs
+ │   └── design documents
+ ├── requirements.txt
+ ├── .travis.yml
+ ├── .readthedocs.yml
+ ├── .codecov.yml
+ ├── .gitignore
+ ├── setup.py
+ ├── setup.cfg
+ ├── farad
+ │   ├── __init__.py
+ │   └── dual.py
+ │   └── elem.py
+ │   └── driver.py
+ │   └── driverRAD.py
+ │   └── rnode.py
+ ├── tests
+ │   ├── __init__.py
+ │   └── test_dual.py
+ │   └── test_elem.py
+ │   └── test_driver.py
+ │   └── test_driverRAD.py
+ │   └── test_rnode.py
+ └── examples
+     └── root-finding.py
+
+
 
 
 The main module for this library will be farad, which contains all of the callable submodules used
