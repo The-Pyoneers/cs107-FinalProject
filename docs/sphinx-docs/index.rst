@@ -111,13 +111,36 @@ To check and ensure that the library is working, try running the following examp
 
    import farad as fd
    import farad.driver as ad
-   from farad.elem import *
-   f = lambda x: exp(x) * sin(x**2)
+   f = lambda x: 4 * x**2 + 3*x + 2  # simple quadratic equation
    function = ad.AutoDiff(f)
-   function.forward(1)  # return the derivative of f at x = 1
-   >>> array(5.22474317)
-   function.get_val_scalar(1)  # return the value of f at x = 1
-   >>> 2.2873552871788423
+   function.values(1)  # return the value of f(x = 1)
+   >>> 9
+   function.forward(1)  # return the derivative f'(x = 1)
+   >>> array(11)
+
+Elementary functions can also be used in the function definition, as follows
+
+.. code-block:: Python
+
+   from farad.elem import *
+   from math import pi
+   f = lambda x: exp(x)*(sin(x) + 2*cos(x))  # simple quadratic equation
+   function = ad.AutoDiff(f)
+   function.values(pi/2)  # return the value of f(x = 1)
+   >>> 4.810477380965352
+   function.forward(pi/2)  # return the derivative f'(x = 1)
+   >>> array(-4.81047738)
+
+The use of multivariate objective functions is also supported, as follows
+
+.. code-block:: Python
+
+   f = lambda x, y, z: 3*x + 4*y + 5*z  # simple quadratic equation
+   function = ad.AutoDiff(f)
+   function.values([1, 3, 5])  # return the value of f(x = 1)
+   >>> 4.810477380965352
+   function.forward([1,3,5])  # return the derivative f'(x = 1)
+   >>> array(-4.81047738)
 
 You are now ready to use Farad!
 
