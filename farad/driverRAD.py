@@ -161,7 +161,7 @@ class RAutoDiff:
                     tmpder[im, :] = [root.grad() for root in self._roots[im]]
         return tmpval, tmpder
 
-    def get_val(self):  # return the value of the function
+    def values(self):  # return the value of the function
         """Get value of the input method fn for given X
 
         Returns:
