@@ -188,7 +188,6 @@ class AutoDiff(object):
                 except:
                     raise Exception(f'Mismatch between function parameter length: {self.length}, and input length: {len(val)}.')
 
-            print('yes')
             try:  # EAFP principle
                 try:  # default assumption is list input
                     for v in val:
