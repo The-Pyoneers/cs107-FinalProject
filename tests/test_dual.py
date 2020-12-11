@@ -61,7 +61,7 @@ def test_sub():
         assert fx.der == 0
     except AssertionError as e:
         print(e)
-        raise AssertionError 
+        raise AssertionError
 
 
 def test_rsub():
@@ -98,7 +98,7 @@ def test_mul():
         assert fx.der == 3.0
     except AssertionError as e:
         print(e)
-        raise AssertionError 
+        raise AssertionError
 
 
 def test_rmul():
@@ -145,7 +145,7 @@ def test_rtruediv():
     fx = 1 / x
     try:
         assert fx.val == 0.2
-        assert fx.der == -25.0
+        assert fx.der == -0.04
     except AssertionError as e:
         print(e)
         raise AssertionError
@@ -187,7 +187,7 @@ def test_pow():
         assert fx.der == 4.0
     except AssertionError as e:
         print(e)
-        raise AssertionError 
+        raise AssertionError
 
     # Test for power special method with two scalar Dual object
     x = Dual(2)
@@ -210,7 +210,7 @@ def test_rpow():
         assert fx.der == pytest.approx(2.77, 0.001)
     except AssertionError as e:
         print(e)
-        raise AssertionError 
+        raise AssertionError
 
 
 def test_eq():
