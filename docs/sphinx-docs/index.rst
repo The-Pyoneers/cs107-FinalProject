@@ -121,36 +121,51 @@ To check and ensure that the library is working, try running the following examp
 
    import farad as fd
    import farad.driver as ad
-   f = lambda x: 4 * x**2 + 3*x + 2  # simple quadratic equation
-   function = ad.AutoDiff(f)
-   function.values(1)  # return the value of f(x = 1)
-   >>> 9
-   function.forward(1)  # return the derivative f'(x = 1)
-   >>> array(11)
+   function = lambda x: 7*x + 6 # simple linear equation - scalar function of scalar values
+   f = ad.AutoDiff(function)
+   f.values(7)  # return the value of f(x = 1)
+   >>> 55
+   f.forward(7)  # return the derivative f'(x = 1)
+   >>> [array(7)]
+   print(f.vals, f.ders)
+   >>> [55] [7]
 
 Elementary functions can also be used in the function definition, as follows
 
 .. code-block:: Python
 
-   from farad.elem import *
-   from math import pi
-   f = lambda x: exp(x)*(sin(x) + 2*cos(x))  # simple quadratic equation
-   function = ad.AutoDiff(f)
-   function.values(pi/2)  # return the value of f(x = 1)
-   >>> 4.810477380965352
-   function.forward(pi/2)  # return the derivative f'(x = 1)
-   >>> array(-4.81047738)
+   import farad.elem as el
+   function = lambda x: 7*el.sin(x) + 6  # sine function
+   f = ad.AutoDiff(function)
+   f.values(7)  # return the value of f(x = 1)
+   >>> 10.598906191031524
+   f.forward(7)  # return the derivative f'(x = 1)
+   >>> [array(5.27731578)]
+   print(f.vals, f.ders)
+   >>> [10.598906191031524] [5.27731578]
 
 The use of multivariate objective functions is also supported, as follows
 
 .. code-block:: Python
 
-   f = lambda x, y, z: 3*x + 4*y + 5*z  # simple quadratic equation
-   function = ad.AutoDiff(f)
-   function.values([1, 3, 5])  # return the value of f(x = 1)
-   >>> 4.810477380965352
-   function.forward([1,3,5])  # return the derivative f'(x = 1)
-   >>> array(-4.81047738)
+   function = lambda x1, x2: x1 * x2 + x1  # multivariate function - scalar functions of vectors
+   f = ad.AutoDiff(function)
+   f.values([2, 3])  # return the value of f(x = 1), requires vector input
+   >>> [8]
+   f.forward([2, 3])  # return the derivative f'(x = 1), requires vector input
+   >>> [4, 2]
+
+The use of multiple objective functions is also supported, as follows
+
+.. code-block:: Python
+
+   function = lambda x1, x2: [x1 * x2 + x1, x1 / x2] # multiple objective functions - vector input of vectors
+   f = ad.AutoDiff(function)
+   f.values([3, 2])  # return the value of f(x = 1), requires vector input
+   >>> [9, 1.5]
+   f.forward([[3, 2], [3,2]])  # return the derivative f'(x = 1), requires vector input
+   >>> [3, 4, 5]  # defaults to coefficients
+   NOT WORKING CURRENTLY
 
 Reverse mode
 --------------------
