@@ -334,8 +334,10 @@ attribute of our dual number object. That is, for a farad object :math:`y`, we h
 Then, we also have driver class called AutoDiff. This class can be instantialized by user-defined function.
 In this class, we have valuesue method to return the value of the function, and we have forward method
 to return the derivative using the forward mode. Currently this driver class can only deal with scalar function input.
-For vector functions, e.g. :math:`g(x) = [f_1(x), f_2(x), f_3(x)]`, we will further implement this class so that the
+For vector functions, e.g. :math:`g(x) = [f_1(x), f_2(x), f_3(x)]`, we also implement this class so that the
 forward method can return a Jacobian matrix.
+
+
 
 Methods and name attributes
 ---------------------------
@@ -405,16 +407,14 @@ log(), exp(), cross() and ndarry for vector as well as when we write the RAutoDi
 Future Features
 ===============
 
-**Jacobian matrix** The package is planned to fully support vector input and vector functions and be able
-to return a Jacobian matrix for vector cases.
 
-**Reverse mode**. Functionality is planned to support reverse mode differentiation, although this will not
-be done using dual numbers as the forward mode was done.
+**Neural network application**
 
-**Neural network application**. We plan to develop a layer class and optimizer to allow this library to be
+We plan to develop a layer class and optimizer to allow this library to be
 run for neural networks. An example application will be given on the MNIST dataset, which will benchmark
 against a standard neural network library such as Pytorch or Tensorflow for comparison.
 
+(add more details...)
 
 Broader Impact and Inclusivity Statement
 ========================================
