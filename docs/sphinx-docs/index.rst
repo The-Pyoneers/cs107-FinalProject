@@ -105,6 +105,10 @@ Python environment, run
 
    import farad as fd
 
+
+Forward mode
+--------------------
+
 To check and ensure that the library is working, try running the following example
 
 .. code-block:: Python
@@ -141,6 +145,78 @@ The use of multivariate objective functions is also supported, as follows
    >>> 4.810477380965352
    function.forward([1,3,5])  # return the derivative f'(x = 1)
    >>> array(-4.81047738)
+
+Reverse mode
+--------------------
+
+To use reverse mode to calculate the value and derivatives of functions, you can check the following examples.
+
+First, you need to load the following libraries:
+
+.. code-block:: Python
+
+   import farad.elem as EL
+   import farad.driver as ad
+
+1. for single function with scalar input
+
+.. code-block:: Python
+
+    >>> f = lambda x: EL.sin(x) + EL.cos(x)
+    >>> function = ad.RAutoDiff(f)
+    >>> function.forwardpass(1.0)  # evaluate f(x) at x = 1.0
+    >>> function.get_val()
+    1.3817732906760363
+    >>> function.reverse()
+    -0.30116867893975674
+
+    # To evaluate the function at multiple points:
+    >>> function.forwardpass([1.0, 2.0, 3.0])  # evaluate f(x) at x = 1.0, 2.0, 3.0
+    >>> function.get_val()
+    array([ 1.38177329,  0.49315059, -0.84887249])
+    >>> function.reverse()
+    array([-0.30116868, -1.32544426, -1.1311125 ])
+
+2. For single function with vector input
+
+.. code-block:: Python
+
+    >>> f = lambda x, y: x * y
+    >>> function = ad.RAutoDiff(f)
+    >>> function.forwardpass([1, 2])  # evaluate f(x, y) at (x=1, y=2)
+    >>> function.get_val()
+    2
+    >>> function.reverse()
+    array([2., 1.])
+
+    # To evaluate the function at multiple points:
+    >>> function.forwardpass([[1,2],[3,4]])  # evaluate f(x, y) at (x=1, y=2), (x=3, y=4)
+    >>> function.get_val()
+    array([ 2., 12.])
+    >>> function.reverse()
+    array([[2., 1.],
+           [4., 3.]])
+
+3. For vector function:
+
+.. code-block:: Python
+
+    >>> f1 = lambda x, y: x * y
+    >>> f2 = lambda x, y: 2 * x * y
+    >>> f = [f1, f2]
+    >>> function = ad.RAutoDiff(f)
+    >>> function.forwardpass([[1,2],[3,4]])  # evaluate [f1(x, y), f2(x, y)] at (x=1, y=2), (x=3, y=4)
+    >>> function.get_val()
+    array([[ 2.,  4.],
+           [12., 24.]])
+    >>> function.reverse()
+    array([[[2., 1.],
+            [4., 2.]],
+
+           [[4., 3.],
+            [8., 6.]]])
+
+    # For vector functions, each individual function needs to contain exactly the same parameters with the orders.
 
 You are now ready to use Farad!
 
@@ -204,8 +280,8 @@ The only anticipated package dependency will be numpy in order to reduce relianc
 and reduce the complexity of the code base. Additional dependencies will be used during testing and packaging.
 
 
-Implementation details
-======================
+Implementation details for forward mode
+=======================================
 
 Our plan on implementing forward mode AD is as follows.
 
@@ -252,6 +328,44 @@ functions include scipy functions, we hope we could potentially deal with those 
 the minimum requirement of the forward mode implementation, we won’t have a scipy dependency. For
 the case when the input function includes scipy, a scipy dependency may be included in our implementation.
 
+Implementation details for reverse mode
+=======================================
+
+Core data structures
+--------------------
+
+Tree data structure. Each node of the tree will contain the value of the node and the derivative relationship between the node and its children.
+For example, for z = x + y, z is the children of node x and node y. The node of x contains the value of x and also :math:`{\partial z / \partial x}`.
+
+Classes to use
+--------------
+
+First, we have a Rnode class. This Rnode class is used for the data structure mentioned above. In an Rnode object, the
+value of the node and the relationship between this node and its children nodes are stored.
+
+Then, we also have driver class called RAutoDiff. It's an interface for users to specify the functions
+and the input parameters. The RAutoDiff object can be instantialized by user-defined function. RAutoDiff
+contains the following methods to return the value and derivatives of the function:
+1. values() is for getting the value of the function.
+2. reverse() is for getting the derivative of the variables via reverse AD mode.
+3. forwardpass() is to constructor the tree structure required to perform reverse AD
+calculation. forwardpass needs to be called before using values() and reverse().
+
+Methods and name attributes
+---------------------------
+
+Methods include all the mathematical operations: addition, multiplication, division, trigonometric
+(sin, cos, tan), power, logarithmic, exponential, hyperbolic (sinh, cosh, tanh), as well as multiple
+complex operators (e.g., arcsin, arctanh, tetration). Methods will also be implemented via operator
+overloading.
+
+Methods for RAutoDiff object have been mentioned in the Classes to use section and is illustrated in the demo
+codes in the How to use section.
+
+Our implementation needs a numpy dependency. We use numpy under-the-hood when we implement elementary functions, eg. cos(), sin(), power(),
+log(), exp(), cross() and ndarry for vector as well as when we write the RAutoDiff class.
+
+
 Future Features
 ===============
 
@@ -275,12 +389,12 @@ widely varying socioeconomic, cultural backgrounds, and ability are united by so
 software is no exception. Contributors are united in the pursuit for progress to tackle existing challenges
 facing humanity and enhancing already-existing solutions. The core developers of Farad share in this worldview and are committed
 to ensuring that every individual, regardless of background, is able to contribute to improve our existing code base. To help
-foster inclusivity, contributors should be respectful of other developers regardless of their identity, and understanding towards 
-those still in the process of learning about diverse perspectives and identities. Differences of opinion may arise and should be 
+foster inclusivity, contributors should be respectful of other developers regardless of their identity, and understanding towards
+those still in the process of learning about diverse perspectives and identities. Differences of opinion may arise and should be
 resolved amicably, exercising an unwavering commitment to respect, tolerance, and restraint. Pull requests will be reviewed blindly by a
 a minimum of two core developers to help mitigate unconscious bias. To make the package more accessible,
 documentation should be written in a way that is understandable to non-native English speakers. When language confusion arises, consideration
-should be made for assuming good intent of the speaker. Ideas and feedback for fostering an increasingly inclusive developer ecosystem are 
+should be made for assuming good intent of the speaker. Ideas and feedback for fostering an increasingly inclusive developer ecosystem are
 encouraged. All are welcome.
 
 **Broader Impact.** Automatic differentiation is applicable to almost every discipline of science and engineering. Consequently, the development
