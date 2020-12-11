@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="farad",
-    version="0.0.0",
+    version="1.2",
     author="Harvard CS107 Final Project Group 34",
     description="A package for forward and reverse automatic differentiation",
     url="https://github.com/The-Pyoneers/cs107-FinalProject",
