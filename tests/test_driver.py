@@ -33,6 +33,7 @@ def test_values():
 
     try:
         assert f.values([3, 2]) == [9, 1.5]
+        assert f.values([[3, 2],[3,2]]) == [[9, 1.5], [9, 1.5]]
     except AssertionError as e:
         print(e)
         raise AssertionError
@@ -63,6 +64,7 @@ def test_forward():
 
     try:
         assert f.forward([3, 2]) == [[3, 3], [0.5, -0.75]]
+        assert f.forward([[3, 2],[3,2]]) == [[[3, 3], [0.5, -0.75]], [[3, 3], [0.5, -0.75]]]
     except AssertionError as e:
         print(e)
         raise AssertionError
