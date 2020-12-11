@@ -225,9 +225,9 @@ def test_eq():
         raise AssertionError
 
     # Test for equality special method with two scalar Dual object
-    x = Dual(2, [1,0])
-    y = Dual(2, [1,0])
-    z = Dual(2, [0,1])
+    x = Dual(2, [1, 0])
+    y = Dual(2, [1, 0])
+    z = Dual(2, [0, 1])
     try:
         assert (x == y) == True
         assert (x == z) == False
@@ -248,9 +248,9 @@ def test_neq():
         raise AssertionError
 
     # Test for equality special method with two scalar Dual object
-    x = Dual(2, [1,0])
-    y = Dual(2, [1,0])
-    z = Dual(2, [0,1])
+    x = Dual(2, [1, 0])
+    y = Dual(2, [1, 0])
+    z = Dual(2, [0, 1])
     try:
         assert (x != y) == False
         assert (x != z) == True
@@ -271,10 +271,10 @@ def test_lt():
         raise AssertionError
 
     # Test for less than special method with two scalar Dual object
-    a = Dual(2, [1,0])
-    b = Dual(2, [1,0])
-    c = Dual(2, [0,1])
-    d = Dual(1, [0,1])
+    a = Dual(2, [1, 0])
+    b = Dual(2, [1, 0])
+    c = Dual(2, [0, 1])
+    d = Dual(1, [0, 1])
     try:
         assert (a < b) == False
         assert (a < c) == False
@@ -322,10 +322,10 @@ def test_gt():
         raise AssertionError
 
     # Test for greater than special method with two scalar Dual object
-    a = Dual(2, [1,0])
-    b = Dual(2, [1,0])
-    c = Dual(2, [0,1])
-    d = Dual(1, [0,1])
+    a = Dual(2, [1, 0])
+    b = Dual(2, [1, 0])
+    c = Dual(2, [0, 1])
+    d = Dual(1, [0, 1])
     try:
         assert (a > b) == False
         assert (a > c) == False
@@ -367,7 +367,7 @@ def test_repr():
     y = Dual(2, [0, 1])
     try:
         assert repr(x) == 'Dual(2,1)'
-        assert repr(y) == 'Dual(2,[0, 1])' 
+        assert repr(y) == 'Dual(2,[0, 1])'
     except AssertionError as e:
         print(e)
         raise AssertionError
@@ -377,7 +377,7 @@ def test_str():
     """Test of the string special method (__str__) of Dual class."""
     # Test for string special method with scalar Dual objects
     x = Dual(2)
-    y = Dual(2, [0,1])
+    y = Dual(2, [0, 1])
     try:
         assert str(x) == 'Forward-mode Dual Object ( Values: 2, Derivatives: 1 )'
         assert str(y) == 'Forward-mode Dual Object ( Values: 2, Derivatives: [0, 1] )'
@@ -390,7 +390,7 @@ def test_len():
     """Test of the length special method (__len__) of Dual class."""
     # Test for string special method with scalar Dual objects
     x = Dual(2)
-    y = Dual(2, [0,1])
+    y = Dual(2, [0, 1])
     try:
         assert len(x) == 1
         assert len(y) == 1
