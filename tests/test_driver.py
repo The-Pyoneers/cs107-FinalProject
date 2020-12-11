@@ -28,6 +28,15 @@ def test_values():
         print(e)
         raise AssertionError
 
+    function = lambda x1, x2: [x1 * x2 + x1, x1 / x2] # multiple objective functions - vector input of vectors
+    f = ad.AutoDiff(function, dim=2)
+
+    try:
+        assert f.values([3, 2]) == [9, 1.5]
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
 
 def test_forward():
     """Test of forward method."""
@@ -49,6 +58,14 @@ def test_forward():
         print(e)
         raise AssertionError
 
+    function = lambda x1, x2: [x1 * x2 + x1, x1 / x2] # multiple objective functions - vector input of vectors
+    f = ad.AutoDiff(function, dim=2)
+
+    try:
+        assert f.forward([3, 2]) == [[3, 3], [0.5, -0.75]]
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
 
 def test_get_forwardpass1f():
     """Test of _forwardpass1f method, i.e., testing one-function situation"""
