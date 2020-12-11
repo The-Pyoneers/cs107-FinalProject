@@ -364,9 +364,9 @@ def test_repr():
     """Test of the representation special method (__repr__) of Dual class."""
     # Test for representation special method with scalar Dual objects
     x = Dual(2)
-    y = Dual(2, [0,1])
+    y = Dual(2, [0, 1])
     try:
-        assert repr(x) == 'Dual(2,array(1))'
+        assert repr(x) == 'Dual(2,1)'
         assert repr(y) == 'Dual(2,[0, 1])' 
     except AssertionError as e:
         print(e)
