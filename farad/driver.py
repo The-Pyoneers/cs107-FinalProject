@@ -2,11 +2,11 @@
 
 This file contains class AutoDiff and RAutoDiff.
 
-AutoDiff is for forward mode， and it contains two methods：
+AutoDiff is for forward mode, and it contains two methods:
 values() is for getting the value of the function.
 forward() is for getting the derivative of the variables via forward AD mode.
 
-RAutoDiff is for reverse mode， and it contains three methods：
+RAutoDiff is for reverse mode, and it contains three methods:
 values() is for getting the value of the function.
 reverse() is for getting the derivative of the variables via reverse AD mode.
 forwardpass() is to constructor the tree structure required to perform reverse AD
