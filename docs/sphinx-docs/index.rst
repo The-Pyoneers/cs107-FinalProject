@@ -251,14 +251,12 @@ setup of the package.
  │   └── dual.py
  │   └── elem.py
  │   └── driver.py
- │   └── driverRAD.py
  │   └── rnode.py
  ├── tests
  │   ├── __init__.py
  │   └── test_dual.py
  │   └── test_elem.py
  │   └── test_driver.py
- │   └── test_driverRAD.py
  │   └── test_rnode.py
  └── examples
      └── root-finding.py
