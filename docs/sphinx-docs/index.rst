@@ -90,11 +90,11 @@ quite straightforward way.
 How to Use Farad
 ================
 
-Farad is currently PyPi-distributed, simply install using the following terminal command:
+Farad is currently PyPi-distributed at https://pypi.org/project/farad/, simply install using the following terminal command:
 
 .. code-block:: console
 
-    pip install -i https://test.pypi.org/simple/ farad==0.0.0
+    pip install farad
 
 User can also install farad locally by using the following terminal commands:
 
