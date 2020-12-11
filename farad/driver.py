@@ -78,6 +78,7 @@ class AutoDiff(object):
         >>> example.values([[3, 4], [5,4]])
         [22, 26]
         """
+        self.vals = []  # reset values to prevent duplicates
         if self.dimensions == 1:  # (1 input -> scalar objective function)
 
             if self.length == 1:  # (1 input parameter -> univariate)
@@ -187,6 +188,7 @@ class AutoDiff(object):
                 except:
                     raise Exception(f'Mismatch between function parameter length: {self.length}, and input length: {len(val)}.')
 
+            print('yes')
             try:  # EAFP principle
                 try:  # default assumption is list input
                     for v in val:
