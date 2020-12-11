@@ -177,9 +177,8 @@ The use of multiple objective functions is also supported, as follows
    f = ad.AutoDiff(function)
    f.values([3, 2])  # return the value of f(x = 1), requires vector input
    >>> [9, 1.5]
-   f.forward([[3, 2], [3,2]])  # return the derivative f'(x = 1), requires vector input
-   >>> [3, 4, 5]  # defaults to coefficients
-   NOT WORKING CURRENTLY
+   f.forward([3, 2])  # return the derivative f'(x = 1), requires vector input
+   >>> [[3, 3], [0.5, -0.75]] # defaults to coefficients
 
 Reverse mode
 --------------------
