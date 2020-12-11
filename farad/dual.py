@@ -29,8 +29,8 @@ class Dual:
 
         Returns
         =======
-        self : Dual class object 
-            Object containing value and derivative attributes. Object also 
+        self : Dual class object
+            Object containing value and derivative attributes. Object also
         has includes overloaded operator methods for custom functionality.
 
         Notes
@@ -69,7 +69,7 @@ class Dual:
         =======
         >>> Dual(1.0,1.0).der
         1.0
-        """       
+        """
         return self._der  # limits user interference with 'der' attribute
 
 
@@ -99,7 +99,7 @@ class Dual:
         =======
         >>> Dual(1.0,1.0).val
         1.0
-        """  
+        """
         return self._val  # limits user interference with 'val' attribute
 
 
@@ -122,7 +122,7 @@ class Dual:
         =====
         This function overloads the built-in addition operator between Dual class objects.
         Functionality also exists to succintly support addition with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Example
@@ -183,12 +183,12 @@ class Dual:
         =====
         This function overloads the built-in subtraction operator between Dual class objects.
         Functionality also exists to succintly support subtraction with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
-    
+
         Examples
         ========
-        >>> Dual(2.0, 3) - Dual(1.0, 2) 
+        >>> Dual(2.0, 3) - Dual(1.0, 2)
         Dual(1.0,1)
         >>> Dual(2.0, 3) - 4
         Dual(-2.0,-1)
@@ -221,7 +221,7 @@ class Dual:
 
         Examples
         ========
-        >>> Dual(2.0, 3) - Dual(1.0, 2) 
+        >>> Dual(2.0, 3) - Dual(1.0, 2)
         Dual(1.0,1)
         >>> Dual(2.0, 3) - 4
         Dual(-2.0,-1)
@@ -251,7 +251,7 @@ class Dual:
         =====
         This function overloads the built-in multiplication operator between Dual class objects.
         Functionality also exists to succintly support multiplication with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Examples
@@ -288,7 +288,7 @@ class Dual:
 
         Examples
         ========
-        >>> 3 * Dual(1.0, 2) 
+        >>> 3 * Dual(1.0, 2)
         Dual(3.0,6)
         """
         return self.__mul__(x)  # operation is commutative
@@ -313,7 +313,7 @@ class Dual:
         =====
         This function overloads the built-in power operator between Dual class objects.
         Functionality also exists to succintly support power operations with integers or floats
-        by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Examples
@@ -354,7 +354,7 @@ class Dual:
         Dual(2.0,2.772588722239781)
         """
         # Cannot revert to __pow__ dunder method due to non-commutativity of exponent operator
-        try: 
+        try:
             return Dual(x**self._val, x._val**self._val * np.log(x._val) * self._der)
         except AttributeError:
             return Dual(x**self._val, x**self._val * np.log(x) * self._der)
@@ -379,7 +379,7 @@ class Dual:
         =====
         This function overloads the built-in division operator between Dual class objects.
         Functionality also exists to succintly support divison with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Examples
@@ -418,10 +418,10 @@ class Dual:
         Examples
         ========
         >>> 3 / Dual(1.0,4.0)
-        Dual(3.0,-0.75)
+        Dual(3.0,-12.0)
         """
         # Cannot revert to __truediv__ dunder method due to non-commutativity of divison operator
-        return Dual(x/self._val, -x/self._der*self._val**2)
+        return Dual(x/self._val, -(x/self._val**2) * self._der)
 
 
     def __neg__(self: Union["Dual", int, float]) -> "Dual":
@@ -611,7 +611,7 @@ class Dual:
         =======
         Boolean expression : bool
             Returns True if the value attribute of self is smaller than or equal to the
-            passed value (if int/float) or is smaller than or equal to the value attribute 
+            passed value (if int/float) or is smaller than or equal to the value attribute
             of the passed Dual class object.
 
         Notes
