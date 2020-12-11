@@ -165,14 +165,14 @@ First, you need to load the following libraries:
     >>> f = lambda x: EL.sin(x) + EL.cos(x)
     >>> function = ad.RAutoDiff(f)
     >>> function.forwardpass(1.0)  # evaluate f(x) at x = 1.0
-    >>> function.get_val()
+    >>> function.values()
     1.3817732906760363
     >>> function.reverse()
     -0.30116867893975674
 
     # To evaluate the function at multiple points:
     >>> function.forwardpass([1.0, 2.0, 3.0])  # evaluate f(x) at x = 1.0, 2.0, 3.0
-    >>> function.get_val()
+    >>> function.values()
     array([ 1.38177329,  0.49315059, -0.84887249])
     >>> function.reverse()
     array([-0.30116868, -1.32544426, -1.1311125 ])
@@ -184,14 +184,14 @@ First, you need to load the following libraries:
     >>> f = lambda x, y: x * y
     >>> function = ad.RAutoDiff(f)
     >>> function.forwardpass([1, 2])  # evaluate f(x, y) at (x=1, y=2)
-    >>> function.get_val()
+    >>> function.values()
     2
     >>> function.reverse()
     array([2., 1.])
 
     # To evaluate the function at multiple points:
     >>> function.forwardpass([[1,2],[3,4]])  # evaluate f(x, y) at (x=1, y=2), (x=3, y=4)
-    >>> function.get_val()
+    >>> function.values()
     array([ 2., 12.])
     >>> function.reverse()
     array([[2., 1.],
@@ -206,7 +206,7 @@ First, you need to load the following libraries:
     >>> f = [f1, f2]
     >>> function = ad.RAutoDiff(f)
     >>> function.forwardpass([[1,2],[3,4]])  # evaluate [f1(x, y), f2(x, y)] at (x=1, y=2), (x=3, y=4)
-    >>> function.get_val()
+    >>> function.values()
     array([[ 2.,  4.],
            [12., 24.]])
     >>> function.reverse()
@@ -300,7 +300,7 @@ class to include derivatives with respect to all input dimensions (from :math:`x
 attribute of our dual number object. That is, for a farad object :math:`y`, we have :math:`y_{der} = [\frac{dy}{dx_1}, \frac{dy}{dx_2},..., \frac{dy}{dx_n}]`.
 
 Then, we also have driver class called AutoDiff. This class can be instantialized by user-defined function.
-In this class, we have get_value method to return the value of the function, and we have forward method
+In this class, we have valuesue method to return the value of the function, and we have forward method
 to return the derivative using the forward mode. Currently this driver class can only deal with scalar function input.
 For vector functions, e.g. :math:`g(x) = [f_1(x), f_2(x), f_3(x)]`, we will further implement this class so that the
 forward method can return a Jacobian matrix.
