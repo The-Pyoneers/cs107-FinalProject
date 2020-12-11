@@ -78,6 +78,8 @@ Then the evaluation trace of the functions in each step:
 
 .. image:: Trace.png
 
+Forward mode
+--------------------
 
 Furthermore, if we are going to apply forward mode of AD for both scalar functions and vector functions of multiple variables,
 we introduce the Jacobian matrix :math:`J = \frac{\partial f_i}{ \partial x_j}` and the seed vector :math:`p`. By applying these two elements to a function, we can define
@@ -86,6 +88,18 @@ be interpreted that the forward mode of AD is actually computing the product of 
 
 From the evaluation graph and evaluation trace of forward mode, the differentiation process can be illustrated in a
 quite straightforward way.
+
+Reverse mode
+--------------------
+
+Reverse mode AD (commonly known as backpropagation) is used in many neural networks frameworks, due to its efficiency and
+accuracy. While the forward mode traverses the chain rule from inside to outside, the reverse one traverses it in an opposite
+way, from outside to inside.The dependent variable to be differentiated is fixed and we compute the derivatives recursively.
+Therefore, it requires us to store the intermediate variable in memory.
+To calculate the derivatives, we use a dynamic approach: construct a graph that represents the original expression as
+the program runs. We construct nodes for independent variables x and y. And we store information of nodes who are dependent
+on the current node in its children, which will be used later to compute the gradients.
+
 
 How to Use Farad
 ================
