@@ -151,7 +151,7 @@ class AutoDiff(object):
         ========
         >>> example = AutoDiff(lambda x: 2**x)
         >>> example.forward(3)
-        5.545177444479562
+        [5.545177444479562]
         >>> example = AutoDiff(lambda x: 2**x)
         >>> example.forward([3, 4])
         [5.545177444479562, 11.090354888959125]
