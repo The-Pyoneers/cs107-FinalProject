@@ -13,7 +13,7 @@ __pycache__/
 .history/
 
 # Sphinx documentation
-docs/_build/
+docs/sphinx-docs/_build/
 
 # Jupyter Notebook
 .ipynb_checkpoints

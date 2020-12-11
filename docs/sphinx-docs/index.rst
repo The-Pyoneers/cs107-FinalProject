@@ -78,6 +78,8 @@ Then the evaluation trace of the functions in each step:
 
 .. image:: Trace.png
 
+Forward mode
+--------------------
 
 Furthermore, if we are going to apply forward mode of AD for both scalar functions and vector functions of multiple variables,
 we introduce the Jacobian matrix :math:`J = \frac{\partial f_i}{ \partial x_j}` and the seed vector :math:`p`. By applying these two elements to a function, we can define
@@ -87,10 +89,28 @@ be interpreted that the forward mode of AD is actually computing the product of 
 From the evaluation graph and evaluation trace of forward mode, the differentiation process can be illustrated in a
 quite straightforward way.
 
+Reverse mode
+--------------------
+
+Reverse mode AD (commonly known as backpropagation) is used in many neural networks frameworks, due to its efficiency and
+accuracy. While the forward mode traverses the chain rule from inside to outside, the reverse one traverses it in an opposite
+way, from outside to inside.The dependent variable to be differentiated is fixed and we compute the derivatives recursively.
+Therefore, it requires us to store the intermediate variable in memory.
+To calculate the derivatives, we use a dynamic approach: construct a graph that represents the original expression as
+the program runs. We construct nodes for independent variables x and y. And we store information of nodes who are dependent
+on the current node in its children, which will be used later to compute the gradients.
+
+
 How to Use Farad
 ================
 
-Farad is not currently PyPi-distributed, but can be installed locally by using the following terminal commands:
+Farad is currently PyPi-distributed at https://pypi.org/project/farad/, simply install using the following terminal command:
+
+.. code-block:: console
+
+    pip install farad
+
+User can also install farad locally by using the following terminal commands:
 
 .. code-block:: console
 
@@ -105,19 +125,132 @@ Python environment, run
 
    import farad as fd
 
+
+Forward mode
+--------------------
+
 To check and ensure that the library is working, try running the following example
 
 .. code-block:: Python
 
    import farad as fd
    import farad.driver as ad
-   from farad.elem import *
-   f = lambda x: exp(x) * sin(x**2)
-   function = ad.AutoDiff(f)
-   function.forward(1)  # return the derivative of f at x = 1
-   >>> array(5.22474317)
-   function.get_val_scalar(1)  # return the value of f at x = 1
-   >>> 2.2873552871788423
+   function = lambda x: 7*x + 6 # simple linear equation - scalar function of scalar values
+   f = ad.AutoDiff(function)
+   f.values(7)  # return the value of f(x = 1)
+   >>> [55]
+   f.forward(7)  # return the derivative f'(x = 1)
+   >>> [7]
+   print(f.vals, f.ders)
+   >>> [55] [7]
+
+Elementary functions can also be used in the function definition, as follows
+
+.. code-block:: Python
+
+   import farad.elem as el
+   function = lambda x: 7*el.sin(x) + 6  # sine function
+   f = ad.AutoDiff(function)
+   f.values(7)  # return the value of f(x = 1)
+   >>> [10.598906191031524]
+   f.forward(7)  # return the derivative f'(x = 1)
+   >>> [5.27731578]
+   print(f.vals, f.ders)
+   >>> [10.598906191031524] [5.27731578]
+
+The use of multivariate objective functions is also supported, as follows
+
+.. code-block:: Python
+
+   function = lambda x1, x2: x1 * x2 + x1  # multivariate function - scalar functions of vectors
+   f = ad.AutoDiff(function)
+   f.values([2, 3])  # return the value of f(x = 1), requires vector input
+   >>> 8
+   f.forward([2, 3])  # return the derivative f'(x = 1), requires vector input
+   >>> [4, 2]
+
+The use of multiple objective functions is also supported, as follows
+
+.. code-block:: Python
+
+   function = lambda x1, x2: [x1 * x2 + x1, x1 / x2] # multiple objective functions - vector input of vectors
+   f = ad.AutoDiff(function, dim=2)
+   f.values([3, 2])  # return the value of f(x = 1), requires vector input
+   >>> [9, 1.5]
+   f.forward([3, 2])  # return the derivative f'(x = 1), requires vector input
+   >>> [[3, 3], [0.5, -0.75]] # defaults to coefficients
+
+Reverse mode
+--------------------
+
+To use reverse mode to calculate the value and derivatives of functions, you can check the following examples.
+
+First, you need to load the following libraries:
+
+.. code-block:: Python
+
+   import farad.elem as EL
+   import farad.driver as ad
+
+1. for single function with scalar input
+
+.. code-block:: Python
+
+    >>> f = lambda x: EL.sin(x) + EL.cos(x)
+    >>> function = ad.RAutoDiff(f)
+    >>> function.forwardpass(1.0)  # evaluate f(x) at x = 1.0
+    >>> function.values()
+    1.3817732906760363
+    >>> function.reverse()
+    -0.30116867893975674
+
+    # To evaluate the function at multiple points:
+    >>> function.forwardpass([1.0, 2.0, 3.0])  # evaluate f(x) at x = 1.0, 2.0, 3.0
+    >>> function.values()
+    array([ 1.38177329,  0.49315059, -0.84887249])
+    >>> function.reverse()
+    array([-0.30116868, -1.32544426, -1.1311125 ])
+
+2. For single function with vector input
+
+.. code-block:: Python
+
+    >>> f = lambda x, y: x * y
+    >>> function = ad.RAutoDiff(f)
+    >>> function.forwardpass([1, 2])  # evaluate f(x, y) at (x=1, y=2)
+    >>> function.values()
+    2
+    >>> function.reverse()
+    array([2., 1.])
+
+    # To evaluate the function at multiple points:
+    >>> function.forwardpass([[1,2],[3,4]])  # evaluate f(x, y) at (x=1, y=2), (x=3, y=4)
+    >>> function.values()
+    array([ 2., 12.])
+    >>> function.reverse()
+    array([[2., 1.],
+           [4., 3.]])
+
+3. For vector function:
+
+.. code-block:: Python
+
+    >>> f1 = lambda x, y: x * y
+    >>> f2 = lambda x, y: 2 * x * y
+    >>> f = [f1, f2]
+    >>> function = ad.RAutoDiff(f)
+    >>> function.forwardpass([[1,2],[3,4]])  # evaluate [f1(x, y), f2(x, y)] at (x=1, y=2), (x=3, y=4)
+    >>> function.values()
+    array([[ 2.,  4.],
+           [12., 24.]])
+    >>> function.reverse()
+    array([[[2., 1.],
+            [4., 2.]],
+
+           [[4., 3.],
+            [8., 6.]]])
+
+    # For vector functions, each individual function needs to contain exactly the same parameters with the orders.
 
 You are now ready to use Farad!
 
@@ -134,7 +267,7 @@ setup of the package.
 
 ::
 
- main
+ farad_pkg
  ├── LICENSE
  ├── README.md
  ├── docs
@@ -152,13 +285,18 @@ setup of the package.
  │   └── dual.py
  │   └── elem.py
  │   └── driver.py
+ │   └── rnode.py
  ├── tests
  │   ├── __init__.py
  │   └── test_dual.py
  │   └── test_elem.py
  │   └── test_driver.py
+ │   └── test_rnode.py
  └── examples
      └── root-finding.py
+
+
+
 
 The main module for this library will be farad, which contains all of the callable submodules used
 for automatic differentiation. Three other modules (directories) will also be created, (1) docs, containing
@@ -174,8 +312,8 @@ The only anticipated package dependency will be numpy in order to reduce relianc
 and reduce the complexity of the code base. Additional dependencies will be used during testing and packaging.
 
 
-Implementation details
-======================
+Implementation details for forward mode
+=======================================
 
 Our plan on implementing forward mode AD is as follows.
 
@@ -194,10 +332,12 @@ class to include derivatives with respect to all input dimensions (from :math:`x
 attribute of our dual number object. That is, for a farad object :math:`y`, we have :math:`y_{der} = [\frac{dy}{dx_1}, \frac{dy}{dx_2},..., \frac{dy}{dx_n}]`.
 
 Then, we also have driver class called AutoDiff. This class can be instantialized by user-defined function.
-In this class, we have get_value method to return the value of the function, and we have forward method
+In this class, we have valuesue method to return the value of the function, and we have forward method
 to return the derivative using the forward mode. Currently this driver class can only deal with scalar function input.
-For vector functions, e.g. :math:`g(x) = [f_1(x), f_2(x), f_3(x)]`, we will further implement this class so that the
+For vector functions, e.g. :math:`g(x) = [f_1(x), f_2(x), f_3(x)]`, we also implement this class so that the
 forward method can return a Jacobian matrix.
+
+
 
 Methods and name attributes
 ---------------------------
@@ -222,18 +362,84 @@ functions include scipy functions, we hope we could potentially deal with those 
 the minimum requirement of the forward mode implementation, we won’t have a scipy dependency. For
 the case when the input function includes scipy, a scipy dependency may be included in our implementation.
 
+Implementation details for reverse mode
+=======================================
+
+Core data structures
+--------------------
+
+Tree data structure. Each node of the tree will contain the value of the node and the derivative relationship between the node and its children.
+For example, for z = x + y, z is the children of node x and node y. The node of x contains the value of x and also :math:`{\partial z / \partial x}`.
+
+Classes to use
+--------------
+
+First, we have a Rnode class. This Rnode class is used for the data structure mentioned above. In an Rnode object, the
+value of the node and the relationship between this node and its children nodes are stored.
+
+Then, we also have driver class called RAutoDiff. It's an interface for users to specify the functions
+and the input parameters. The RAutoDiff object can be instantialized by user-defined function. RAutoDiff
+contains the following methods to return the value and derivatives of the function:
+1. values() is for getting the value of the function.
+2. reverse() is for getting the derivative of the variables via reverse AD mode.
+3. forwardpass() is to constructor the tree structure required to perform reverse AD
+calculation. forwardpass needs to be called before using values() and reverse().
+
+Methods and name attributes
+---------------------------
+
+Methods include all the mathematical operations: addition, multiplication, division, trigonometric
+(sin, cos, tan), power, logarithmic, exponential, hyperbolic (sinh, cosh, tanh), as well as multiple
+complex operators (e.g., arcsin, arctanh, tetration). Methods will also be implemented via operator
+overloading.
+
+In the Rnode class, grad() method is used to recursively calculate the derivatives. This method should be
+used in code-developing level. The users should use methods in RAutoDiff class to get the value and derivatives
+of the function.
+
+Methods for RAutoDiff object have been mentioned in the Classes to use section and is illustrated in the demo
+codes in the How to use section.
+
+Our implementation needs a numpy dependency. We use numpy under-the-hood when we implement elementary functions, eg. cos(), sin(), power(),
+log(), exp(), cross() and ndarry for vector as well as when we write the RAutoDiff class.
+
+
 Future Features
 ===============
 
-**Jacobian matrix** The package is planned to fully support vector input and vector functions and be able
-to return a Jacobian matrix for vector cases.
 
-**Reverse mode**. Functionality is planned to support reverse mode differentiation, although this will not
-be done using dual numbers as the forward mode was done.
+**Neural network application**
 
-**Neural network application**. We plan to develop a layer class and optimizer to allow this library to be
+We plan to develop a layer class and optimizer to allow this library to be
 run for neural networks. An example application will be given on the MNIST dataset, which will benchmark
 against a standard neural network library such as Pytorch or Tensorflow for comparison.
+
+(add more details...)
+
+Broader Impact and Inclusivity Statement
+========================================
+
+**Inclusivity.** Science as a discipline exists without prejudice or favoritism. Its universal goal is to uncover the truth
+about the physical world, be it through discovery or ingenuity. Researchers from disparate fields as well as
+widely varying socioeconomic, cultural backgrounds, and ability are united by solely one thing: potential. Open-source
+software is no exception. Contributors are united in the pursuit for progress to tackle existing challenges
+facing humanity and enhancing already-existing solutions. The core developers of Farad share in this worldview and are committed
+to ensuring that every individual, regardless of background, is able to contribute to improve our existing code base. To help
+foster inclusivity, contributors should be respectful of other developers regardless of their identity, and understanding towards
+those still in the process of learning about diverse perspectives and identities. Differences of opinion may arise and should be
+resolved amicably, exercising an unwavering commitment to respect, tolerance, and restraint. Pull requests will be reviewed blindly by a
+a minimum of two core developers to help mitigate unconscious bias. To make the package more accessible,
+documentation should be written in a way that is understandable to non-native English speakers. When language confusion arises, consideration
+should be made for assuming good intent of the speaker. Ideas and feedback for fostering an increasingly inclusive developer ecosystem are
+encouraged. All are welcome.
+
+**Broader Impact.** Automatic differentiation is applicable to almost every discipline of science and engineering. Consequently, the development
+of an automatic differentiation library can have far-reaching implications, from the solving of differential equations in thermodynamics, electromagnetism,
+and fluid mechanics, to the creation of neural networks for classifying images or interpreting text data. Stemming from these applications, real-world consequences
+arise which can have implications for individual privacy, safety, and well-being. To promote a more ethical and socially desirable innovation process,
+contributors are encouraged to point out any potential consequences of decisions and discuss these seriously in a transparent and interactive manner. In general,
+updates should not adversely impact or deter any disadvantaged groups and should aim to increase the speed at which results are obtained.
+
 
 .. toctree::
    :maxdepth: 2

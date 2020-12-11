@@ -5,10 +5,24 @@ import pytest
 import numpy as np
 import farad.elem as Elem
 from farad.dual import Dual
+from farad.rnode import Rnode
 
 
 def test_sin():
     """Test of sin method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.sin(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.sin(x.value)
+        assert x.grad() == np.cos(x.value)
+
+    except AssertionError as e:
+        print(e)
+        raise AssertionError
+
     # Test for sin with two Dual objects
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
@@ -37,6 +51,17 @@ def test_sin():
 
 def test_cos():
     """Test of cos method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.cos(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.cos(x.value)
+        assert x.grad() == -np.sin(x.value)
+
+    except AssertionError as e:
+        print(e)
     # Test for cos with two Dual objects
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
@@ -65,6 +90,17 @@ def test_cos():
 
 def test_tan():
     """Test of tan method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.tan(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.tan(x.value)
+        assert x.grad() == 1 / (np.cos(x.value) ** 2)
+
+    except AssertionError as e:
+        print(e)
     # Test for tan with two Dual objects
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
@@ -93,6 +129,17 @@ def test_tan():
 
 def test_log():
     """Test of log method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.log(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.log(x.value)
+        assert x.grad() == 1/x.value
+
+    except AssertionError as e:
+        print(e)
     # Test for log with two Dual objects
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
@@ -125,6 +172,17 @@ def test_log():
 
 def test_log10():
     """Test of log10 method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.log10(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.log10(x.value)
+        assert x.grad() == 1/(x.value * np.log(10))
+
+    except AssertionError as e:
+        print(e)
     # Test for log10 with two Dual objects
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
@@ -157,6 +215,17 @@ def test_log10():
 
 def test_log2():
     """Test of log2 method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.log2(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.log2(x.value)
+        assert x.grad() == 1/(x.value * np.log(2))
+
+    except AssertionError as e:
+        print(e)
     # Test for log2 with two Dual objects
     val1 = Dual(3, [4, 1])
     val2 = Dual(2, [3, 1])
@@ -189,6 +258,17 @@ def test_log2():
 
 def test_sinh():
     """Test of sinh method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.sinh(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.sinh(x.value)
+        assert x.grad() == np.cosh(x.value)
+
+    except AssertionError as e:
+        print(e)
     # Test for sinh with two Dual objects
     val = Dual(3, [4, 1])
     z = Elem.sinh(val)
@@ -215,6 +295,17 @@ def test_sinh():
 
 def test_cosh():
     """Test of cosh method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.cosh(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.cosh(x.value)
+        assert x.grad() == np.sinh(x.value)
+
+    except AssertionError as e:
+        print(e)
     # Test for cosh with two Dual objects
     val = Dual(3, [4, 1])
     z = Elem.cosh(val)
@@ -241,10 +332,21 @@ def test_cosh():
 
 def test_tanh():
     """Test of tanh method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.tanh(x)
+    z.grad_value = 1.0
+    try:
+        assert z.value == np.tanh(x.value)
+        assert x.grad() == 1 / np.cosh(x.value)**2
+
+    except AssertionError as e:
+        print(e)
     # Test for tan with two Dual objects
     val = Dual(3, [4, 1])
     z = Elem.tanh(val)
-    der = val.der/np.cosh(val.val)
+    der = val.der/(np.cosh(val.val))**2
 
     try:
         assert z.val == np.tanh(val.val)
@@ -267,6 +369,20 @@ def test_tanh():
 
 def test_relu():
     """Test of relu method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.relu(x)
+    z.grad_value = 1.0
+
+    a = max(0, x.value)
+    b = np.where(a > 0, 1, 0)
+    try:
+        assert z.value == a
+        assert x.grad() == b
+
+    except AssertionError as e:
+        print(e)
     # Test for relu with two Dual objects
     x = Dual(3, [4, 1])
     z = Elem.relu(x)
@@ -296,12 +412,28 @@ def test_relu():
 
 def test_relu6():
     """Test of relu6 method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(7.0)
+    z = Elem.relu6(x)
+    z.grad_value = 1.0
+
+    a = max(0, x.value)
+    b = np.where(0.0 < a < 6.0, 1, 0)
+    if a > 6.0:  # clip output to a maximum of 6
+        a = 6.0
+    try:
+        assert z.value == a
+        assert x.grad() == b
+
+    except AssertionError as e:
+        print(e)
     # Test for relu6 with two Dual objects
     x = Dual(8, [4, 1])
     z = Elem.relu6(x)
 
     a = max(0, x.val)
-    b = np.where(a > 0, 1, 0)
+    b = np.where(0.0 < a < 6.0, 1, 0)
     print(b)
     if a > 6:  # clip output to a maximum of 6
         a = 6
@@ -328,6 +460,20 @@ def test_relu6():
 
 def test_logistic():
     """Test of logistic method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.logistic(x)
+    z.grad_value = 1.0
+
+    nominator = np.exp(x.value)
+    denominator = (1 + np.exp(x.value)) ** 2
+    try:
+        assert z.value == 1 / (1 + np.exp(-x.value))
+        assert x.grad() == nominator / denominator
+
+    except AssertionError as e:
+        print(e)
     # Test for logistic with two Dual objects
     x = Dual(3, [4, 1])
     z = Elem.logistic(x)
@@ -352,10 +498,22 @@ def test_logistic():
 
 def test_exp():
     """Test of exp method."""
+    # Test for sin with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.exp(x)
+    z.grad_value = 1.0
+
+    try:
+        assert z.value == np.exp(x.value)
+        assert x.grad() == np.exp(x.value)
+
+    except AssertionError as e:
+        print(e)
     # Test for exp with two Dual objects
     x = Dual(3, [4, 1])
     z = Elem.exp(x)
-    der = np.exp(x.val) * x.der
+    der = np.exp(x.val) * np.asarray(x.der)
 
     try:
         assert z.val == np.exp(x.val)
@@ -405,6 +563,18 @@ def test_exp():
 
 def test_sqrt():
     """Test of sqrt method."""
+    # Test for sqrt with Rnode objects
+
+    x = Rnode(1.0)
+    z = Elem.sqrt(x)
+    z.grad_value = 1.0
+
+    try:
+        assert z.value == x.value ** 0.5
+        assert x.grad() == 0.5*x.value ** (-0.5)
+
+    except AssertionError as e:
+        print(e)
     # Test for sqrt with two Dual objects
     x = Dual(3, [4, 1])
     z = Elem.sqrt(x)
@@ -459,12 +629,31 @@ def test_power():
 
 def test_arcsin():
     """Test of arcsin method."""
+    # Test for arcsin with Rnode objects
+
+    x = Rnode(0.11)
+    z = Elem.arcsin(x)
+    z.grad_value = 1.0
+    temp = 1 - x.value ** 2
+    if temp <= 0:
+        raise ValueError('Domain of sqrt is {x >= 0}')
+    try:
+        assert z.value == np.arcsin(x.value)
+        assert x.grad() == 1 / np.sqrt(temp)
+    except AssertionError as e:
+        print(e)
+
+    # Test for arcsin with invalid Rnode objects
+    with pytest.raises(ValueError, match=r".* sqrt .*"):
+        Elem.arcsin(Rnode(1.0))
+
+
     # Test for arcsin with two Dual objects
     # arsin() input (-1,1)
     x = Dual(0.2, [0.4, 0.1])
     z = Elem.arcsin(x)
     print(z)
-    der = 1 / np.sqrt(1 - x.val ** 2) * x.der
+    der = 1 / np.sqrt(1 - x.val ** 2) * np.asarray(x.der)
     try:
         assert z.val == np.arcsin(x.val)
         assert np.all(z.der == der)
@@ -486,12 +675,34 @@ def test_arcsin():
 
 def test_arccos():
     """Test of arccos method."""
+    # Test for arccos with Rnode objects
+
+    x = Rnode(0.11)
+    z = Elem.arccos(x)
+    z.grad_value = 1.0
+    temp = 1 - x.value ** 2
+    print(temp)
+    if temp <= 0:
+        raise ValueError('Domain of sqrt is {x >= 0}')
+    try:
+        assert z.value == np.arccos(x.value)
+        assert x.grad() == -1 / np.sqrt(temp)
+    except AssertionError as e:
+        print(e)
+
+    # Test for arccos with invalid Rnode objects
+    with pytest.raises(ValueError, match=r".* sqrt .*"):
+        x = Rnode(2.0)
+        z = Elem.arccos(x)
+        Elem.arcsin(x)
+        z.grad_value = 1.0
+
     # Test for arccos with two Dual objects
     # arccos() input (-1,1)
     x = Dual(0.2, [0.4, 0.1])
     z = Elem.arccos(x)
     print(z)
-    der = -1 / np.sqrt(1 - x.val**2) * x.der
+    der = -1 / np.sqrt(1 - x.val**2) * np.asarray(x.der)
     try:
         assert z.val == np.arccos(x.val)
         assert np.all(z.der == der)
@@ -513,11 +724,23 @@ def test_arccos():
 
 def test_arctan():
     """Test of arctan method."""
+    # Test for arctan with Rnode objects
+
+    x = Rnode(0.11)
+    z = Elem.arctan(x)
+    z.grad_value = 1.0
+
+    try:
+        assert z.value == np.arctan(x.value)
+        assert x.grad() == 1 / (1 + x.value ** 2)
+    except AssertionError as e:
+        print(e)
+
     # Test for arctan with two Dual objects
     # arctan() input (-1,1)
     x = Dual(0.2, [0.4, 0.1])
     z = Elem.arctan(x)
-    der = 1 / (1 + x.val**2) * x.der
+    der = 1 / (1 + x.val**2) * np.asarray(x.der)
     try:
         assert z.val == np.arctan(x.val)
         assert np.all(z.der == der)

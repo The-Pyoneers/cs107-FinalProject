@@ -14,7 +14,7 @@ from typing import NoReturn, List, Union, Optional, Type
 Array = Union[List[float], np.ndarray, numbers.Integral]
 
 
-class Dual():
+class Dual:
 
 
     def __init__(self, val: numbers.Integral, der: Optional[Array] = 1) -> "Dual":
@@ -29,8 +29,8 @@ class Dual():
 
         Returns
         =======
-        self : Dual class object 
-            Object containing value and derivative attributes. Object also 
+        self : Dual class object
+            Object containing value and derivative attributes. Object also
         has includes overloaded operator methods for custom functionality.
 
         Notes
@@ -40,7 +40,7 @@ class Dual():
         vector inputs with jacobians.
         """
         self._val = val
-        self._der = np.array(der)
+        self._der = der
 
 
     @property
@@ -68,8 +68,8 @@ class Dual():
         Example
         =======
         >>> Dual(1.0,1.0).der
-        array(1.)
-        """       
+        1.0
+        """
         return self._der  # limits user interference with 'der' attribute
 
 
@@ -99,7 +99,7 @@ class Dual():
         =======
         >>> Dual(1.0,1.0).val
         1.0
-        """  
+        """
         return self._val  # limits user interference with 'val' attribute
 
 
@@ -122,18 +122,18 @@ class Dual():
         =====
         This function overloads the built-in addition operator between Dual class objects.
         Functionality also exists to succintly support addition with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Example
         =======
         >>> Dual(1.0,4.0) + Dual(2.0,3.0)
-        Dual(3.0,array(7.))
+        Dual(3.0,7.0)
         """
         try:  # try-except loop for Python principle EAFP
             return Dual(self._val + x._val, self._der + x._der)
         except AttributeError:  # if input is not a Dual object but a float
-            return Dual(self._val + x, self._der + x)
+            return Dual(self._val + x, self._der)
 
 
     def __radd__(self, x: Union["Dual", float]) -> "Dual":
@@ -159,7 +159,7 @@ class Dual():
         Example
         =======
         >>> 4 + Dual(2.0,3.0)
-        Dual(6.0,array(7.))
+        Dual(6.0,3.0)
         """
         return self.__add__(x)  # operation is commutative
 
@@ -183,18 +183,18 @@ class Dual():
         =====
         This function overloads the built-in subtraction operator between Dual class objects.
         Functionality also exists to succintly support subtraction with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
-    
+
         Examples
         ========
-        >>> Dual(2.0, 3) - Dual(1.0, 2) 
-        Dual(1.0,array(1))
+        >>> Dual(2.0, 3) - Dual(1.0, 2)
+        Dual(1.0,1)
         >>> Dual(2.0, 3) - 4
-        Dual(-2.0,array(-1))
+        Dual(-2.0,-1)
         """
         try:
-            return Dual(self._val - x._val, self._der - x._der)
+            return Dual(self._val - x._val, np.asarray(self._der) - np.asarray(x._der))
         except AttributeError:
             return Dual(self._val - x, self._der - x)
 
@@ -221,10 +221,10 @@ class Dual():
 
         Examples
         ========
-        >>> Dual(2.0, 3) - Dual(1.0, 2) 
-        Dual(1.0,array(1))
+        >>> Dual(2.0, 3) - Dual(1.0, 2)
+        Dual(1.0,1)
         >>> Dual(2.0, 3) - 4
-        Dual(-2.0,array(-1))
+        Dual(-2.0,-1)
         """
         try:  # operation is not commutative
             return Dual(x._val - self._val, x._der - self._der)
@@ -251,15 +251,15 @@ class Dual():
         =====
         This function overloads the built-in multiplication operator between Dual class objects.
         Functionality also exists to succintly support multiplication with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Examples
         ========
         >>> Dual(2,3) * Dual(1,2)
-        Dual(2,array(7))
+        Dual(2,7)
         >>> Dual(2,3) * 3
-        Dual(6,array(9))
+        Dual(6,9)
         """
         try:
             return Dual(self._val * x._val, self._der * x._val + self._val * x._der)  # chain rule for derivative
@@ -288,8 +288,8 @@ class Dual():
 
         Examples
         ========
-        >>> 3 * Dual(1.0, 2) 
-        Dual(3.0,array(6))
+        >>> 3 * Dual(1.0, 2)
+        Dual(3.0,6)
         """
         return self.__mul__(x)  # operation is commutative
 
@@ -313,20 +313,20 @@ class Dual():
         =====
         This function overloads the built-in power operator between Dual class objects.
         Functionality also exists to succintly support power operations with integers or floats
-        by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Examples
         ========
         >>> Dual(1.0, 2) ** 2
-        Dual(1.0,array(4.))
+        Dual(1.0,4.0)
         >>> Dual(1.0, 3.0) ** Dual(4.0, 5.0)
-        Dual(1.0,array(12.))
+        Dual(1.0,12.0)
         """
         try:
             return Dual(self._val**x._val, self._val**x._val*(self._der*(x._val/self._val) + x._der*np.log(self._val)))
         except AttributeError:
-            return Dual(self._val**x, self._val**(x-1) * x * self._der)
+            return Dual(self._val**x, self._val**(x-1) * x * np.asarray(self._der))
 
 
     def __rpow__(self, x: Union["Dual", int, float]) -> "Dual":
@@ -351,10 +351,10 @@ class Dual():
         Examples
         ========
         >>> 2 ** Dual(1.0,2)
-        Dual(2.0,array(2.77258872))
+        Dual(2.0,2.772588722239781)
         """
         # Cannot revert to __pow__ dunder method due to non-commutativity of exponent operator
-        try: 
+        try:
             return Dual(x**self._val, x._val**self._val * np.log(x._val) * self._der)
         except AttributeError:
             return Dual(x**self._val, x**self._val * np.log(x) * self._der)
@@ -379,15 +379,15 @@ class Dual():
         =====
         This function overloads the built-in division operator between Dual class objects.
         Functionality also exists to succintly support divison with integers or floats to Dual
-        objects by making use of the EAFP (easier to ask forgiveness than permission) in the 
+        objects by making use of the EAFP (easier to ask forgiveness than permission) in the
         Zen of Python.
 
         Examples
         ========
         >>> Dual(2.0,3.0) / Dual(1.0,4.0)
-        Dual(2.0,array(-5.))
+        Dual(2.0,-5.0)
         >>> Dual(2.0,3.0) / 4
-        Dual(0.5,array(0.75))
+        Dual(0.5,0.75)
         """
         try:
             return Dual(self._val/x._val, (self._der * x._val - self._val * x._der)/x._val**2)
@@ -418,10 +418,10 @@ class Dual():
         Examples
         ========
         >>> 3 / Dual(1.0,4.0)
-        Dual(3.0,array(-0.75))
+        Dual(3.0,-12.0)
         """
         # Cannot revert to __truediv__ dunder method due to non-commutativity of divison operator
-        return Dual(x/self._val, -x/self._der*self._val**2)
+        return Dual(x/self._val, -(x/self._val**2) * self._der)
 
 
     def __neg__(self: Union["Dual", int, float]) -> "Dual":
@@ -447,7 +447,7 @@ class Dual():
         Examples
         ========
         >>> -Dual(1.0,4.0)
-        Dual(-1.0,array(-4.))
+        Dual(-1.0,-4.0)
         """
         return Dual(-self._val, -self._der)
 
@@ -475,7 +475,7 @@ class Dual():
         Examples
         ========
         >>> +Dual(1.0,4.0)
-        Dual(1.0,array(4.))
+        Dual(1.0,4.0)
         """
         return Dual(self._val, self._der)
 
@@ -553,9 +553,9 @@ class Dual():
         False
         """
         try:
-            return (self._val != x._val or (np.array_equal(self._der, x._der) == False))
+            return self._val != x._val or (np.array_equal(self._der, x._der) is False)
         except AttributeError:
-            return (self._val != x)
+            return self._val != x
 
 
     def __lt__(self, x: Union["Dual", int, float]) -> bool:
@@ -611,7 +611,7 @@ class Dual():
         =======
         Boolean expression : bool
             Returns True if the value attribute of self is smaller than or equal to the
-            passed value (if int/float) or is smaller than or equal to the value attribute 
+            passed value (if int/float) or is smaller than or equal to the value attribute
             of the passed Dual class object.
 
         Notes
@@ -735,7 +735,7 @@ class Dual():
         Example
         =======
         >>> repr(Dual(1.0,4.0))
-        'Dual(1.0,array(4.))'
+        'Dual(1.0,4.0)'
         """
         try:
             return f"Dual({reprlib.repr(self._val)},{reprlib.repr(list(self._der))})"
