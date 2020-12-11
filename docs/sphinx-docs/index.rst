@@ -359,6 +359,10 @@ Methods include all the mathematical operations: addition, multiplication, divis
 complex operators (e.g., arcsin, arctanh, tetration). Methods will also be implemented via operator
 overloading.
 
+In the Rnode class, grad() method is used to recursively calculate the derivatives. This method should be
+used in code-developing level. The users should use methods in RAutoDiff class to get the value and derivatives
+of the function.
+
 Methods for RAutoDiff object have been mentioned in the Classes to use section and is illustrated in the demo
 codes in the How to use section.
 
