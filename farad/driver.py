@@ -67,7 +67,7 @@ class AutoDiff(object):
         ========
         >>> example = AutoDiff(lambda x: 2**x)
         >>> example.values(3)
-        8
+        [8]
         >>> example = AutoDiff(lambda x: 2**x)
         >>> example.values([3, 4])
         [8, 16]
@@ -91,6 +91,7 @@ class AutoDiff(object):
                     except TypeError:  # defers to float/integer input
                         a = Dual(val, 1)
                         self.vals.append(self.function(a)._val)
+                        return self.vals
                 except TypeError:
                     raise TypeError('Only list, float, and integer inputs supported.')
 
