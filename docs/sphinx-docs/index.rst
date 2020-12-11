@@ -196,55 +196,55 @@ First, you need to load the following libraries:
 
 .. code-block:: Python
 
-    >>> f = lambda x: EL.sin(x) + EL.cos(x)
-    >>> function = ad.RAutoDiff(f)
-    >>> function.forwardpass(1.0)  # evaluate f(x) at x = 1.0
-    >>> function.values()
-    1.3817732906760363
-    >>> function.reverse()
-    -0.30116867893975674
+    f = lambda x: EL.sin(x) + EL.cos(x)
+    function = ad.RAutoDiff(f)
+    function.forwardpass(1.0)  # evaluate f(x) at x = 1.0
+    function.values()
+    >>> 1.3817732906760363
+    function.reverse()
+    >>> -0.30116867893975674
 
     # To evaluate the function at multiple points:
-    >>> function.forwardpass([1.0, 2.0, 3.0])  # evaluate f(x) at x = 1.0, 2.0, 3.0
-    >>> function.values()
-    array([ 1.38177329,  0.49315059, -0.84887249])
-    >>> function.reverse()
-    array([-0.30116868, -1.32544426, -1.1311125 ])
+    function.forwardpass([1.0, 2.0, 3.0])  # evaluate f(x) at x = 1.0, 2.0, 3.0
+    function.values()
+    >>> array([ 1.38177329,  0.49315059, -0.84887249])
+    function.reverse()
+    >>> array([-0.30116868, -1.32544426, -1.1311125 ])
 
 2. For single function with vector input
 
 .. code-block:: Python
 
-    >>> f = lambda x, y: x * y
-    >>> function = ad.RAutoDiff(f)
-    >>> function.forwardpass([1, 2])  # evaluate f(x, y) at (x=1, y=2)
-    >>> function.values()
-    2
-    >>> function.reverse()
-    array([2., 1.])
+    f = lambda x, y: x * y
+    function = ad.RAutoDiff(f)
+    function.forwardpass([1, 2])  # evaluate f(x, y) at (x=1, y=2)
+    function.values()
+    >>> 2
+    function.reverse()
+    >>> array([2., 1.])
 
     # To evaluate the function at multiple points:
-    >>> function.forwardpass([[1,2],[3,4]])  # evaluate f(x, y) at (x=1, y=2), (x=3, y=4)
-    >>> function.values()
-    array([ 2., 12.])
-    >>> function.reverse()
-    array([[2., 1.],
+    function.forwardpass([[1,2],[3,4]])  # evaluate f(x, y) at (x=1, y=2), (x=3, y=4)
+    function.values()
+    >>> array([ 2., 12.])
+    function.reverse()
+    >>> array([[2., 1.],
            [4., 3.]])
 
 3. For vector function:
 
 .. code-block:: Python
 
-    >>> f1 = lambda x, y: x * y
-    >>> f2 = lambda x, y: 2 * x * y
-    >>> f = [f1, f2]
-    >>> function = ad.RAutoDiff(f)
-    >>> function.forwardpass([[1,2],[3,4]])  # evaluate [f1(x, y), f2(x, y)] at (x=1, y=2), (x=3, y=4)
-    >>> function.values()
-    array([[ 2.,  4.],
+    f1 = lambda x, y: x * y
+    f2 = lambda x, y: 2 * x * y
+    f = [f1, f2]
+    function = ad.RAutoDiff(f)
+    function.forwardpass([[1,2],[3,4]])  # evaluate [f1(x, y), f2(x, y)] at (x=1, y=2), (x=3, y=4)
+    function.values()
+    >>> array([[ 2.,  4.],
            [12., 24.]])
-    >>> function.reverse()
-    array([[[2., 1.],
+    function.reverse()
+    >>> array([[[2., 1.],
             [4., 2.]],
 
            [[4., 3.],
