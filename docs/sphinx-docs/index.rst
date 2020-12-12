@@ -135,11 +135,11 @@ To check and ensure that the library is working, try running the following examp
 
    import farad as fd
    import farad.driver as ad
-   function = lambda x: 7*x + 6 # simple linear equation - scalar function of scalar values
+   function = lambda x: 7 * x + 6 # simple linear equation - scalar function of scalar values
    f = ad.AutoDiff(function)
-   f.values(7)  # return the value of f(x = 1)
+   f.values(7)  # return the value of f(x = 7)
    >>> [55]
-   f.forward(7)  # return the derivative f'(x = 1)
+   f.forward(7)  # return the derivative f'(x = 7)
    >>> [7]
    print(f.vals, f.ders)
    >>> [55] [7]
@@ -148,12 +148,12 @@ Elementary functions can also be used in the function definition, as follows
 
 .. code-block:: Python
 
-   import farad.elem as el
-   function = lambda x: 7*el.sin(x) + 6  # sine function
+   import farad.elem as EL
+   function = lambda x: 7 * EL.sin(x) + 6  # sine function
    f = ad.AutoDiff(function)
-   f.values(7)  # return the value of f(x = 1)
+   f.values(7)  # return the value of f(x = 7)
    >>> [10.598906191031524]
-   f.forward(7)  # return the derivative f'(x = 1)
+   f.forward(7)  # return the derivative f'(x = 7)
    >>> [5.27731578]
    print(f.vals, f.ders)
    >>> [10.598906191031524] [5.27731578]
@@ -164,9 +164,9 @@ The use of multivariate objective functions is also supported, as follows
 
    function = lambda x1, x2: x1 * x2 + x1  # multivariate function - scalar functions of vectors
    f = ad.AutoDiff(function)
-   f.values([2, 3])  # return the value of f(x = 1), requires vector input
+   f.values([2, 3])  # return the value of f([x1, x2] = [2, 3]), requires vector input
    >>> 8
-   f.forward([2, 3])  # return the derivative f'(x = 1), requires vector input
+   f.forward([2, 3])  # return the derivative f'([x1, x2] = [2, 3]), requires vector input
    >>> [4, 2]
 
 The use of multiple objective functions is also supported, as follows
@@ -175,9 +175,9 @@ The use of multiple objective functions is also supported, as follows
 
    function = lambda x1, x2: [x1 * x2 + x1, x1 / x2] # multiple objective functions - vector input of vectors
    f = ad.AutoDiff(function, dim=2)
-   f.values([3, 2])  # return the value of f(x = 1), requires vector input
+   f.values([3, 2])  # return the value of f([x1, x2] = [3, 2]), requires vector input
    >>> [9, 1.5]
-   f.forward([3, 2])  # return the derivative f'(x = 1), requires vector input
+   f.forward([3, 2])  # return the derivative f'([x1, x2] = [3, 2]), requires vector input
    >>> [[3, 3], [0.5, -0.75]] # defaults to coefficients
 
 Reverse mode
