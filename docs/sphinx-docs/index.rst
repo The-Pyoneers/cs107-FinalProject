@@ -412,7 +412,16 @@ Future Features
 
 We plan to develop a layer class and optimizer to allow this library to be
 run for neural networks. An example application will be given on the MNIST dataset, which will benchmark
-against a standard neural network library such as Pytorch or Tensorflow for comparison.
+against a standard neural network library such as Pytorch or Tensorflow for comparison. We also
+want to include other functionalities such as saving and importing neuron weights.
+
+The use of a layer abstraction allows simpler interfacing with the farad library, especially for large inputs. For example, images in MNIST are relatively small, consisting of only 28x28 pixels. However, when flattened this extends to an input vector of 784 neurons, which is not easily manageable without this abstraction. Multiple layers can be linked together in a computational workflow to produce complex network architectures comparable to those of standard neural network libraries such as Tensorflow and Pytorch, which can be used as a benchmark for comparing performance. 
+
+In addition to what we have accomplished, we also need to deal with matrix/array operations to better apply our automatic differentiation package to tasks related to neural networks
+For large neural network, matrix operation seems inevitable. Take reverse mode for example, which could be
+more time-efficient in nueral network calculation, we could use a array-like data structure in a new class. Individual element of in the
+array would be our Rnode object. In this new class, we can overload common operators
+to support matrix/array operation.
 
 (add more details...)
 
