@@ -438,7 +438,7 @@ resolved amicably, exercising an unwavering commitment to respect, tolerance, an
 a minimum of two core developers to help mitigate unconscious bias. To make the package more accessible,
 documentation should be written in a way that is understandable to non-native English speakers. When language confusion arises, consideration
 should be made for assuming good intent of the speaker. Ideas and feedback for fostering an increasingly inclusive developer ecosystem are
-encouraged. All are welcome.
+encouraged. All are welcome. However, any unethical or illegal usage of our package will not be tolerated.
 
 **Broader Impact.** Automatic differentiation is applicable to almost every discipline of science and engineering. Consequently, the development
 of an automatic differentiation library can have far-reaching implications, from the solving of differential equations in thermodynamics, electromagnetism,
